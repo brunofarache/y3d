@@ -1,19 +1,32 @@
 YUI.add('webgl', function(Y) {
-	var WebGL = Y.namespace('WebGL');
+	Y.Scene = Y.Base.create('scene', Y.Base, [], {
+		initializer: function() {
+			var instance = this,
+				container = instance.get('container'),
+				canvas = instance.get('canvas');
 
-	WebGL.scene = function(node, config) {
-		var container = Y.one(node),
-			canvas = Y.Node.create('<canvas></canvas>');
-			config = config ? config : {};
+			canvas.set('height', instance.get('height'));
+			canvas.set('width', instance.get('width'));
 
-		config = Y.merge({
-			height: 100,
-			width: 100
-		}, config);
+			container.append(canvas);
+		}
+	}, {
+		ATTRS: {
+			canvas: {
+				value: Y.Node.create('<canvas></canvas>')
+			},
 
-		canvas.set('height', config.height);
-		canvas.set('width', config.width);
+			container: {
+				value: Y.Node.one('#container')
+			},
 
-		container.append(canvas);
-	};
-}, '0.0.1', {requires: ['node-base']});
+			height: {
+				value: 100
+			},
+
+			width: {
+				value: 100
+			}
+		}
+	});
+}, '1.0', {requires: ['base-build', 'node-base']});

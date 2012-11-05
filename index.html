@@ -12,11 +12,11 @@
 			modules: {
 				'webgl': {
 					fullpath: 'js/webgl.js',
-					requires: ['node-base']
+					requires: ['base-build', 'node-base']
 				}
 			}
 		}).use('webgl', function (Y) {
-			Y.WebGL.scene('#container');
+			var scene = new Y.Scene();
 		});
 	</script>	
 </body>
