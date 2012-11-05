@@ -3,18 +3,48 @@
 	<title>yui webgl module</title>
 
 	<script src="lib/yui-min.js"></script>
+	<script src="lib/glMatrix-0.9.5.min.js"></script>
+
+	<script id="fragment-shader" type="x-shader/x-fragment">
+		precision mediump float;
+
+		void main(void) {
+			gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+		}
+	</script>
+
+	<script id="vertex-shader" type="x-shader/x-vertex">
+		attribute vec3 vertexPosition;
+
+		uniform mat4 projectionMatrix;
+		uniform mat4 modelViewMatrix;
+
+		void main(void) {
+			gl_Position = projectionMatrix * modelViewMatrix * vec4(vertexPosition, 1.0);
+		}
+	</script>
 </head>
 <body>
 	<div id='container'></div>
 
 	<script>
 		YUI({
-			modules: {
-				'webgl-scene': {
-					fullpath: 'src/webgl-scene/webgl-scene.js',
-					requires: ['base-build', 'node-base']
+			groups: {
+				'webgl': {
+					base: 'src/',
+					modules: {
+						'webgl-scene': {
+							path: 'webgl-scene/webgl-scene.js',
+							requires: ['base-build', 'node-base', 'webgl-shader']
+						},
+
+						'webgl-shader': {
+							path: 'webgl-shader/webgl-shader.js',
+							requires: ['node-base']
+						}
+					}
 				}
-			}
+			}	
 		}).use('webgl-scene', function(Y) {
 			var scene = new Y.Scene();
 		});

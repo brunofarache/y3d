@@ -1,5 +1,6 @@
 YUI.add('webgl-scene', function(Y) {
 	var context = null;
+	var program = null;
 
 	Y.Scene = Y.Base.create('scene', Y.Base, [], {
 		initializer: function() {
@@ -15,9 +16,55 @@ YUI.add('webgl-scene', function(Y) {
 			container.append(canvas);
 
 			context = canvas.getDOMNode().getContext("experimental-webgl");
+			program = Y.Shader.link(context);
+
+			instance.render();
+		},
+
+		render: function() {
+			var instance = this,
+				buffer = instance.getBuffer(),
+				height = instance.get('height'),
+				width = instance.get('width');
 
 			context.clearColor(0.0, 0.0, 0.0, 1.0);
-        	context.enable(context.DEPTH_TEST);
+			context.enable(context.DEPTH_TEST);
+
+			context.viewport(0, 0, width, height);
+			context.clear(context.COLOR_BUFFER_BIT | context.DEPTH_BUFFER_BIT);
+
+			var modelViewMatrix = mat4.create();
+			var projectionMatrix = mat4.create();
+
+			mat4.perspective(45, width/height, 0.1, 100.0, projectionMatrix);
+
+			mat4.identity(modelViewMatrix);
+			mat4.translate(modelViewMatrix, [0.0, 0.0, -7.0]);
+
+			context.bindBuffer(context.ARRAY_BUFFER, buffer);
+
+			context.vertexAttribPointer(program.vertexPositionAttribute, 3, context.FLOAT, false, 0, 0);
+			
+			context.uniformMatrix4fv(program.projectionMatrixUniform, false, projectionMatrix);
+        	context.uniformMatrix4fv(program.modelViewMatrixUniform, false, modelViewMatrix);
+			
+			context.drawArrays(context.TRIANGLES, 0, 3);
+		},
+
+		getBuffer: function() {
+			var buffer = context.createBuffer();
+
+			context.bindBuffer(context.ARRAY_BUFFER, buffer);
+
+			var vertices = [
+				0.0, 1.0, 0.0,
+				-1.0, -1.0, 0.0,
+				1.0, -1.0, 0.0
+			];
+
+			context.bufferData(context.ARRAY_BUFFER, new Float32Array(vertices), context.STATIC_DRAW);
+
+			return buffer;
 		}
 	}, {
 		ATTRS: {
@@ -38,4 +85,4 @@ YUI.add('webgl-scene', function(Y) {
 			}
 		}
 	});
-}, '1.0', {requires: ['base-build', 'node-base']});
+}, '1.0', {requires: ['base-build', 'node-base', 'webgl-shader']});
