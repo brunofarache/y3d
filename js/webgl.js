@@ -1,14 +1,23 @@
 YUI.add('webgl', function(Y) {
+	var context = null;
+
 	Y.Scene = Y.Base.create('scene', Y.Base, [], {
 		initializer: function() {
 			var instance = this,
+				canvas = instance.get('canvas'),
 				container = instance.get('container'),
-				canvas = instance.get('canvas');
+				height = instance.get('height'),
+				width = instance.get('width');
 
-			canvas.set('height', instance.get('height'));
-			canvas.set('width', instance.get('width'));
+			canvas.set('height', height);
+			canvas.set('width', width);
 
 			container.append(canvas);
+
+			context = canvas.getDOMNode().getContext("experimental-webgl");
+
+			context.clearColor(0.0, 0.0, 0.0, 1.0);
+        	context.enable(context.DEPTH_TEST);
 		}
 	}, {
 		ATTRS: {
