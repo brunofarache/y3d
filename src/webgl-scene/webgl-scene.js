@@ -1,4 +1,4 @@
-YUI.add('webgl', function(Y) {
+YUI.add('webgl-scene', function(Y) {
 	var context = null;
 
 	Y.Scene = Y.Base.create('scene', Y.Base, [], {

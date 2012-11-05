@@ -10,12 +10,12 @@
 	<script>
 		YUI({
 			modules: {
-				'webgl': {
-					fullpath: 'src/webgl-scene.js',
+				'webgl-scene': {
+					fullpath: 'src/webgl-scene/webgl-scene.js',
 					requires: ['base-build', 'node-base']
 				}
 			}
-		}).use('webgl', function (Y) {
+		}).use('webgl-scene', function(Y) {
 			var scene = new Y.Scene();
 		});
 	</script>	
