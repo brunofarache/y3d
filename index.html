@@ -1,0 +1,23 @@
+<html>
+<head>
+	<title>yui webgl module</title>
+
+	<script src="lib/yui-min.js"></script>
+</head>
+<body>
+	<div id='container'></div>
+
+	<script>
+		YUI({
+			modules: {
+				'webgl': {
+					fullpath: 'js/webgl.js',
+					requires: ['node-base']
+				}
+			}
+		}).use('webgl', function (Y) {
+			Y.WebGL.scene('#container');
+		});
+	</script>	
+</body>
+</html>
