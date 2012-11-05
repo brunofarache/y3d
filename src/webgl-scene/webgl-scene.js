@@ -23,7 +23,6 @@ YUI.add('webgl-scene', function(Y) {
 
 		render: function() {
 			var instance = this,
-				buffer = instance.getBuffer(),
 				height = instance.get('height'),
 				width = instance.get('width');
 
@@ -41,7 +40,7 @@ YUI.add('webgl-scene', function(Y) {
 			mat4.identity(modelViewMatrix);
 			mat4.translate(modelViewMatrix, [0.0, 0.0, -7.0]);
 
-			context.bindBuffer(context.ARRAY_BUFFER, buffer);
+			instance.bindBuffer();
 
 			context.vertexAttribPointer(program.vertexPositionAttribute, 3, context.FLOAT, false, 0, 0);
 			
@@ -51,7 +50,7 @@ YUI.add('webgl-scene', function(Y) {
 			context.drawArrays(context.TRIANGLES, 0, 3);
 		},
 
-		getBuffer: function() {
+		bindBuffer: function() {
 			var buffer = context.createBuffer();
 
 			context.bindBuffer(context.ARRAY_BUFFER, buffer);
@@ -63,8 +62,6 @@ YUI.add('webgl-scene', function(Y) {
 			];
 
 			context.bufferData(context.ARRAY_BUFFER, new Float32Array(vertices), context.STATIC_DRAW);
-
-			return buffer;
 		}
 	}, {
 		ATTRS: {
