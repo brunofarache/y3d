@@ -1,6 +1,8 @@
 YUI.add('webgl-scene', function(Y) {
 	var context = null;
 	var program = null;
+	var colorBuffer;
+	var vertexBuffer;
 
 	Y.Scene = Y.Base.create('scene', Y.Base, [], {
 		initializer: function() {
@@ -17,6 +19,8 @@ YUI.add('webgl-scene', function(Y) {
 
 			context = canvas.getDOMNode().getContext("experimental-webgl");
 			program = Y.Shader.link(context);
+
+			instance.initBuffers();
 
 			instance.render();
 		},
@@ -40,20 +44,22 @@ YUI.add('webgl-scene', function(Y) {
 			mat4.identity(modelViewMatrix);
 			mat4.translate(modelViewMatrix, [0.0, 0.0, -7.0]);
 
-			instance.bindBuffer();
-
+			context.bindBuffer(context.ARRAY_BUFFER, vertexBuffer);
 			context.vertexAttribPointer(program.vertexPositionAttribute, 3, context.FLOAT, false, 0, 0);
 			
+			context.bindBuffer(context.ARRAY_BUFFER, colorBuffer);
+			context.vertexAttribPointer(program.vertexColorAttribute, 4, context.FLOAT, false, 0, 0);
+
 			context.uniformMatrix4fv(program.projectionMatrixUniform, false, projectionMatrix);
         	context.uniformMatrix4fv(program.modelViewMatrixUniform, false, modelViewMatrix);
 			
 			context.drawArrays(context.TRIANGLES, 0, 3);
 		},
 
-		bindBuffer: function() {
-			var buffer = context.createBuffer();
+		initBuffers: function() {
+			vertexBuffer = context.createBuffer();
 
-			context.bindBuffer(context.ARRAY_BUFFER, buffer);
+			context.bindBuffer(context.ARRAY_BUFFER, vertexBuffer);
 
 			var vertices = [
 				0.0, 1.0, 0.0,
@@ -62,6 +68,18 @@ YUI.add('webgl-scene', function(Y) {
 			];
 
 			context.bufferData(context.ARRAY_BUFFER, new Float32Array(vertices), context.STATIC_DRAW);
+
+			colorBuffer = context.createBuffer();
+
+			context.bindBuffer(context.ARRAY_BUFFER, colorBuffer);
+
+			var colors = [
+				1.0, 0.0, 0.0, 1.0,
+				1.0, 0.0, 0.0, 1.0,
+				1.0, 0.0, 0.0, 1.0
+			];
+
+			context.bufferData(context.ARRAY_BUFFER, new Float32Array(colors), context.STATIC_DRAW);
 		}
 	}, {
 		ATTRS: {
@@ -74,11 +92,11 @@ YUI.add('webgl-scene', function(Y) {
 			},
 
 			height: {
-				value: 100
+				value: 500
 			},
 
 			width: {
-				value: 100
+				value: 500
 			}
 		}
 	});

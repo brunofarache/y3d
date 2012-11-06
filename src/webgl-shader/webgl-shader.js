@@ -48,6 +48,9 @@ YUI.add('webgl-shader', function(Y) {
         program.vertexPositionAttribute = context.getAttribLocation(program, "vertexPosition");
         context.enableVertexAttribArray(program.vertexPositionAttribute);
 
+        program.vertexColorAttribute = context.getAttribLocation(program, "vertexColor");
+    	context.enableVertexAttribArray(program.vertexColorAttribute);
+
         program.projectionMatrixUniform = context.getUniformLocation(program, "projectionMatrix");
         program.modelViewMatrixUniform = context.getUniformLocation(program, "modelViewMatrix");
 
