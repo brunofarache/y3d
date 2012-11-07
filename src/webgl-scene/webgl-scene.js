@@ -44,6 +44,8 @@ YUI.add('webgl-scene', function(Y) {
 			mat4.identity(modelViewMatrix);
 			mat4.translate(modelViewMatrix, [0.0, 0.0, -7.0]);
 
+			mat4.rotate(modelViewMatrix, (45 * (Math.PI/180)), [0, 1, 0]);
+
 			context.bindBuffer(context.ARRAY_BUFFER, vertexBuffer);
 			context.vertexAttribPointer(program.vertexPositionAttribute, 3, context.FLOAT, false, 0, 0);
 			
