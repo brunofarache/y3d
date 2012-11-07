@@ -55,7 +55,7 @@ YUI.add('webgl-scene', function(Y) {
 			context.uniformMatrix4fv(program.projectionMatrixUniform, false, projectionMatrix);
         	context.uniformMatrix4fv(program.modelViewMatrixUniform, false, modelViewMatrix);
 			
-			context.drawArrays(context.TRIANGLES, 0, 3);
+			context.drawArrays(context.TRIANGLES, 0, 6);
 		},
 
 		initBuffers: function() {
@@ -64,9 +64,12 @@ YUI.add('webgl-scene', function(Y) {
 			context.bindBuffer(context.ARRAY_BUFFER, vertexBuffer);
 
 			var vertices = [
-				0.0, 1.0, 0.0,
-				-1.0, -1.0, 0.0,
-				1.0, -1.0, 0.0
+				-1.0, 1.0, 0.0,
+				1.0, 1.0, 0.0,
+				1.0, -1.0, 0.0,
+				-1.0, 1.0, 0.0,
+				1.0, -1.0, 0.0,
+				-1.0, -1.0, 0.0
 			];
 
 			context.bufferData(context.ARRAY_BUFFER, new Float32Array(vertices), context.STATIC_DRAW);
@@ -76,6 +79,9 @@ YUI.add('webgl-scene', function(Y) {
 			context.bindBuffer(context.ARRAY_BUFFER, colorBuffer);
 
 			var colors = [
+				1.0, 0.0, 0.0, 1.0,
+				1.0, 0.0, 0.0, 1.0,
+				1.0, 0.0, 0.0, 1.0,
 				1.0, 0.0, 0.0, 1.0,
 				1.0, 0.0, 0.0, 1.0,
 				1.0, 0.0, 0.0, 1.0
