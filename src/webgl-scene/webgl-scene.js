@@ -58,7 +58,7 @@ YUI.add('webgl-scene', function(Y) {
 			context.uniformMatrix4fv(program.projectionMatrixUniform, false, projectionMatrix);
         	context.uniformMatrix4fv(program.modelViewMatrixUniform, false, modelViewMatrix);
 			
-			context.drawElements(context.TRIANGLES, 24, context.UNSIGNED_SHORT, 0);
+			context.drawElements(context.TRIANGLES, 36, context.UNSIGNED_SHORT, 0);
 		},
 
 		initBuffers: function() {
@@ -68,40 +68,16 @@ YUI.add('webgl-scene', function(Y) {
 
 			var vertices = [
 				// Front face
-				-1.0, -1.0,  1.0,
 				1.0, -1.0,  1.0,
 				1.0,  1.0,  1.0,
 				-1.0,  1.0,  1.0,
+				-1.0, -1.0,  1.0,
 
 				// Back face
-				-1.0, -1.0, -1.0,
-				-1.0,  1.0, -1.0,
-				1.0,  1.0, -1.0,
 				1.0, -1.0, -1.0,
-
-				// Top face
-				-1.0,  1.0, -1.0,
-				-1.0,  1.0,  1.0,
-				1.0,  1.0,  1.0,
-				1.0,  1.0, -1.0,
-
-				// Bottom face
-				-1.0, -1.0, -1.0,
-				1.0, -1.0, -1.0,
-				1.0, -1.0,  1.0,
-				-1.0, -1.0,  1.0,
-
-				// Right face
-				1.0, -1.0, -1.0,
-				1.0,  1.0, -1.0,
-				1.0,  1.0,  1.0,
-				1.0, -1.0,  1.0,
-
-				// Left face
-				-1.0, -1.0, -1.0,
-				-1.0, -1.0,  1.0,
-				-1.0,  1.0,  1.0,
-				-1.0,  1.0, -1.0
+				1.0, 1.0, -1.0,
+				-1.0, 1.0, -1.0,
+				-1.0, -1.0, -1.0
 			];
 
 			context.bufferData(context.ARRAY_BUFFER, new Float32Array(vertices), context.STATIC_DRAW);
@@ -120,26 +96,6 @@ YUI.add('webgl-scene', function(Y) {
 				1.0, 0.0, 0.0, 1.0,
 				1.0, 0.0, 0.0, 1.0,
 				1.0, 0.0, 0.0, 1.0,
-
-				1.0, 0.0, 0.0, 1.0,
-				1.0, 0.0, 0.0, 1.0,
-				1.0, 0.0, 0.0, 1.0,
-				1.0, 0.0, 0.0, 1.0,
-
-				1.0, 0.0, 0.0, 1.0,
-				1.0, 0.0, 0.0, 1.0,
-				1.0, 0.0, 0.0, 1.0,
-				1.0, 0.0, 0.0, 1.0,
-
-				1.0, 0.0, 0.0, 1.0,
-				1.0, 0.0, 0.0, 1.0,
-				1.0, 0.0, 0.0, 1.0,
-				1.0, 0.0, 0.0, 1.0,
-
-				1.0, 0.0, 0.0, 1.0,
-				1.0, 0.0, 0.0, 1.0,
-				1.0, 0.0, 0.0, 1.0,
-				1.0, 0.0, 0.0, 1.0
 			];
 
 			context.bufferData(context.ARRAY_BUFFER, new Float32Array(colors), context.STATIC_DRAW);
@@ -149,12 +105,24 @@ YUI.add('webgl-scene', function(Y) {
 			context.bindBuffer(context.ELEMENT_ARRAY_BUFFER, indexBuffer);
 
 			var indices = [
-				0, 1, 2,      0, 2, 3,    // Front face
-				4, 5, 6,      4, 6, 7,    // Back face
-				8, 9, 10,     8, 10, 11,  // Top face
-				12, 13, 14,   12, 14, 15, // Bottom face
-				16, 17, 18,   16, 18, 19, // Right face
-				20, 21, 22,   20, 22, 23  // Left face
+				 // Front
+				0, 1, 2,
+				2, 3, 0,
+				// Back
+				4, 6, 5,
+				4, 7, 6,
+				// Left
+				2, 7, 3,
+				7, 6, 2,
+				// Right
+				0, 4, 1,
+				4, 1, 5,
+				// Top
+				6, 2, 1,
+				1, 6, 5,
+				// Bottom
+				0, 3, 7,
+				0, 7, 4
 			];
 
 			context.bufferData(context.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), context.STATIC_DRAW);
