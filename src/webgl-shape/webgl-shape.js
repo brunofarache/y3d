@@ -9,7 +9,7 @@ YUI.add('webgl-shape', function(Y) {
 		bindBuffers: function(context) {
 			var instance = this,
 				vertices = instance.get('vertices'),
-				colors = instance.get('colors'),
+				color = instance.get('color'),
 				indices = instance.get('indices');
 
 			instance.vertexBuffer = context.createBuffer();
@@ -20,7 +20,7 @@ YUI.add('webgl-shape', function(Y) {
 			instance.colorBuffer = context.createBuffer();
 
 			context.bindBuffer(context.ARRAY_BUFFER, instance.colorBuffer);
-			context.bufferData(context.ARRAY_BUFFER, new Float32Array(colors), context.STATIC_DRAW);
+			context.bufferData(context.ARRAY_BUFFER, new Float32Array(color), context.STATIC_DRAW);
 
 			instance.indexBuffer = context.createBuffer();
 			
@@ -29,16 +29,40 @@ YUI.add('webgl-shape', function(Y) {
 		}
 	}, {
 		ATTRS: {
-			colors: {
+			color: {
+				setter: function(val) {
+					var instance = this;
+
+					if (Lang.isArray(val)) {
+						var length = val.length;
+
+						if (length == 3) {
+							for (var i = 0; i < length; i++) {
+								var n = val[i];
+
+								if (n > 1) {
+									val[i] = (n / 255);
+								}
+							}
+
+							val.push(1.0);
+						}
+						
+						if (val.length == 4) {
+							var vertices = instance.get('vertices'),
+								j = (vertices.length / 3) - 1;
+
+							for (var i = 0; i < j; i++) {
+								val = val.concat(val);
+							}
+						}
+					}
+
+					return val;
+				},
+
 				value: [
-					1.0, 0.0, 0.0, 1.0,
-					1.0, 0.0, 0.0, 1.0,
-					1.0, 0.0, 0.0, 1.0,
-					1.0, 0.0, 0.0, 1.0,
-					1.0, 0.0, 0.0, 1.0,
-					1.0, 0.0, 0.0, 1.0,
-					1.0, 0.0, 0.0, 1.0,
-					1.0, 0.0, 0.0, 1.0
+					0.0, 0.0, 0.0
 				]
 			},
 
@@ -62,18 +86,23 @@ YUI.add('webgl-shape', function(Y) {
 					// Front
 					0, 1, 2,
 					2, 3, 0,
+
 					// Back
 					4, 6, 5,
 					4, 7, 6,
+
 					// Left
 					2, 7, 3,
 					7, 6, 2,
+
 					// Right
 					0, 4, 1,
 					4, 1, 5,
+
 					// Top
 					6, 2, 1,
 					1, 6, 5,
+
 					// Bottom
 					0, 3, 7,
 					0, 7, 4

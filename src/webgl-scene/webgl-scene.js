@@ -34,7 +34,7 @@ YUI.add('webgl-scene', function(Y) {
 				height = instance.get('height'),
 				width = instance.get('width');
 
-			context.clearColor(0.0, 0.0, 0.0, 1.0);
+			context.clearColor(1.0, 1.0, 1.0, 1.0);
 			context.enable(context.DEPTH_TEST);
 
 			context.viewport(0, 0, width, height);
@@ -53,9 +53,11 @@ YUI.add('webgl-scene', function(Y) {
 			var shapes = instance.get('shapes');
 
 			for (var i = 0; i < shapes.length; i++) {
-				var shape = shapes[i];
+				var shape = shapes[i],
+					indicesLength = shape.get('indices').length;
 
 				context.bindBuffer(context.ARRAY_BUFFER, shape.vertexBuffer);
+
 				context.vertexAttribPointer(program.vertexPositionAttribute, 3, context.FLOAT, false, 0, 0);
 
 				context.bindBuffer(context.ARRAY_BUFFER, shape.colorBuffer);
@@ -66,7 +68,7 @@ YUI.add('webgl-scene', function(Y) {
 				context.uniformMatrix4fv(program.projectionMatrixUniform, false, projectionMatrix);
 				context.uniformMatrix4fv(program.modelViewMatrixUniform, false, modelViewMatrix);
 
-				context.drawElements(context.TRIANGLES, 36, context.UNSIGNED_SHORT, 0);
+				context.drawElements(context.TRIANGLES, indicesLength, context.UNSIGNED_SHORT, 0);
 			};
 		}
 	}, {
