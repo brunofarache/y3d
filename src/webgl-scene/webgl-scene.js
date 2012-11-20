@@ -34,27 +34,22 @@ YUI.add('webgl-scene', function(Y) {
 				height = instance.get('height'),
 				width = instance.get('width');
 
-			context.clearColor(1.0, 1.0, 1.0, 1.0);
+			context.clearColor(0.0, 0.0, 0.0, 1.0);
 			context.enable(context.DEPTH_TEST);
 
 			context.viewport(0, 0, width, height);
 			context.clear(context.COLOR_BUFFER_BIT | context.DEPTH_BUFFER_BIT);
 
-			var modelViewMatrix = mat4.create();
 			var projectionMatrix = mat4.create();
 
 			mat4.perspective(45, width/height, 0.1, 100.0, projectionMatrix);
-
-			mat4.identity(modelViewMatrix);
-			mat4.translate(modelViewMatrix, [0.0, 0.0, -7.0]);
-
-			mat4.rotate(modelViewMatrix, (45 * (Math.PI/180)), [1, 1, 0]);
 
 			var shapes = instance.get('shapes');
 
 			for (var i = 0; i < shapes.length; i++) {
 				var shape = shapes[i],
-					indicesLength = shape.get('indices').length;
+					indicesLength = shape.get('indices').length,
+					modelViewMatrix = shape.get('modelViewMatrix');
 
 				context.bindBuffer(context.ARRAY_BUFFER, shape.vertexBuffer);
 
@@ -69,7 +64,7 @@ YUI.add('webgl-scene', function(Y) {
 				context.uniformMatrix4fv(program.modelViewMatrixUniform, false, modelViewMatrix);
 
 				context.drawElements(context.TRIANGLES, indicesLength, context.UNSIGNED_SHORT, 0);
-			};
+			}
 		}
 	}, {
 		ATTRS: {
@@ -82,7 +77,7 @@ YUI.add('webgl-scene', function(Y) {
 			},
 
 			height: {
-				value: 500
+				value: 800
 			},
 
 			shapes: {
@@ -90,7 +85,7 @@ YUI.add('webgl-scene', function(Y) {
 			},
 
 			width: {
-				value: 500
+				value: 1000
 			}
 		}
 	});

@@ -6,6 +6,16 @@ YUI.add('webgl-shape', function(Y) {
 		indexBuffer: null,
 		vertexBuffer: null,
 
+		initializer: function() {
+			var instance = this;
+
+			var modelViewMatrix = mat4.create();
+
+			mat4.identity(modelViewMatrix);
+
+			instance.set('modelViewMatrix', modelViewMatrix);	
+		},
+
 		bindBuffers: function(context) {
 			var instance = this,
 				vertices = instance.get('vertices'),
@@ -26,6 +36,20 @@ YUI.add('webgl-shape', function(Y) {
 			
 			context.bindBuffer(context.ELEMENT_ARRAY_BUFFER, instance.indexBuffer);
 			context.bufferData(context.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), context.STATIC_DRAW);
+		},
+
+		rotate: function(x, y, z, degrees) {
+			var instance = this,
+				modelViewMatrix = instance.get('modelViewMatrix');
+
+			mat4.rotate(modelViewMatrix, (degrees * (Math.PI/180)), [x, y, z]);
+		},
+
+		translate: function(x, y, z) {
+			var instance = this,
+				modelViewMatrix = instance.get('modelViewMatrix');
+
+			mat4.translate(modelViewMatrix, [x, y, z]);
 		}
 	}, {
 		ATTRS: {
@@ -69,6 +93,10 @@ YUI.add('webgl-shape', function(Y) {
 			indices: {
 				value: [],
 				validator: Lang.isArray
+			},
+
+			modelViewMatrix: {
+				value: null
 			},
 
 			vertices: {
