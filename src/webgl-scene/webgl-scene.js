@@ -31,10 +31,11 @@ YUI.add('webgl-scene', function(Y) {
 
 		render: function() {
 			var instance = this,
+				clearColor = instance.get('clearColor'),
 				height = instance.get('height'),
 				width = instance.get('width');
 
-			context.clearColor(0.0, 0.0, 0.0, 1.0);
+			context.clearColor(clearColor[0], clearColor[1], clearColor[2], 1.0);
 			context.enable(context.DEPTH_TEST);
 
 			context.viewport(0, 0, width, height);
@@ -70,6 +71,10 @@ YUI.add('webgl-scene', function(Y) {
 		ATTRS: {
 			canvas: {
 				value: Y.Node.create('<canvas></canvas>')
+			},
+
+			clearColor: {
+				value: [0.0, 0.0, 0.0]
 			},
 
 			container: {
