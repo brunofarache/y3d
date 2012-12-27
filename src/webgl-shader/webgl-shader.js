@@ -1,20 +1,41 @@
 YUI.add('webgl-shader', function(Y) {
+	var fragmentShaderSource = [
+		'precision mediump float;',
+		'varying vec4 fragmentColor;',
+		'',
+		'void main(void) {',
+		'	gl_FragColor = fragmentColor;',
+		'}'
+	].join('\n');
+
+	var vertexShaderSource = [
+		'attribute vec3 vertexPosition;',
+		'attribute vec4 vertexColor;',
+		'',
+		'uniform mat4 projectionMatrix;',
+		'uniform mat4 modelViewMatrix;',
+		'',
+		'varying vec4 fragmentColor;',
+		'',
+		'void main(void) {',
+		'	gl_Position = projectionMatrix * modelViewMatrix * vec4(vertexPosition, 1.0);',
+		'	fragmentColor = vertexColor;',
+		'}'
+	].join('\n');
+	
 	var Shader = Y.namespace('Shader');
 
-	Shader.compile = function(context, id) {
-		var node = Y.Node.one(id),
-			type = node.getAttribute('type');
-		
-		var shader;
+	Shader.compile = function(context, type) {
+		var shader, source;
 
-		if (type === 'x-shader/x-fragment') {
+		if (type === 'fragment') {
 			shader = context.createShader(context.FRAGMENT_SHADER);
+			source = fragmentShaderSource;
 		}
-		else if (type === 'x-shader/x-vertex') {
+		else if (type === 'vertex') {
 			shader = context.createShader(context.VERTEX_SHADER);
+			source = vertexShaderSource;
 		}
-
-		var source = node.get('text');
 
 		context.shaderSource(shader, source);
 		context.compileShader(shader);
@@ -29,8 +50,8 @@ YUI.add('webgl-shader', function(Y) {
 	};
 
 	Shader.link = function(context) {
-		var fragmentShader = Shader.compile(context, '#fragment-shader'),
-			vertexShader = Shader.compile(context, '#vertex-shader');
+		var fragmentShader = Shader.compile(context, 'fragment'),
+			vertexShader = Shader.compile(context, 'vertex');
 
 		var program = context.createProgram();
 

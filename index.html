@@ -4,31 +4,6 @@
 
 	<script src="lib/yui-min.js"></script>
 	<script src="lib/glMatrix-0.9.5.min.js"></script>
-
-	<script id="fragment-shader" type="x-shader/x-fragment">
-		precision mediump float;
-
-		varying vec4 fragmentColor;
-
-		void main(void) {
-			gl_FragColor = fragmentColor;
-		}
-	</script>
-
-	<script id="vertex-shader" type="x-shader/x-vertex">
-		attribute vec3 vertexPosition;
-		attribute vec4 vertexColor;
-
-		uniform mat4 projectionMatrix;
-		uniform mat4 modelViewMatrix;
-
-		varying vec4 fragmentColor;
-
-		void main(void) {
-			gl_Position = projectionMatrix * modelViewMatrix * vec4(vertexPosition, 1.0);
-			fragmentColor = vertexColor;
-		}
-	</script>
 </head>
 <body>
 	<div id='container'></div>
@@ -72,8 +47,8 @@
 
 			cube2.set('color', [100, 110, 40]);
 
-			cube2.translate(3.0, 0.0, -20.0);
-			cube2.rotate(1, 1, 0, 45);
+			cube2.translate(3.0, 0.0, -40.0);
+			cube2.rotate(1, 1, 0, 60);
 
 			scene.addShape(cube2);
 
