@@ -4,6 +4,8 @@ YUI.add('webgl-shape', function(Y) {
 	Y.Shape = Y.Base.create('shape', Y.Base, [], {
 		colorBuffer: null,
 		indexBuffer: null,
+		texture: null,
+		textureBuffer: null,
 		vertexBuffer: null,
 
 		initializer: function() {
@@ -16,11 +18,13 @@ YUI.add('webgl-shape', function(Y) {
 			instance.set('modelViewMatrix', modelViewMatrix);	
 		},
 
-		bindBuffers: function(context) {
+		bindBuffers: function(context, scene) {
 			var instance = this,
 				vertices = instance.get('vertices'),
 				color = instance.get('color'),
-				indices = instance.get('indices');
+				indices = instance.get('indices'),
+				textureUrl = instance.get('textureUrl'),
+				textureCoords = instance.get('textureCoords');
 
 			instance.vertexBuffer = context.createBuffer();
 
@@ -36,6 +40,28 @@ YUI.add('webgl-shape', function(Y) {
 			
 			context.bindBuffer(context.ELEMENT_ARRAY_BUFFER, instance.indexBuffer);
 			context.bufferData(context.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), context.STATIC_DRAW);
+
+			instance.textureBuffer = context.createBuffer();
+
+    		context.bindBuffer(context.ARRAY_BUFFER, instance.textureBuffer);
+			context.bufferData(context.ARRAY_BUFFER, new Float32Array(textureCoords), context.STATIC_DRAW);
+
+			instance.texture = context.createTexture();
+
+			instance.texture.image = new Image();
+
+			instance.texture.image.onload = function() {
+				context.bindTexture(context.TEXTURE_2D, instance.texture);
+				context.pixelStorei(context.UNPACK_FLIP_Y_WEBGL, true);
+				context.texImage2D(context.TEXTURE_2D, 0, context.RGBA, context.RGBA, context.UNSIGNED_BYTE, instance.texture.image);
+			    context.texParameteri(context.TEXTURE_2D, context.TEXTURE_MAG_FILTER, context.NEAREST);
+			    context.texParameteri(context.TEXTURE_2D, context.TEXTURE_MIN_FILTER, context.NEAREST);
+			    context.bindTexture(context.TEXTURE_2D, null);
+
+			    scene.render();
+			};
+
+			instance.texture.image.src = textureUrl;
 		},
 
 		rotate: function(x, y, z, degrees) {
@@ -134,6 +160,22 @@ YUI.add('webgl-shape', function(Y) {
 					// Bottom
 					0, 3, 7,
 					0, 7, 4
+				]
+			},
+
+			textureCoords: {
+				value: [
+					// Front
+					0.0, 0.0,
+					1.0, 0.0,
+					0.0, 1.0,
+					1.0, 1.0,
+
+					// Back
+					0.0, 0.0,
+					1.0, 0.0,
+					0.0, 1.0,
+					1.0, 1.0
 				]
 			},
 

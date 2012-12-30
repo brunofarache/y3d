@@ -22,7 +22,7 @@ YUI.add('webgl-scene', function(Y) {
 		addShape: function(shape) {
 			var instance = this;
 
-			shape.bindBuffers(context);
+			shape.bindBuffers(context, this);
 
 			var shapes = instance.get('shapes');
 
@@ -53,11 +53,17 @@ YUI.add('webgl-scene', function(Y) {
 					modelViewMatrix = shape.get('modelViewMatrix');
 
 				context.bindBuffer(context.ARRAY_BUFFER, shape.vertexBuffer);
-
 				context.vertexAttribPointer(program.vertexPositionAttribute, 3, context.FLOAT, false, 0, 0);
 
 				context.bindBuffer(context.ARRAY_BUFFER, shape.colorBuffer);
 				context.vertexAttribPointer(program.vertexColorAttribute, 4, context.FLOAT, false, 0, 0);
+
+				context.bindBuffer(context.ARRAY_BUFFER, shape.textureBuffer);
+      			context.vertexAttribPointer(program.textureCoordAttribute, 2, context.FLOAT, false, 0, 0);
+
+      			context.activeTexture(context.TEXTURE0);
+    			context.bindTexture(context.TEXTURE_2D, shape.texture);
+    			context.uniform1i(program.sampler, 0);
 
 				context.bindBuffer(context.ELEMENT_ARRAY_BUFFER, shape.indexBuffer);
 

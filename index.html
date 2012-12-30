@@ -36,6 +36,8 @@
 
 			var cube = new Y.Cube();
 
+			cube.set('textureUrl', 'images/grass.png');
+
 			cube.set('color', [200, 110, 40]);
 
 			cube.translate(-3.0, 0.0, -20.0);
@@ -43,16 +45,7 @@
 
 			scene.addShape(cube);
 
-			var cube2 = new Y.Cube();
-
-			cube2.set('color', [100, 110, 40]);
-
-			cube2.translate(3.0, 0.0, -40.0);
-			cube2.rotate(1, 1, 0, 60);
-
-			scene.addShape(cube2);
-
-			scene.render();
+			// scene.render();
 		});
 	</script>	
 </body>
