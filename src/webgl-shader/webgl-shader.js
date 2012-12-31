@@ -1,38 +1,53 @@
 YUI.add('webgl-shader', function(Y) {
+	var colorProgram = null,
+		textureProgram = null;
+
 	var fragmentShaderSource = [
 		'precision mediump float;',
-		'',
+
 		'varying vec4 fragmentColor;',
-		'varying vec2 vertexTextureCoordinates;',
-		'',
-		'uniform sampler2D sampler;',
-		'',
+
+		'#ifdef USE_TEXTURE',
+			'varying vec2 vertexTextureCoordinates;',
+			'uniform sampler2D sampler;',
+		'#endif',
+
 		'void main(void) {',
-		'	gl_FragColor = texture2D(sampler, vertexTextureCoordinates);',
+			'gl_FragColor = fragmentColor;',
+
+			'#ifdef USE_TEXTURE',
+				'gl_FragColor = gl_FragColor * texture2D(sampler, vertexTextureCoordinates);',
+			'#endif',
 		'}'
 	].join('\n');
 
 	var vertexShaderSource = [
 		'attribute vec3 vertexPosition;',
 		'attribute vec4 vertexColor;',
-		'attribute vec2 textureCoordinates;',
-		'',
+
+		'#ifdef USE_TEXTURE',
+			'attribute vec2 textureCoordinates;',
+			'varying vec2 vertexTextureCoordinates;',
+		'#endif',
+
 		'uniform mat4 projectionMatrix;',
 		'uniform mat4 modelViewMatrix;',
-		'',
+
 		'varying vec4 fragmentColor;',
-		'varying vec2 vertexTextureCoordinates;',
-		'',
+		
 		'void main(void) {',
-		'	gl_Position = projectionMatrix * modelViewMatrix * vec4(vertexPosition, 1.0);',
-		'	fragmentColor = vertexColor;',
-		'	vertexTextureCoordinates = textureCoordinates;',
+			'gl_Position = projectionMatrix * modelViewMatrix * vec4(vertexPosition, 1.0);',
+			'fragmentColor = vertexColor;',
+
+			'#ifdef USE_TEXTURE',
+				'vertexTextureCoordinates = textureCoordinates;',
+			'#endif',
 		'}'
 	].join('\n');
 	
 	var Shader = Y.namespace('Shader');
 
-	Shader.compile = function(context, type) {
+	Shader.compile = function(context, type, constants) {
 		var shader, source;
 
 		if (type === 'fragment') {
@@ -43,6 +58,8 @@ YUI.add('webgl-shader', function(Y) {
 			shader = context.createShader(context.VERTEX_SHADER);
 			source = vertexShaderSource;
 		}
+
+		source = [constants, source].join('\n');
 
 		context.shaderSource(shader, source);
 		context.compileShader(shader);
@@ -56,9 +73,34 @@ YUI.add('webgl-shader', function(Y) {
 		return shader;		
 	};
 
-	Shader.link = function(context) {
-		var fragmentShader = Shader.compile(context, 'fragment'),
-			vertexShader = Shader.compile(context, 'vertex');
+	Shader.getColorProgram = function(context) {
+		if (colorProgram != null) {
+			return colorProgram;
+		}
+
+		colorProgram = Shader.link(context, []);
+
+		return colorProgram;
+	};
+
+	Shader.getTextureProgram = function(context) {
+		if (textureProgram != null) {
+			return textureProgram;
+		}
+
+		textureProgram = Shader.link(context, ['#define USE_TEXTURE']);
+
+		textureProgram.textureCoordinatesAttribute = context.getAttribLocation(textureProgram, "textureCoordinates");
+        context.enableVertexAttribArray(textureProgram.textureCoordinatesAttribute);
+
+        textureProgram.samplerUniform = context.getUniformLocation(textureProgram, "sampler");
+
+		return textureProgram;
+	};
+
+	Shader.link = function(context, constants) {
+		var fragmentShader = Shader.compile(context, 'fragment', constants),
+			vertexShader = Shader.compile(context, 'vertex', constants);
 
 		var program = context.createProgram();
 
@@ -71,20 +113,14 @@ YUI.add('webgl-shader', function(Y) {
             console.log("Could not link shaders");
         }
 
-        context.useProgram(program);
-
         program.vertexPositionAttribute = context.getAttribLocation(program, "vertexPosition");
         context.enableVertexAttribArray(program.vertexPositionAttribute);
 
         program.vertexColorAttribute = context.getAttribLocation(program, "vertexColor");
     	context.enableVertexAttribArray(program.vertexColorAttribute);
 
-    	program.textureCoordinatesAttribute = context.getAttribLocation(program, "textureCoordinates");
-        context.enableVertexAttribArray(program.textureCoordinatesAttribute);
-
         program.projectionMatrixUniform = context.getUniformLocation(program, "projectionMatrix");
         program.modelViewMatrixUniform = context.getUniformLocation(program, "modelViewMatrix");
-        program.samplerUniform = context.getUniformLocation(program, "sampler");
 
         return program;
 	};

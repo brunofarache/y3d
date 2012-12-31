@@ -59,7 +59,7 @@ YUI.add('webgl-shape', function(Y) {
 				},
 
 				value: [
-					0.0, 0.0, 0.0
+					1.0, 1.0, 1.0
 				]
 			},
 

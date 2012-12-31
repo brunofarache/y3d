@@ -1,6 +1,5 @@
 YUI.add('webgl-scene', function(Y) {
 	var context = null;
-	var program = null;
 
 	Y.Scene = Y.Base.create('scene', Y.Base, [], {
 		initializer: function() {
@@ -16,7 +15,6 @@ YUI.add('webgl-scene', function(Y) {
 			container.append(canvas);
 
 			context = canvas.getDOMNode().getContext("experimental-webgl");
-			program = Y.Shader.link(context);
 		},
 
 		addShape: function(shape) {
@@ -51,12 +49,23 @@ YUI.add('webgl-scene', function(Y) {
 
 			for (var i = 0; i < shapes.length; i++) {
 				var shape = shapes[i],
+					texture = shape.get('texture'),
 					indicesLength = shape.get('indices').length,
-					modelViewMatrix = shape.get('modelViewMatrix');
+					modelViewMatrix = shape.get('modelViewMatrix'),
+					program = null;
 
-				instance._setVertexAttribute(shape);
-				instance._setColorAttribute(shape);
-				instance._setTextureAttribute(shape);
+				if (texture != null) {
+					program = Y.Shader.getTextureProgram(context);
+				}
+				else {
+					program = Y.Shader.getColorProgram(context);
+				}
+
+				context.useProgram(program);
+
+				instance._setVertexAttribute(program, shape);
+				instance._setColorAttribute(program, shape);
+				instance._setTextureAttribute(program, shape);
 				instance._setIndices(shape);
 
 				context.uniformMatrix4fv(program.projectionMatrixUniform, false, projectionMatrix);
@@ -87,8 +96,13 @@ YUI.add('webgl-scene', function(Y) {
 		},
 
 		_createTextureBuffer: function(shape) {
-			var texture = shape.get('texture'),
-				textureBuffer = context.createBuffer(),
+			var texture = shape.get('texture');
+
+			if (texture == null) {
+				return;
+			}
+
+			var textureBuffer = context.createBuffer(),
 				textureCoordinates = shape.get('textureCoordinates');
 
 			context.bindBuffer(context.ARRAY_BUFFER, textureBuffer);
@@ -117,16 +131,21 @@ YUI.add('webgl-scene', function(Y) {
 			context.bindBuffer(context.ELEMENT_ARRAY_BUFFER, indexBuffer);
 		},
 
-		_setColorAttribute: function(shape) {
+		_setColorAttribute: function(program, shape) {
 			var colorBuffer = shape.get('colorBuffer');
 
 			context.bindBuffer(context.ARRAY_BUFFER, colorBuffer);
 			context.vertexAttribPointer(program.vertexColorAttribute, 4, context.FLOAT, false, 0, 0);
 		},
 
-		_setTextureAttribute: function(shape) {
-			var texture = shape.get('texture'),
-				textureBuffer = shape.get('textureBuffer'),
+		_setTextureAttribute: function(program, shape) {
+			var texture = shape.get('texture');
+
+			if (texture == null) {
+				return;
+			}
+
+			var	textureBuffer = shape.get('textureBuffer'),
 				image = texture.get('image'),
 				webglTexture = texture.get('webglTexture');
 
@@ -145,7 +164,7 @@ YUI.add('webgl-scene', function(Y) {
 			context.uniform1i(program.sampler, 0);
 		},
 
-		_setVertexAttribute: function(shape) {
+		_setVertexAttribute: function(program, shape) {
 			var vertexBuffer = shape.get('vertexBuffer');
 
 			context.bindBuffer(context.ARRAY_BUFFER, vertexBuffer);
