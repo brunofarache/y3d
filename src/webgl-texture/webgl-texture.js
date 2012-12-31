@@ -56,18 +56,18 @@ YUI.add('webgl-texture', function(Y) {
 		_textureLoaded: function(texture) {
 			var instance = this,
 				imageUrl = texture.get('imageUrl'),
-				scene = instance.get('scene'),
+				texturesLoaded = instance.get('texturesLoaded'),
 				unloadedTextures = instance.get('unloadedTextures');
 
 			delete unloadedTextures[imageUrl];
 
 			if (instance._isEmpty()) {
-				scene.render();
+				texturesLoaded();
 			}
 		}
 	}, {
 		ATTRS: {
-			scene: {
+			texturesLoaded: {
 				value: null
 			},
 
