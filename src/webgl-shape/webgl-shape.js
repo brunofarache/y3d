@@ -2,27 +2,13 @@ YUI.add('webgl-shape', function(Y) {
 	var Lang = Y.Lang;
 
 	Y.Shape = Y.Base.create('shape', Y.Base, [], {
-		colorBuffer: null,
-
 		initializer: function() {
-			var instance = this;
-
-			var modelViewMatrix = mat4.create();
+			var instance = this,
+				modelViewMatrix = mat4.create();
 
 			mat4.identity(modelViewMatrix);
 
 			instance.set('modelViewMatrix', modelViewMatrix);	
-		},
-
-		bindBuffers: function(context) {
-			var instance = this,
-				color = instance.get('color'),
-				indices = instance.get('indices');
-		
-			instance.colorBuffer = context.createBuffer();
-
-			context.bindBuffer(context.ARRAY_BUFFER, instance.colorBuffer);
-			context.bufferData(context.ARRAY_BUFFER, new Float32Array(color), context.STATIC_DRAW);
 		},
 
 		rotate: function(x, y, z, degrees) {
@@ -75,6 +61,10 @@ YUI.add('webgl-shape', function(Y) {
 				value: [
 					0.0, 0.0, 0.0
 				]
+			},
+
+			colorBuffer: {
+				value: null
 			},
 
 			indexBuffer: {

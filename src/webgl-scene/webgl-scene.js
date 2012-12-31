@@ -23,9 +23,8 @@ YUI.add('webgl-scene', function(Y) {
 			var instance = this,
 				shapes = instance.get('shapes');
 
-			shape.bindBuffers(context);
-
 			instance._bindVertexBuffer(shape);
+			instance._bindColorBuffer(shape);
 			instance._bindTextureBuffer(shape);
 			instance._bindIndexBuffer(shape);
 
@@ -68,10 +67,7 @@ YUI.add('webgl-scene', function(Y) {
 					modelViewMatrix = shape.get('modelViewMatrix');
 
 				instance._setVertexAttribute(shape);
-
-				context.bindBuffer(context.ARRAY_BUFFER, shape.colorBuffer);
-				context.vertexAttribPointer(program.vertexColorAttribute, 4, context.FLOAT, false, 0, 0);
-
+				instance._setColorAttribute(shape);
 				instance._setTextureAttribute(shape);
 				instance._setIndices(shape);
 
@@ -80,6 +76,16 @@ YUI.add('webgl-scene', function(Y) {
 
 				context.drawElements(context.TRIANGLES, indicesLength, context.UNSIGNED_SHORT, 0);
 			}
+		},
+
+		_bindColorBuffer: function(shape) {
+			var color = shape.get('color'),
+				colorBuffer = context.createBuffer();
+
+			context.bindBuffer(context.ARRAY_BUFFER, colorBuffer);
+			context.bufferData(context.ARRAY_BUFFER, new Float32Array(color), context.STATIC_DRAW);
+
+			shape.set('colorBuffer', colorBuffer);
 		},
 
 		_bindIndexBuffer: function(shape) {
@@ -93,8 +99,7 @@ YUI.add('webgl-scene', function(Y) {
 		},
 
 		_bindTextureBuffer: function(shape) {
-			var instance = this,
-				texture = shape.get('texture'),
+			var texture = shape.get('texture'),
 				textureBuffer = context.createBuffer(),
 				textureCoordinates = shape.get('textureCoordinates');
 
@@ -122,6 +127,13 @@ YUI.add('webgl-scene', function(Y) {
 			var indexBuffer = shape.get('indexBuffer');
 
 			context.bindBuffer(context.ELEMENT_ARRAY_BUFFER, indexBuffer);
+		},
+
+		_setColorAttribute: function(shape) {
+			var colorBuffer = shape.get('colorBuffer');
+
+			context.bindBuffer(context.ARRAY_BUFFER, colorBuffer);
+			context.vertexAttribPointer(program.vertexColorAttribute, 4, context.FLOAT, false, 0, 0);
 		},
 
 		_setTextureAttribute: function(shape) {
