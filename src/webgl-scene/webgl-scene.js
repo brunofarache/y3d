@@ -27,6 +27,7 @@ YUI.add('webgl-scene', function(Y) {
 
 			instance._bindVertexBuffer(shape);
 			instance._bindTextureBuffer(shape);
+			instance._bindIndexBuffer(shape);
 
 			shapes.push(shape);
 		},
@@ -72,14 +73,23 @@ YUI.add('webgl-scene', function(Y) {
 				context.vertexAttribPointer(program.vertexColorAttribute, 4, context.FLOAT, false, 0, 0);
 
 				instance._setTextureAttribute(shape);
-
-				context.bindBuffer(context.ELEMENT_ARRAY_BUFFER, shape.indexBuffer);
+				instance._setIndices(shape);
 
 				context.uniformMatrix4fv(program.projectionMatrixUniform, false, projectionMatrix);
 				context.uniformMatrix4fv(program.modelViewMatrixUniform, false, modelViewMatrix);
 
 				context.drawElements(context.TRIANGLES, indicesLength, context.UNSIGNED_SHORT, 0);
 			}
+		},
+
+		_bindIndexBuffer: function(shape) {
+			var indexBuffer = context.createBuffer(),
+				indices = shape.get('indices');
+
+			context.bindBuffer(context.ELEMENT_ARRAY_BUFFER, indexBuffer);
+			context.bufferData(context.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), context.STATIC_DRAW);
+
+			shape.set('indexBuffer', indexBuffer)
 		},
 
 		_bindTextureBuffer: function(shape) {
@@ -106,6 +116,12 @@ YUI.add('webgl-scene', function(Y) {
 			context.bufferData(context.ARRAY_BUFFER, new Float32Array(vertices), context.STATIC_DRAW);
 
 			shape.set('vertexBuffer', vertexBuffer);
+		},
+
+		_setIndices: function(shape) {
+			var indexBuffer = shape.get('indexBuffer');
+
+			context.bindBuffer(context.ELEMENT_ARRAY_BUFFER, indexBuffer);
 		},
 
 		_setTextureAttribute: function(shape) {

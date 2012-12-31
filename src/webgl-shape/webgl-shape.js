@@ -3,7 +3,6 @@ YUI.add('webgl-shape', function(Y) {
 
 	Y.Shape = Y.Base.create('shape', Y.Base, [], {
 		colorBuffer: null,
-		indexBuffer: null,
 
 		initializer: function() {
 			var instance = this;
@@ -24,11 +23,6 @@ YUI.add('webgl-shape', function(Y) {
 
 			context.bindBuffer(context.ARRAY_BUFFER, instance.colorBuffer);
 			context.bufferData(context.ARRAY_BUFFER, new Float32Array(color), context.STATIC_DRAW);
-
-			instance.indexBuffer = context.createBuffer();
-			
-			context.bindBuffer(context.ELEMENT_ARRAY_BUFFER, instance.indexBuffer);
-			context.bufferData(context.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), context.STATIC_DRAW);
 		},
 
 		rotate: function(x, y, z, degrees) {
@@ -81,6 +75,10 @@ YUI.add('webgl-shape', function(Y) {
 				value: [
 					0.0, 0.0, 0.0
 				]
+			},
+
+			indexBuffer: {
+				value: null
 			},
 
 			indices: {
