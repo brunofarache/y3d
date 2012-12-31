@@ -4,7 +4,6 @@ YUI.add('webgl-shape', function(Y) {
 	Y.Shape = Y.Base.create('shape', Y.Base, [], {
 		colorBuffer: null,
 		indexBuffer: null,
-		vertexBuffer: null,
 
 		initializer: function() {
 			var instance = this;
@@ -18,14 +17,8 @@ YUI.add('webgl-shape', function(Y) {
 
 		bindBuffers: function(context) {
 			var instance = this,
-				vertices = instance.get('vertices'),
 				color = instance.get('color'),
 				indices = instance.get('indices');
-
-			instance.vertexBuffer = context.createBuffer();
-
-			context.bindBuffer(context.ARRAY_BUFFER, instance.vertexBuffer);
-			context.bufferData(context.ARRAY_BUFFER, new Float32Array(vertices), context.STATIC_DRAW);
 		
 			instance.colorBuffer = context.createBuffer();
 
@@ -110,6 +103,10 @@ YUI.add('webgl-shape', function(Y) {
 			textureCoordinates: {
 				value: [],
 				validator: Lang.isArray
+			},
+
+			vertexBuffer: {
+				value: null
 			},
 
 			vertices: {

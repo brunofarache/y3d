@@ -25,7 +25,8 @@ YUI.add('webgl-scene', function(Y) {
 
 			shape.bindBuffers(context);
 
-			instance._setTexture(shape);
+			instance._bindVertexBuffer(shape);
+			instance._bindTextureBuffer(shape);
 
 			shapes.push(shape);
 		},
@@ -65,8 +66,7 @@ YUI.add('webgl-scene', function(Y) {
 					indicesLength = shape.get('indices').length,
 					modelViewMatrix = shape.get('modelViewMatrix');
 
-				context.bindBuffer(context.ARRAY_BUFFER, shape.vertexBuffer);
-				context.vertexAttribPointer(program.vertexPositionAttribute, 3, context.FLOAT, false, 0, 0);
+				instance._setVertexAttribute(shape);
 
 				context.bindBuffer(context.ARRAY_BUFFER, shape.colorBuffer);
 				context.vertexAttribPointer(program.vertexColorAttribute, 4, context.FLOAT, false, 0, 0);
@@ -82,7 +82,7 @@ YUI.add('webgl-scene', function(Y) {
 			}
 		},
 
-		_setTexture: function(shape) {
+		_bindTextureBuffer: function(shape) {
 			var instance = this,
 				texture = shape.get('texture'),
 				textureBuffer = context.createBuffer(),
@@ -98,6 +98,16 @@ YUI.add('webgl-scene', function(Y) {
 			texture.set('webglTexture', webglTexture);
 		},
 
+		_bindVertexBuffer: function(shape) {
+			var vertexBuffer = context.createBuffer(),
+				vertices = shape.get('vertices');
+
+			context.bindBuffer(context.ARRAY_BUFFER, vertexBuffer);
+			context.bufferData(context.ARRAY_BUFFER, new Float32Array(vertices), context.STATIC_DRAW);
+
+			shape.set('vertexBuffer', vertexBuffer);
+		},
+
 		_setTextureAttribute: function(shape) {
 			var texture = shape.get('texture'),
 				textureBuffer = shape.get('textureBuffer'),
@@ -109,6 +119,13 @@ YUI.add('webgl-scene', function(Y) {
 			context.activeTexture(context.TEXTURE0);
 			context.bindTexture(context.TEXTURE_2D, webglTexture);
 			context.uniform1i(program.sampler, 0);
+		},
+
+		_setVertexAttribute: function(shape) {
+			var vertexBuffer = shape.get('vertexBuffer');
+
+			context.bindBuffer(context.ARRAY_BUFFER, vertexBuffer);
+			context.vertexAttribPointer(program.vertexPositionAttribute, 3, context.FLOAT, false, 0, 0);
 		}
 	}, {
 		ATTRS: {
