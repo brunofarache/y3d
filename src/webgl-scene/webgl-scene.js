@@ -23,10 +23,10 @@ YUI.add('webgl-scene', function(Y) {
 			var instance = this,
 				shapes = instance.get('shapes');
 
-			instance._bindVertexBuffer(shape);
-			instance._bindColorBuffer(shape);
-			instance._bindTextureBuffer(shape);
-			instance._bindIndexBuffer(shape);
+			instance._createVertexBuffer(shape);
+			instance._createColorBuffer(shape);
+			instance._createTextureBuffer(shape);
+			instance._createIndexBuffer(shape);
 
 			shapes.push(shape);
 		},
@@ -66,7 +66,7 @@ YUI.add('webgl-scene', function(Y) {
 			}
 		},
 
-		_bindColorBuffer: function(shape) {
+		_createColorBuffer: function(shape) {
 			var color = shape.get('color'),
 				colorBuffer = context.createBuffer();
 
@@ -76,7 +76,7 @@ YUI.add('webgl-scene', function(Y) {
 			shape.set('colorBuffer', colorBuffer);
 		},
 
-		_bindIndexBuffer: function(shape) {
+		_createIndexBuffer: function(shape) {
 			var indexBuffer = context.createBuffer(),
 				indices = shape.get('indices');
 
@@ -86,7 +86,7 @@ YUI.add('webgl-scene', function(Y) {
 			shape.set('indexBuffer', indexBuffer)
 		},
 
-		_bindTextureBuffer: function(shape) {
+		_createTextureBuffer: function(shape) {
 			var texture = shape.get('texture'),
 				textureBuffer = context.createBuffer(),
 				textureCoordinates = shape.get('textureCoordinates');
@@ -101,7 +101,7 @@ YUI.add('webgl-scene', function(Y) {
 			texture.set('webglTexture', webglTexture);
 		},
 
-		_bindVertexBuffer: function(shape) {
+		_createVertexBuffer: function(shape) {
 			var vertexBuffer = context.createBuffer(),
 				vertices = shape.get('vertices');
 
