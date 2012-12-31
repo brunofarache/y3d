@@ -3,30 +3,30 @@ YUI.add('webgl-shader', function(Y) {
 		'precision mediump float;',
 		'',
 		'varying vec4 fragmentColor;',
-		'varying vec2 vertexTextureCoord;',
+		'varying vec2 vertexTextureCoordinates;',
 		'',
 		'uniform sampler2D sampler;',
 		'',
 		'void main(void) {',
-		'	gl_FragColor = texture2D(sampler, vec2(vertexTextureCoord.s, vertexTextureCoord.t));',
+		'	gl_FragColor = texture2D(sampler, vec2(vertexTextureCoordinates.s, vertexTextureCoordinates.t));',
 		'}'
 	].join('\n');
 
 	var vertexShaderSource = [
 		'attribute vec3 vertexPosition;',
 		'attribute vec4 vertexColor;',
-		'attribute vec2 textureCoord;',
+		'attribute vec2 textureCoordinates;',
 		'',
 		'uniform mat4 projectionMatrix;',
 		'uniform mat4 modelViewMatrix;',
 		'',
 		'varying vec4 fragmentColor;',
-		'varying vec2 vertexTextureCoord;',
+		'varying vec2 vertexTextureCoordinates;',
 		'',
 		'void main(void) {',
 		'	gl_Position = projectionMatrix * modelViewMatrix * vec4(vertexPosition, 1.0);',
 		'	fragmentColor = vertexColor;',
-		'	vertexTextureCoord = textureCoord;',
+		'	vertexTextureCoordinates = textureCoordinates;',
 		'}'
 	].join('\n');
 	
@@ -79,8 +79,8 @@ YUI.add('webgl-shader', function(Y) {
         program.vertexColorAttribute = context.getAttribLocation(program, "vertexColor");
     	context.enableVertexAttribArray(program.vertexColorAttribute);
 
-    	program.textureCoordAttribute = context.getAttribLocation(program, "textureCoord");
-        context.enableVertexAttribArray(program.textureCoordAttribute);
+    	program.textureCoordinatesAttribute = context.getAttribLocation(program, "textureCoordinates");
+        context.enableVertexAttribArray(program.textureCoordinatesAttribute);
 
         program.projectionMatrixUniform = context.getUniformLocation(program, "projectionMatrix");
         program.modelViewMatrixUniform = context.getUniformLocation(program, "modelViewMatrix");

@@ -16,7 +16,7 @@
 					modules: {
 						'webgl-scene': {
 							path: 'webgl-scene/webgl-scene.js',
-							requires: ['base-build', 'node-base', 'webgl-shader']
+							requires: ['base-build', 'node-base', 'webgl-shader', 'webgl-texture']
 						},
 
 						'webgl-shader': {
@@ -27,6 +27,11 @@
 						'webgl-shape': {
 							path: 'webgl-shape/webgl-shape.js',
 							requires: ['base-build']
+						},
+
+						'webgl-texture': {
+							path: 'webgl-texture/webgl-texture.js',
+							requires: ['base-build']
 						}
 					}
 				}
@@ -36,8 +41,7 @@
 
 			var cube = new Y.Cube();
 
-			cube.set('textureUrl', 'images/grass.png');
-
+			cube.set('texture', new Y.Texture({'imageUrl': 'images/grass.png'}));
 			cube.set('color', [200, 110, 40]);
 
 			cube.translate(-3.0, 0.0, -20.0);
