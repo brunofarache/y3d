@@ -8,7 +8,7 @@ YUI.add('webgl-shader', function(Y) {
 		'uniform sampler2D sampler;',
 		'',
 		'void main(void) {',
-		'	gl_FragColor = texture2D(sampler, vec2(vertexTextureCoordinates.s, vertexTextureCoordinates.t));',
+		'	gl_FragColor = texture2D(sampler, vertexTextureCoordinates);',
 		'}'
 	].join('\n');
 
