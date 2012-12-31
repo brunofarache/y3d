@@ -17,12 +17,6 @@ YUI.add('webgl-scene', function(Y) {
 
 			context = canvas.getDOMNode().getContext("experimental-webgl");
 			program = Y.Shader.link(context);
-
-			var textureLoader = new Y.TextureLoader();
-
-			textureLoader.set('scene', instance);
-
-			instance.set('textureLoader', textureLoader);
 		},
 
 		addShape: function(shape) {
@@ -34,6 +28,18 @@ YUI.add('webgl-scene', function(Y) {
 			instance._setTexture(shape);
 
 			shapes.push(shape);
+		},
+
+		bindTexture: function(texture) {
+			var image = texture.get('image'),
+				webglTexture = texture.get('webglTexture');
+
+			context.bindTexture(context.TEXTURE_2D, webglTexture);
+			context.pixelStorei(context.UNPACK_FLIP_Y_WEBGL, true);
+			context.texImage2D(context.TEXTURE_2D, 0, context.RGBA, context.RGBA, context.UNSIGNED_BYTE, image);
+			context.texParameteri(context.TEXTURE_2D, context.TEXTURE_MAG_FILTER, context.NEAREST);
+			context.texParameteri(context.TEXTURE_2D, context.TEXTURE_MIN_FILTER, context.NEAREST);
+			context.bindTexture(context.TEXTURE_2D, null);
 		},
 
 		render: function() {
@@ -76,24 +82,11 @@ YUI.add('webgl-scene', function(Y) {
 			}
 		},
 
-		bindTexture: function(texture) {
-			var image = texture.get('image'),
-				webglTexture = texture.get('webglTexture');
-
-			context.bindTexture(context.TEXTURE_2D, webglTexture);
-			context.pixelStorei(context.UNPACK_FLIP_Y_WEBGL, true);
-			context.texImage2D(context.TEXTURE_2D, 0, context.RGBA, context.RGBA, context.UNSIGNED_BYTE, image);
-			context.texParameteri(context.TEXTURE_2D, context.TEXTURE_MAG_FILTER, context.NEAREST);
-			context.texParameteri(context.TEXTURE_2D, context.TEXTURE_MIN_FILTER, context.NEAREST);
-			context.bindTexture(context.TEXTURE_2D, null);
-		},
-
 		_setTexture: function(shape) {
 			var instance = this,
 				texture = shape.get('texture'),
 				textureBuffer = context.createBuffer(),
-				textureCoordinates = shape.get('textureCoordinates'),
-				textureLoader = instance.get('textureLoader');
+				textureCoordinates = shape.get('textureCoordinates');
 
 			context.bindBuffer(context.ARRAY_BUFFER, textureBuffer);
 			context.bufferData(context.ARRAY_BUFFER, new Float32Array(textureCoordinates), context.STATIC_DRAW);
@@ -103,8 +96,6 @@ YUI.add('webgl-scene', function(Y) {
 			var webglTexture = context.createTexture();
 
 			texture.set('webglTexture', webglTexture);
-
-			textureLoader.addTexture(texture);
 		},
 
 		_setTextureAttribute: function(shape) {
@@ -141,13 +132,9 @@ YUI.add('webgl-scene', function(Y) {
 				value: []
 			},
 
-			textureLoader: {
-				value: null
-			},
-
 			width: {
 				value: 1000
 			}
 		}
 	});
-}, '1.0', {requires: ['base-build', 'node-base', 'webgl-shader', 'webgl-texture']});
+}, '1.0', {requires: ['base-build', 'node-base', 'webgl-shader']});

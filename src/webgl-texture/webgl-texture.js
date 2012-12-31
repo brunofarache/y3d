@@ -20,26 +20,32 @@ YUI.add('webgl-texture', function(Y) {
 	});
 
 	Y.TextureLoader = Y.Base.create('texture-loader', Y.Base, [], {
-		addTexture: function(texture) {
+		initializer: function() {
 			var instance = this,
-				image = texture.get('image'),
-				imageUrl = texture.get('imageUrl')
-				textures = instance.get('textures');
+				textures = instance.get('textures'),
+				unloadedTextures = instance.get('unloadedTextures');
 
-			textures[imageUrl] = texture;
+			for (var i = 0; i < textures.length; i++) {
+				var texture = textures[i],
+					image = texture.get('image'),
+					imageUrl = texture.get('imageUrl');
 
-			image.onload = function() {
-				instance._textureLoaded(texture);
-			};
+				unloadedTextures[imageUrl] = texture;
 
-			image.src = imageUrl;
+				image.onload = function() {
+					instance._textureLoaded(texture);
+				};
+
+				image.src = imageUrl;
+			}
 		},
 
 		_isEmpty: function() {
-			var instance = this;
+			var instance = this,
+				unloadedTextures = instance.get('unloadedTextures');
 
-			for (var imageUrl in textures) {
-				if (textures.hasOwnProperty(imageUrl)) {
+			for (var imageUrl in unloadedTextures) {
+				if (unloadedTextures.hasOwnProperty(imageUrl)) {
 					return false;
 				}
 			}
@@ -51,11 +57,11 @@ YUI.add('webgl-texture', function(Y) {
 			var instance = this,
 				imageUrl = texture.get('imageUrl'),
 				scene = instance.get('scene'),
-				textures = instance.get('textures');
+				unloadedTextures = instance.get('unloadedTextures');
 
 			scene.bindTexture(texture);
 
-			delete textures[imageUrl];
+			delete unloadedTextures[imageUrl];
 
 			if (instance._isEmpty()) {
 				scene.render();
@@ -68,6 +74,11 @@ YUI.add('webgl-texture', function(Y) {
 			},
 
 			textures: {
+				value: [],
+				validator: Lang.isArray
+			},
+
+			unloadedTextures: {
 				value: {}
 			}
 		}
