@@ -59,8 +59,6 @@ YUI.add('webgl-texture', function(Y) {
 				scene = instance.get('scene'),
 				unloadedTextures = instance.get('unloadedTextures');
 
-			scene.bindTexture(texture);
-
 			delete unloadedTextures[imageUrl];
 
 			if (instance._isEmpty()) {

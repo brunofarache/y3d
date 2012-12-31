@@ -31,18 +31,6 @@ YUI.add('webgl-scene', function(Y) {
 			shapes.push(shape);
 		},
 
-		bindTexture: function(texture) {
-			var image = texture.get('image'),
-				webglTexture = texture.get('webglTexture');
-
-			context.bindTexture(context.TEXTURE_2D, webglTexture);
-			context.pixelStorei(context.UNPACK_FLIP_Y_WEBGL, true);
-			context.texImage2D(context.TEXTURE_2D, 0, context.RGBA, context.RGBA, context.UNSIGNED_BYTE, image);
-			context.texParameteri(context.TEXTURE_2D, context.TEXTURE_MAG_FILTER, context.NEAREST);
-			context.texParameteri(context.TEXTURE_2D, context.TEXTURE_MIN_FILTER, context.NEAREST);
-			context.bindTexture(context.TEXTURE_2D, null);
-		},
-
 		render: function() {
 			var instance = this,
 				clearColor = instance.get('clearColor'),
@@ -139,7 +127,15 @@ YUI.add('webgl-scene', function(Y) {
 		_setTextureAttribute: function(shape) {
 			var texture = shape.get('texture'),
 				textureBuffer = shape.get('textureBuffer'),
+				image = texture.get('image'),
 				webglTexture = texture.get('webglTexture');
+
+			context.bindTexture(context.TEXTURE_2D, webglTexture);
+			context.pixelStorei(context.UNPACK_FLIP_Y_WEBGL, true);
+			context.texImage2D(context.TEXTURE_2D, 0, context.RGBA, context.RGBA, context.UNSIGNED_BYTE, image);
+			context.texParameteri(context.TEXTURE_2D, context.TEXTURE_MAG_FILTER, context.NEAREST);
+			context.texParameteri(context.TEXTURE_2D, context.TEXTURE_MIN_FILTER, context.NEAREST);
+			context.bindTexture(context.TEXTURE_2D, null);
 
 			context.bindBuffer(context.ARRAY_BUFFER, textureBuffer);
 			context.vertexAttribPointer(program.textureCoordinatesAttribute, 2, context.FLOAT, false, 0, 0);
