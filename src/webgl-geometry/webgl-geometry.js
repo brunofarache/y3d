@@ -25,6 +25,26 @@ YUI.add('webgl-geometry', function(Y) {
 			mat4.translate(modelViewMatrix, [x, y, z]);
 		},
 
+		_setColor: function(value) {
+			var instance = this;
+
+			if (Lang.isArray(value) && value.length == 3) {
+				value.push(1.0);
+			}
+			else if (Lang.isString(value)) {
+				value = Y.Color.toWebGLColorArray(value);
+			}
+
+			var vertices = instance.get('vertices'),
+				j = (vertices.length / 3) - 1;
+
+			for (var i = 0; i < j; i++) {
+				value = value.concat(value);
+			}
+
+			return value;
+		},
+
 		_setTexture: function(value) {
 			if (Lang.isString(value)) {
 				value = new Y.Texture({'imageUrl': value});
@@ -35,40 +55,11 @@ YUI.add('webgl-geometry', function(Y) {
 	}, {
 		ATTRS: {
 			color: {
-				setter: function(val) {
-					var instance = this;
-
-					if (Lang.isArray(val)) {
-						var length = val.length;
-
-						if (length == 3) {
-							for (var i = 0; i < length; i++) {
-								var n = val[i];
-
-								if (n > 1) {
-									val[i] = (n / 255);
-								}
-							}
-
-							val.push(1.0);
-						}
-						
-						if (val.length == 4) {
-							var vertices = instance.get('vertices'),
-								j = (vertices.length / 3) - 1;
-
-							for (var i = 0; i < j; i++) {
-								val = val.concat(val);
-							}
-						}
-					}
-
-					return val;
-				},
-
-				value: [
-					1.0, 1.0, 1.0
-				]
+				value: 'white',
+				setter: '_setColor',
+				validator: function(value) {
+					return Lang.isArray(value) || Lang.isString(value);
+				}
 			},
 
 			colorBuffer: {
@@ -89,8 +80,8 @@ YUI.add('webgl-geometry', function(Y) {
 			},
 
 			texture: {
-				setter: '_setTexture',
-				value: null
+				value: null,
+				setter: '_setTexture'
 			},
 
 			textureBuffer: {
