@@ -14,14 +14,18 @@
 				'webgl': {
 					base: 'src/',
 					modules: {
+						'webgl-color': {
+							path: 'webgl-color/webgl-color.js',
+							requires: ['color']
+						},
+
 						'webgl-scene': {
 							path: 'webgl-scene/webgl-scene.js',
-							requires: ['base-build', 'node-base', 'webgl-shader']
+							requires: ['base-build', 'node-base', 'webgl-color', 'webgl-shader']
 						},
 
 						'webgl-shader': {
-							path: 'webgl-shader/webgl-shader.js',
-							requires: ['node-base']
+							path: 'webgl-shader/webgl-shader.js'
 						},
 
 						'webgl-geometry': {
@@ -36,7 +40,7 @@
 					}
 				}
 			}	
-		}).use('webgl-scene', 'webgl-geometry', 'webgl-texture', function(Y) {
+		}).use('webgl-geometry', 'webgl-scene', 'webgl-texture', function(Y) {
 			var scene = new Y.Scene();
 
 			var cube = new Y.Cube();

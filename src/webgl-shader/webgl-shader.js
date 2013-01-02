@@ -126,4 +126,4 @@ YUI.add('webgl-shader', function(Y) {
 			return program;
 		}
 	};
-}, '1.0', {requires: ['node-base']});
+}, '1.0', {});

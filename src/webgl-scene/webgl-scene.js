@@ -1,5 +1,6 @@
 YUI.add('webgl-scene', function(Y) {
-	var context = null;
+	var Lang = Y.Lang,
+		context = null;
 
 	Y.Scene = Y.Base.create('scene', Y.Base, [], {
 		initializer: function() {
@@ -35,7 +36,8 @@ YUI.add('webgl-scene', function(Y) {
 				height = instance.get('height'),
 				width = instance.get('width');
 
-			context.clearColor(clearColor[0], clearColor[1], clearColor[2], 1.0);
+			context.clearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
+
 			context.enable(context.DEPTH_TEST);
 
 			context.viewport(0, 0, width, height);
@@ -125,6 +127,14 @@ YUI.add('webgl-scene', function(Y) {
 			geometry.set('vertexBuffer', vertexBuffer);
 		},
 
+		_setClearColor: function(value) {
+			if (Lang.isString(value)) {
+				value = Y.Color.toWebGLColorArray(value);
+			}
+
+			return value;
+		},
+
 		_setIndices: function(geometry) {
 			var indexBuffer = geometry.get('indexBuffer');
 
@@ -177,7 +187,8 @@ YUI.add('webgl-scene', function(Y) {
 			},
 
 			clearColor: {
-				value: [0.0, 0.0, 0.0]
+				value: 'black',
+				setter: '_setClearColor'
 			},
 
 			container: {
@@ -197,4 +208,4 @@ YUI.add('webgl-scene', function(Y) {
 			}
 		}
 	});
-}, '1.0', {requires: ['base-build', 'node-base', 'webgl-shader']});
+}, '1.0', {requires: ['base-build', 'node-base', 'webgl-color', 'webgl-shader']});
