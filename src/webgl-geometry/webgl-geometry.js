@@ -1,7 +1,7 @@
-YUI.add('webgl-shape', function(Y) {
+YUI.add('webgl-geometry', function(Y) {
 	var Lang = Y.Lang;
 
-	Y.Shape = Y.Base.create('shape', Y.Base, [], {
+	Y.Geometry = Y.Base.create('geometry', Y.Base, [], {
 		initializer: function() {
 			var instance = this,
 				modelViewMatrix = mat4.create();
@@ -104,7 +104,7 @@ YUI.add('webgl-shape', function(Y) {
 		}
 	});
 
-	Y.Cube = Y.Base.create('cube', Y.Shape, [], {
+	Y.Cube = Y.Base.create('cube', Y.Geometry, [], {
 	}, {
 		ATTRS: {
 			indices: {

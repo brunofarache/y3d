@@ -24,8 +24,8 @@
 							requires: ['node-base']
 						},
 
-						'webgl-shape': {
-							path: 'webgl-shape/webgl-shape.js',
+						'webgl-geometry': {
+							path: 'webgl-geometry/webgl-geometry.js',
 							requires: ['base-build']
 						},
 
@@ -36,7 +36,7 @@
 					}
 				}
 			}	
-		}).use('webgl-scene', 'webgl-shape', 'webgl-texture', function(Y) {
+		}).use('webgl-scene', 'webgl-geometry', 'webgl-texture', function(Y) {
 			var scene = new Y.Scene();
 
 			var cube = new Y.Cube();
@@ -45,7 +45,7 @@
 			cube.translate(3.0, 0.0, -20.0);
 			cube.rotate(1, 1, 0, 45);
 
-			scene.addShape(cube);
+			scene.addGeometry(cube);
 
 			var cube2 = new Y.Cube();
 
@@ -64,7 +64,7 @@
 
 			cube2.set('texture', texture);
 
-			scene.addShape(cube2);
+			scene.addGeometry(cube2);
 		});
 	</script>	
 </body>
