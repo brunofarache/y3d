@@ -33,7 +33,7 @@ YUI.add('webgl-texture', function(Y) {
 				unloadedTextures[imageUrl] = texture;
 
 				image.onload = function() {
-					instance._textureLoaded(texture);
+					instance._onLoad(texture);
 				};
 
 				image.src = imageUrl;
@@ -53,21 +53,21 @@ YUI.add('webgl-texture', function(Y) {
 			return true;
 		},
 
-		_textureLoaded: function(texture) {
+		_onLoad: function(texture) {
 			var instance = this,
 				imageUrl = texture.get('imageUrl'),
-				texturesLoaded = instance.get('texturesLoaded'),
+				onLoad = instance.get('onLoad'),
 				unloadedTextures = instance.get('unloadedTextures');
 
 			delete unloadedTextures[imageUrl];
 
 			if (instance._isEmpty()) {
-				texturesLoaded();
+				onLoad();
 			}
 		}
 	}, {
 		ATTRS: {
-			texturesLoaded: {
+			onLoad: {
 				value: null
 			},
 

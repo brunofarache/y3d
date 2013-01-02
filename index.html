@@ -55,7 +55,7 @@
 			var texture = new Y.Texture({'imageUrl': 'images/grass.png'});
 
 			new Y.TextureLoader({
-				texturesLoaded: function() {
+				onLoad: function() {
 					scene.render();
 				},
 
