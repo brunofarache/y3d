@@ -26,7 +26,7 @@
 
 						'webgl-geometry': {
 							path: 'webgl-geometry/webgl-geometry.js',
-							requires: ['base-build']
+							requires: ['base-build', 'webgl-texture']
 						},
 
 						'webgl-texture': {
@@ -52,17 +52,15 @@
 			cube2.translate(-3.0, 0.0, -20.0);
 			cube2.rotate(1, 1, 0, 45);
 
-			var texture = new Y.Texture({'imageUrl': 'images/grass.png'});
+			cube2.set('texture', 'images/grass.png');
 
 			new Y.TextureLoader({
 				onLoad: function() {
 					scene.render();
 				},
 
-				textures: [texture]
+				textures: [cube2.get('texture')]
 			});
-
-			cube2.set('texture', texture);
 
 			scene.addGeometry(cube2);
 		});

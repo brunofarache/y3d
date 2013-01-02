@@ -23,6 +23,14 @@ YUI.add('webgl-geometry', function(Y) {
 				modelViewMatrix = instance.get('modelViewMatrix');
 
 			mat4.translate(modelViewMatrix, [x, y, z]);
+		},
+
+		_setTexture: function(value) {
+			if (Lang.isString(value)) {
+				value = new Y.Texture({'imageUrl': value});
+			}
+
+			return value;
 		}
 	}, {
 		ATTRS: {
@@ -81,6 +89,7 @@ YUI.add('webgl-geometry', function(Y) {
 			},
 
 			texture: {
+				setter: '_setTexture',
 				value: null
 			},
 
@@ -199,4 +208,4 @@ YUI.add('webgl-geometry', function(Y) {
 			}
 		}
 	});
-}, '1.0', {requires: ['base-build']});
+}, '1.0', {requires: ['base-build', 'webgl-texture']});
