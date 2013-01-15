@@ -63,6 +63,7 @@ YUI.add('webgl-shader', function(Y) {
 					'lightWeight = ambientLightColor + lightColor * directionalLightWeight;',
 				'#else',
 					'lightWeight = vec3(1.0, 1.0, 1.0);',
+					'vertexNormal;',
 				'#endif',
 			'}'
 		].join('\n');
