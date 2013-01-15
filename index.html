@@ -19,6 +19,16 @@
 							requires: ['color']
 						},
 
+						'webgl-geometry': {
+							path: 'webgl-geometry/webgl-geometry.js',
+							requires: ['base-build', 'webgl-texture']
+						},
+
+						'webgl-light': {
+							path: 'webgl-light/webgl-light.js',
+							requires: ['base-build', 'webgl-color']
+						},
+
 						'webgl-scene': {
 							path: 'webgl-scene/webgl-scene.js',
 							requires: ['base-build', 'node-base', 'webgl-color', 'webgl-shader']
@@ -28,11 +38,6 @@
 							path: 'webgl-shader/webgl-shader.js'
 						},
 
-						'webgl-geometry': {
-							path: 'webgl-geometry/webgl-geometry.js',
-							requires: ['base-build', 'webgl-texture']
-						},
-
 						'webgl-texture': {
 							path: 'webgl-texture/webgl-texture.js',
 							requires: ['base-build']
@@ -40,8 +45,10 @@
 					}
 				}
 			}	
-		}).use('webgl-geometry', 'webgl-scene', 'webgl-texture', function(Y) {
+		}).use('webgl-geometry', 'webgl-light', 'webgl-scene', 'webgl-texture', function(Y) {
 			var scene = new Y.Scene();
+
+			scene.addLight(new Y.Light());
 
 			var cube = new Y.Cube();
 

@@ -40,6 +40,10 @@ YUI.add('webgl-shader', function(Y) {
 			'uniform mat4 modelViewMatrix;',
 			'uniform mat3 normalMatrix;',
 
+			'#ifdef USE_LIGHT',
+				'uniform vec3 lightColor;',
+			'#endif',
+
 			'varying vec4 fragmentColor;',
 			'varying vec3 lightWeight;',
 		
@@ -53,7 +57,6 @@ YUI.add('webgl-shader', function(Y) {
 				'#endif',
 
 				'#ifdef USE_LIGHT',
-					'vec3 lightColor = vec3(0.8, 0.8, 0.8);',
 					'vec3 lightDirection = vec3(0.25, 2, -1.0);',
 					'vec3 ambientLightColor = vec3(1.0, 1.0, 1.0);',
 
@@ -98,22 +101,30 @@ YUI.add('webgl-shader', function(Y) {
 			return shader;		
 		},
 
-		getColorProgram: function(context) {
+		getColorProgram: function(options) {
 			if (colorProgram != null) {
 				return colorProgram;
 			}
 
-			colorProgram = Y.Shader.link(context, []);
+			var context = options.context,
+				constants = options.constants || [];
+
+			colorProgram = Y.Shader.link(context, constants);
 
 			return colorProgram;
 		},
 
-		getTextureProgram: function(context) {
+		getTextureProgram: function(options) {
 			if (textureProgram != null) {
 				return textureProgram;
 			}
 
-			textureProgram = Y.Shader.link(context, ['#define USE_TEXTURE', '#define USE_LIGHT']);
+			var context = options.context,
+				constants = options.constants || [];
+
+			constants.push('#define USE_TEXTURE');
+
+			textureProgram = Y.Shader.link(context, constants);
 
 			textureProgram.textureCoordinatesAttribute = context.getAttribLocation(textureProgram, "textureCoordinates");
 			context.enableVertexAttribArray(textureProgram.textureCoordinatesAttribute);
@@ -150,6 +161,7 @@ YUI.add('webgl-shader', function(Y) {
 			program.projectionMatrixUniform = context.getUniformLocation(program, "projectionMatrix");
 			program.modelViewMatrixUniform = context.getUniformLocation(program, "modelViewMatrix");
 			program.normalMatrixUniform = context.getUniformLocation(program, "normalMatrix");
+			program.lightColorUniform = context.getUniformLocation(program, "lightColor");
 
 			return program;
 		}

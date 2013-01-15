@@ -31,10 +31,18 @@ YUI.add('webgl-scene', function(Y) {
 			geometries.push(geometry);
 		},
 
+		addLight: function(light) {
+			var instance = this,
+				lights = instance.get('lights');
+
+			lights.push(light);
+		},
+
 		render: function() {
 			var instance = this,
 				clearColor = instance.get('clearColor'),
 				height = instance.get('height'),
+				lights = instance.get('lights'),
 				width = instance.get('width');
 
 			context.clearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
@@ -57,11 +65,19 @@ YUI.add('webgl-scene', function(Y) {
 					modelViewMatrix = geometry.get('modelViewMatrix'),
 					program = null;
 
+				var options = {
+					context: context
+				}
+
+				if (lights.length > 0) {
+					options.constants = ['#define USE_LIGHT'];
+				}
+
 				if (texture != null) {
-					program = Y.Shader.getTextureProgram(context);
+					program = Y.Shader.getTextureProgram(options);
 				}
 				else {
-					program = Y.Shader.getColorProgram(context);
+					program = Y.Shader.getColorProgram(options);
 				}
 
 				context.useProgram(program);
@@ -74,6 +90,13 @@ YUI.add('webgl-scene', function(Y) {
 
 				context.uniformMatrix4fv(program.projectionMatrixUniform, false, projectionMatrix);
 				context.uniformMatrix4fv(program.modelViewMatrixUniform, false, modelViewMatrix);
+
+				if (lights.length > 0) {
+					var light = lights[0],
+						color = light.get('color');
+
+					context.uniform3f(program.lightColorUniform, color[0], color[1], color[2]);
+				}
 
 				var normalMatrix = mat3.create();
 
@@ -221,11 +244,15 @@ YUI.add('webgl-scene', function(Y) {
 				value: Y.Node.one('#container')
 			},
 
+			geometries: {
+				value: []
+			},
+
 			height: {
 				value: 800
 			},
 
-			geometries: {
+			lights: {
 				value: []
 			},
 
