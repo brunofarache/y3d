@@ -1,7 +1,6 @@
 YUI.add('webgl-color', function(Y) {
-
-	Color = {
-		toWebGLColorArray: function(str) {
+	var Color = {
+		normalizedColorArray: function(str) {
 			var color = Y.Color.toRGBA(str),
 				arr = Y.Color.toArray(color);
 

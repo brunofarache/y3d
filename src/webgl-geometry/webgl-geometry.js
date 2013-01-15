@@ -32,7 +32,7 @@ YUI.add('webgl-geometry', function(Y) {
 				value.push(1.0);
 			}
 			else if (Lang.isString(value)) {
-				value = Y.Color.toWebGLColorArray(value);
+				value = Y.Color.normalizedColorArray(value);
 			}
 
 			var vertices = instance.get('vertices'),
@@ -79,6 +79,15 @@ YUI.add('webgl-geometry', function(Y) {
 				value: null
 			},
 
+			normalBuffer: {
+				value: null
+			},
+
+			normals: {
+				value: [],
+				validator: Lang.isArray
+			},
+
 			texture: {
 				value: null,
 				setter: '_setTexture'
@@ -115,6 +124,46 @@ YUI.add('webgl-geometry', function(Y) {
 					12, 13, 14,   12, 14, 15, // Bottom face
 					16, 17, 18,   16, 18, 19, // Right face
 					20, 21, 22,   20, 22, 23  // Left face
+				]
+			},
+
+			normals: {
+				value: [
+					// Front face
+					0.0,  0.0,  1.0,
+					0.0,  0.0,  1.0,
+					0.0,  0.0,  1.0,
+					0.0,  0.0,  1.0,
+
+					// Back face
+					0.0,  0.0, -1.0,
+					0.0,  0.0, -1.0,
+					0.0,  0.0, -1.0,
+					0.0,  0.0, -1.0,
+
+					// Top face
+					0.0,  1.0,  0.0,
+					0.0,  1.0,  0.0,
+					0.0,  1.0,  0.0,
+					0.0,  1.0,  0.0,
+
+					// Bottom face
+					0.0, -1.0,  0.0,
+					0.0, -1.0,  0.0,
+					0.0, -1.0,  0.0,
+					0.0, -1.0,  0.0,
+
+					// Right face
+					1.0,  0.0,  0.0,
+					1.0,  0.0,  0.0,
+					1.0,  0.0,  0.0,
+					1.0,  0.0,  0.0,
+
+					// Left face
+					-1.0,  0.0,  0.0,
+					-1.0,  0.0,  0.0,
+					-1.0,  0.0,  0.0,
+					-1.0,  0.0,  0.0
 				]
 			},
 

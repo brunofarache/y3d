@@ -25,6 +25,7 @@ YUI.add('webgl-scene', function(Y) {
 			instance._createVertexBuffer(geometry);
 			instance._createColorBuffer(geometry);
 			instance._createTextureBuffer(geometry);
+			instance._createNormalBuffer(geometry);
 			instance._createIndexBuffer(geometry);
 
 			geometries.push(geometry);
@@ -68,10 +69,18 @@ YUI.add('webgl-scene', function(Y) {
 				instance._setVertexAttribute(program, geometry);
 				instance._setColorAttribute(program, geometry);
 				instance._setTextureAttribute(program, geometry);
+				instance._setNormalAttribute(program, geometry);
 				instance._setIndices(geometry);
 
 				context.uniformMatrix4fv(program.projectionMatrixUniform, false, projectionMatrix);
 				context.uniformMatrix4fv(program.modelViewMatrixUniform, false, modelViewMatrix);
+
+				var normalMatrix = mat3.create();
+
+				mat4.toInverseMat3(modelViewMatrix, normalMatrix);
+				mat3.transpose(normalMatrix);
+
+				context.uniformMatrix3fv(program.normalMatrixUniform, false, normalMatrix);
 
 				context.drawElements(context.TRIANGLES, indicesLength, context.UNSIGNED_SHORT, 0);
 			}
@@ -95,6 +104,16 @@ YUI.add('webgl-scene', function(Y) {
 			context.bufferData(context.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), context.STATIC_DRAW);
 
 			geometry.set('indexBuffer', indexBuffer)
+		},
+
+		_createNormalBuffer: function(geometry) {
+			var normalBuffer = context.createBuffer(),
+				normals = geometry.get('normals');
+
+			context.bindBuffer(context.ARRAY_BUFFER, normalBuffer);
+			context.bufferData(context.ARRAY_BUFFER, new Float32Array(normals), context.STATIC_DRAW);
+
+			geometry.set('normalBuffer', normalBuffer);
 		},
 
 		_createTextureBuffer: function(geometry) {
@@ -129,7 +148,7 @@ YUI.add('webgl-scene', function(Y) {
 
 		_setClearColor: function(value) {
 			if (Lang.isString(value)) {
-				value = Y.Color.toWebGLColorArray(value);
+				value = Y.Color.normalizedColorArray(value);
 			}
 
 			return value;
@@ -146,6 +165,13 @@ YUI.add('webgl-scene', function(Y) {
 
 			context.bindBuffer(context.ARRAY_BUFFER, colorBuffer);
 			context.vertexAttribPointer(program.vertexColorAttribute, 4, context.FLOAT, false, 0, 0);
+		},
+
+		_setNormalAttribute: function(program, geometry) {
+			var normalBuffer = geometry.get('normalBuffer');
+
+			context.bindBuffer(context.ARRAY_BUFFER, normalBuffer);
+			context.vertexAttribPointer(program.vertexNormalAttribute, 3, context.FLOAT, false, 0, 0);
 		},
 
 		_setTextureAttribute: function(program, geometry) {
