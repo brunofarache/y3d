@@ -1,0 +1,3 @@
+[submodule "lib/yui"]
+	path = lib/yui
+	url = git://github.com/yui/yui3.git
