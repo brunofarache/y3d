@@ -42,6 +42,7 @@ YUI.add('webgl-shader', function(Y) {
 
 			'#ifdef USE_LIGHT',
 				'uniform vec3 lightColor;',
+				'uniform vec3 lightDirection;',
 			'#endif',
 
 			'varying vec4 fragmentColor;',
@@ -57,7 +58,6 @@ YUI.add('webgl-shader', function(Y) {
 				'#endif',
 
 				'#ifdef USE_LIGHT',
-					'vec3 lightDirection = vec3(0.25, 2, -1.0);',
 					'vec3 ambientLightColor = vec3(1.0, 1.0, 1.0);',
 
 					'vec3 transformedNormal = normalMatrix * vertexNormal;',
@@ -162,6 +162,7 @@ YUI.add('webgl-shader', function(Y) {
 			program.modelViewMatrixUniform = context.getUniformLocation(program, "modelViewMatrix");
 			program.normalMatrixUniform = context.getUniformLocation(program, "normalMatrix");
 			program.lightColorUniform = context.getUniformLocation(program, "lightColor");
+			program.lightDirectionUniform = context.getUniformLocation(program, "lightDirection");
 
 			return program;
 		}

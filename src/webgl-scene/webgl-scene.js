@@ -87,16 +87,10 @@ YUI.add('webgl-scene', function(Y) {
 				instance._setTextureAttribute(program, geometry);
 				instance._setNormalAttribute(program, geometry);
 				instance._setIndices(geometry);
+				instance._setLightUniforms(program, lights);
 
 				context.uniformMatrix4fv(program.projectionMatrixUniform, false, projectionMatrix);
 				context.uniformMatrix4fv(program.modelViewMatrixUniform, false, modelViewMatrix);
-
-				if (lights.length > 0) {
-					var light = lights[0],
-						color = light.get('color');
-
-					context.uniform3f(program.lightColorUniform, color[0], color[1], color[2]);
-				}
 
 				var normalMatrix = mat3.create();
 
@@ -188,6 +182,17 @@ YUI.add('webgl-scene', function(Y) {
 
 			context.bindBuffer(context.ARRAY_BUFFER, colorBuffer);
 			context.vertexAttribPointer(program.vertexColorAttribute, 4, context.FLOAT, false, 0, 0);
+		},
+
+		_setLightUniforms: function(program, lights) {
+			if (lights.length > 0) {
+				var light = lights[0],
+					color = light.get('color'),
+					direction = light.get('direction');
+
+				context.uniform3f(program.lightColorUniform, color[0], color[1], color[2]);
+				context.uniform3f(program.lightDirectionUniform, direction[0], direction[1], direction[2]);
+			}
 		},
 
 		_setNormalAttribute: function(program, geometry) {

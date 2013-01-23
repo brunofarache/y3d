@@ -17,7 +17,7 @@ YUI.add('webgl-light', function(Y) {
 			},
 
 			direction: {
-				value: [0.25, 2, -1.0]
+				value: [0, 0, 0]
 			}
 		}
 	});

@@ -48,7 +48,7 @@
 		}).use('webgl-geometry', 'webgl-light', 'webgl-scene', 'webgl-texture', function(Y) {
 			var scene = new Y.Scene();
 
-			scene.addLight(new Y.Light());
+			scene.addLight(new Y.Light({direction: [1, 1, 1]}));
 
 			var cube = new Y.Cube();
 
