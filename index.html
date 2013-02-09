@@ -19,6 +19,11 @@
 							requires: ['color']
 						},
 
+						'webgl-cube': {
+							path: 'webgl-geometry/cube.js',
+							requires: ['webgl-geometry']
+						},
+
 						'webgl-geometry': {
 							path: 'webgl-geometry/webgl-geometry.js',
 							requires: ['base-build', 'webgl-texture']
@@ -27,6 +32,11 @@
 						'webgl-light': {
 							path: 'webgl-light/webgl-light.js',
 							requires: ['base-build', 'webgl-color']
+						},
+
+						'webgl-plane': {
+							path: 'webgl-geometry/plane.js',
+							requires: ['webgl-geometry']
 						},
 
 						'webgl-scene': {
@@ -41,39 +51,58 @@
 						'webgl-texture': {
 							path: 'webgl-texture/webgl-texture.js',
 							requires: ['base-build']
+						},
+
+						'webgl-triangle': {
+							path: 'webgl-geometry/triangle.js',
+							requires: ['webgl-geometry']
 						}
 					}
 				}
 			}	
-		}).use('webgl-geometry', 'webgl-light', 'webgl-scene', 'webgl-texture', function(Y) {
+		}).use('webgl-cube', 'webgl-geometry', 'webgl-light', 'webgl-plane', 'webgl-scene', 'webgl-texture', 'webgl-triangle', function(Y) {
 			var scene = new Y.Scene();
 
-			scene.addLight(new Y.Light({direction: [1, 1, 1]}));
+			// scene.addLight(new Y.Light({direction: [1, 1, 1]}));
+
+			var triangle = new Y.Triangle();
+			triangle.set('color', 'red');
+			triangle.translate(3.0, 0.0, -20.0);
+
+			scene.addGeometry(triangle);
+
+			var plane = new Y.Plane();
+			plane.set('color', 'blue');
+			plane.translate(-3.0, 0.0, -20.0);
+
+			scene.addGeometry(plane);
 
 			var cube = new Y.Cube();
 
 			cube.set('color', 'teal');
-			cube.translate(3.0, 0.0, -20.0);
+			cube.translate(0, 3.0, -20.0);
 			cube.rotate(1, 1, 0, 45);
 
 			scene.addGeometry(cube);
 
-			var cube2 = new Y.Cube();
+			scene.render();
 
-			cube2.translate(-3.0, 0.0, -20.0);
-			cube2.rotate(1, 1, 0, 45);
+			// var cube2 = new Y.Cube();
 
-			cube2.set('texture', 'images/grass.png');
+			// cube2.translate(-3.0, 0.0, -20.0);
+			// cube2.rotate(1, 1, 0, 45);
 
-			new Y.TextureLoader({
-				onLoad: function() {
-					scene.render();
-				},
+			// cube2.set('texture', 'images/grass.png');
 
-				textures: [cube2.get('texture')]
-			});
+			// new Y.TextureLoader({
+			// 	onLoad: function() {
+			// 		scene.render();
+			// 	},
 
-			scene.addGeometry(cube2);
+			// 	textures: [cube2.get('texture')]
+			// });
+
+			// scene.addGeometry(cube2);
 		});
 	</script>	
 </body>
