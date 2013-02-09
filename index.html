@@ -15,46 +15,46 @@
 					base: 'src/',
 					modules: {
 						'webgl-color': {
-							path: 'webgl-color/webgl-color.js',
+							path: 'color/color.js',
 							requires: ['color']
 						},
 
 						'webgl-cube': {
-							path: 'webgl-geometry/cube.js',
+							path: 'geometry/cube.js',
 							requires: ['webgl-geometry']
 						},
 
 						'webgl-geometry': {
-							path: 'webgl-geometry/webgl-geometry.js',
+							path: 'geometry/geometry.js',
 							requires: ['base-build', 'webgl-texture']
 						},
 
 						'webgl-light': {
-							path: 'webgl-light/webgl-light.js',
+							path: 'light/light.js',
 							requires: ['base-build', 'webgl-color']
 						},
 
 						'webgl-plane': {
-							path: 'webgl-geometry/plane.js',
+							path: 'geometry/plane.js',
 							requires: ['webgl-geometry']
 						},
 
 						'webgl-scene': {
-							path: 'webgl-scene/webgl-scene.js',
+							path: 'scene/scene.js',
 							requires: ['base-build', 'node-base', 'webgl-color', 'webgl-shader']
 						},
 
 						'webgl-shader': {
-							path: 'webgl-shader/webgl-shader.js'
+							path: 'shader/shader.js'
 						},
 
 						'webgl-texture': {
-							path: 'webgl-texture/webgl-texture.js',
+							path: 'texture/texture.js',
 							requires: ['base-build']
 						},
 
 						'webgl-triangle': {
-							path: 'webgl-geometry/triangle.js',
+							path: 'geometry/triangle.js',
 							requires: ['webgl-geometry']
 						}
 					}
