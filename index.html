@@ -14,6 +14,10 @@
 				'webgl': {
 					base: 'src/',
 					modules: {
+						'webgl-anim': {
+							path: 'anim/anim.js'
+						},
+
 						'webgl-color': {
 							path: 'color/color.js',
 							requires: ['color']
@@ -60,7 +64,7 @@
 					}
 				}
 			}	
-		}).use('webgl-cube', 'webgl-geometry', 'webgl-light', 'webgl-plane', 'webgl-scene', 'webgl-texture', 'webgl-triangle', function(Y) {
+		}).use('webgl-anim', 'webgl-cube', 'webgl-geometry', 'webgl-light', 'webgl-plane', 'webgl-scene', 'webgl-texture', 'webgl-triangle', function(Y) {
 			var scene = new Y.Scene();
 
 			// scene.addLight(new Y.Light({direction: [1, 1, 1]}));
@@ -81,11 +85,22 @@
 
 			cube.set('color', 'teal');
 			cube.translate(0, 3.0, -20.0);
-			cube.rotate(1, 1, 0, 45);
 
 			scene.addGeometry(cube);
 
-			scene.render();
+			var animation = function() {
+				plane.rotate(0, 1, 1, 1);
+				triangle.rotate(1, 1, 0, 1);
+				cube.rotate(1, 1, 0, 3);
+			};
+
+			var debug = function(fps) {
+				console.log(fps);
+			};
+
+			var anim = new Y.WebGLAnim(scene, animation, debug);
+
+			anim.start();
 
 			// var cube2 = new Y.Cube();
 
