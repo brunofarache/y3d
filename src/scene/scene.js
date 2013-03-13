@@ -104,6 +104,10 @@ YUI.add('webgl-scene', function(Y) {
 				context.uniformMatrix3fv(program.normalMatrixUniform, false, normalMatrix);
 
 				context.drawElements(context.TRIANGLES, indicesLength, context.UNSIGNED_SHORT, 0);
+
+				context.bindBuffer(context.ARRAY_BUFFER, null);
+				context.bindBuffer(context.ELEMENT_ARRAY_BUFFER, null);
+				context.bindTexture(context.TEXTURE_2D, null);
 			}
 		},
 
@@ -116,6 +120,7 @@ YUI.add('webgl-scene', function(Y) {
 
 			context.bindBuffer(target, buffer);
 			context.bufferData(target, new arrayType(attribute), context.STATIC_DRAW); 
+			context.bindBuffer(target, null);
 
 			geometry[bufferName] = buffer;
 		},
@@ -157,6 +162,7 @@ YUI.add('webgl-scene', function(Y) {
 
 			context.bindBuffer(context.ARRAY_BUFFER, colorBuffer);
 			context.vertexAttribPointer(program.vertexColorAttribute, 4, context.FLOAT, false, 0, 0);
+			context.bindBuffer(context.ARRAY_BUFFER, null);
 		},
 
 		_setLightUniforms: function(program, lights) {
@@ -180,6 +186,7 @@ YUI.add('webgl-scene', function(Y) {
 
 			context.bindBuffer(context.ARRAY_BUFFER, normalsBuffer);
 			context.vertexAttribPointer(program.vertexNormalAttribute, 3, context.FLOAT, false, 0, 0);
+			context.bindBuffer(context.ARRAY_BUFFER, null);
 		},
 
 		_setTextureAttribute: function(program, geometry) {
@@ -196,17 +203,17 @@ YUI.add('webgl-scene', function(Y) {
 				webglTexture = texture.get('webglTexture');
 
 			context.bindTexture(context.TEXTURE_2D, webglTexture);
+
 			context.pixelStorei(context.UNPACK_FLIP_Y_WEBGL, true);
 			context.texImage2D(context.TEXTURE_2D, 0, context.RGBA, context.RGBA, context.UNSIGNED_BYTE, image);
 			context.texParameteri(context.TEXTURE_2D, context.TEXTURE_MAG_FILTER, context.NEAREST);
 			context.texParameteri(context.TEXTURE_2D, context.TEXTURE_MIN_FILTER, context.NEAREST);
-			context.bindTexture(context.TEXTURE_2D, null);
 
 			context.bindBuffer(context.ARRAY_BUFFER, textureCoordinatesBuffer);
 			context.vertexAttribPointer(program.textureCoordinatesAttribute, 2, context.FLOAT, false, 0, 0);
+			context.bindBuffer(context.ARRAY_BUFFER, null);
 
 			context.activeTexture(context.TEXTURE0);
-			context.bindTexture(context.TEXTURE_2D, webglTexture);
 			context.uniform1i(program.sampler, 0);
 		},
 
@@ -217,6 +224,7 @@ YUI.add('webgl-scene', function(Y) {
 
 			context.bindBuffer(context.ARRAY_BUFFER, verticesBuffer);
 			context.vertexAttribPointer(program.vertexPositionAttribute, 3, context.FLOAT, false, 0, 0);
+			context.bindBuffer(context.ARRAY_BUFFER, null);
 		}
 	}, {
 		ATTRS: {
