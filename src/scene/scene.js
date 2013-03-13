@@ -1,8 +1,9 @@
 YUI.add('webgl-scene', function(Y) {
-	var Lang = Y.Lang,
-		context = null;
+	var Lang = Y.Lang;
 
 	Y.Scene = Y.Base.create('scene', Y.Base, [], {
+		context: null,
+
 		initializer: function() {
 			var instance = this,
 				canvas = instance.get('canvas'),
@@ -15,7 +16,7 @@ YUI.add('webgl-scene', function(Y) {
 
 			container.append(canvas);
 
-			context = canvas.getDOMNode().getContext("experimental-webgl");
+			instance.context = canvas.getDOMNode().getContext("experimental-webgl");
 		},
 
 		addGeometry: function(geometry) {
@@ -40,6 +41,7 @@ YUI.add('webgl-scene', function(Y) {
 
 		render: function() {
 			var instance = this,
+				context = instance.context,
 				clearColor = instance.get('clearColor'),
 				height = instance.get('height'),
 				lights = instance.get('lights'),
@@ -104,7 +106,9 @@ YUI.add('webgl-scene', function(Y) {
 		},
 
 		_createColorBuffer: function(geometry) {
-			var color = geometry.get('color'),
+			var instance = this,
+				context = instance.context,
+				color = geometry.get('color'),
 				colorBuffer = context.createBuffer();
 
 			context.bindBuffer(context.ARRAY_BUFFER, colorBuffer);
@@ -114,7 +118,9 @@ YUI.add('webgl-scene', function(Y) {
 		},
 
 		_createIndexBuffer: function(geometry) {
-			var indexBuffer = context.createBuffer(),
+			var instance = this,
+				context = instance.context,
+				indexBuffer = context.createBuffer(),
 				indices = geometry.get('indices');
 
 			context.bindBuffer(context.ELEMENT_ARRAY_BUFFER, indexBuffer);
@@ -124,7 +130,9 @@ YUI.add('webgl-scene', function(Y) {
 		},
 
 		_createNormalBuffer: function(geometry) {
-			var normalBuffer = context.createBuffer(),
+			var instance = this,
+				context = instance.context,
+				normalBuffer = context.createBuffer(),
 				normals = geometry.get('normals');
 
 			context.bindBuffer(context.ARRAY_BUFFER, normalBuffer);
@@ -134,7 +142,9 @@ YUI.add('webgl-scene', function(Y) {
 		},
 
 		_createTextureBuffer: function(geometry) {
-			var texture = geometry.get('texture');
+			var instance = this,
+				context = instance.context,
+				texture = geometry.get('texture');
 
 			if (texture == null) {
 				return;
@@ -154,7 +164,9 @@ YUI.add('webgl-scene', function(Y) {
 		},
 
 		_createVertexBuffer: function(geometry) {
-			var vertexBuffer = context.createBuffer(),
+			var instance = this,
+				context = instance.context,
+				vertexBuffer = context.createBuffer(),
 				vertices = geometry.get('vertices');
 
 			context.bindBuffer(context.ARRAY_BUFFER, vertexBuffer);
@@ -172,19 +184,26 @@ YUI.add('webgl-scene', function(Y) {
 		},
 
 		_setIndices: function(geometry) {
-			var indexBuffer = geometry.get('indexBuffer');
+			var instance = this,
+				context = instance.context,
+				indexBuffer = geometry.get('indexBuffer');
 
 			context.bindBuffer(context.ELEMENT_ARRAY_BUFFER, indexBuffer);
 		},
 
 		_setColorAttribute: function(program, geometry) {
-			var colorBuffer = geometry.get('colorBuffer');
+			var instance = this,
+				context = instance.context,
+				colorBuffer = geometry.get('colorBuffer');
 
 			context.bindBuffer(context.ARRAY_BUFFER, colorBuffer);
 			context.vertexAttribPointer(program.vertexColorAttribute, 4, context.FLOAT, false, 0, 0);
 		},
 
 		_setLightUniforms: function(program, lights) {
+			var instance = this,
+				context = instance.context;
+
 			if (lights.length > 0) {
 				var light = lights[0],
 					color = light.get('color'),
@@ -196,14 +215,18 @@ YUI.add('webgl-scene', function(Y) {
 		},
 
 		_setNormalAttribute: function(program, geometry) {
-			var normalBuffer = geometry.get('normalBuffer');
+			var instance = this,
+				context = instance.context,
+				normalBuffer = geometry.get('normalBuffer');
 
 			context.bindBuffer(context.ARRAY_BUFFER, normalBuffer);
 			context.vertexAttribPointer(program.vertexNormalAttribute, 3, context.FLOAT, false, 0, 0);
 		},
 
 		_setTextureAttribute: function(program, geometry) {
-			var texture = geometry.get('texture');
+			var instance = this,
+				context = instance.context,
+				texture = geometry.get('texture');
 
 			if (texture == null) {
 				return;
@@ -229,7 +252,9 @@ YUI.add('webgl-scene', function(Y) {
 		},
 
 		_setVertexAttribute: function(program, geometry) {
-			var vertexBuffer = geometry.get('vertexBuffer');
+			var instance = this,
+				context = instance.context,
+				vertexBuffer = geometry.get('vertexBuffer');
 
 			context.bindBuffer(context.ARRAY_BUFFER, vertexBuffer);
 			context.vertexAttribPointer(program.vertexPositionAttribute, 3, context.FLOAT, false, 0, 0);
