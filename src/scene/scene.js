@@ -24,12 +24,12 @@ YUI.add('webgl-scene', function(Y) {
 				context = instance.context,
 				geometries = instance.get('geometries');
 
-			instance._setBuffer(geometry, 'color', context.ARRAY_BUFFER, Float32Array);
-			instance._setBuffer(geometry, 'indices', context.ELEMENT_ARRAY_BUFFER, Uint16Array);
-			instance._setBuffer(geometry, 'normals', context.ARRAY_BUFFER, Float32Array);
-			instance._setBuffer(geometry, 'vertices', context.ARRAY_BUFFER, Float32Array);
+			instance._loadBufferData(geometry, 'color', context.ARRAY_BUFFER, Float32Array);
+			instance._loadBufferData(geometry, 'indices', context.ELEMENT_ARRAY_BUFFER, Uint16Array);
+			instance._loadBufferData(geometry, 'normals', context.ARRAY_BUFFER, Float32Array);
+			instance._loadBufferData(geometry, 'vertices', context.ARRAY_BUFFER, Float32Array);
 
-			instance._setTextureBuffer(geometry);
+			instance._loadTextureBufferData(geometry);
 
 			geometries.push(geometry);
 		},
@@ -112,7 +112,7 @@ YUI.add('webgl-scene', function(Y) {
 			}
 		},
 
-		_setBuffer: function(geometry, attributeName, target, arrayType) {
+		_loadBufferData: function(geometry, attributeName, target, arrayType) {
 			var instance = this,
 				context = instance.context,
 				attribute = geometry.get(attributeName),
@@ -126,7 +126,7 @@ YUI.add('webgl-scene', function(Y) {
 			geometry[bufferName] = buffer;
 		},
 
-		_setTextureBuffer: function(geometry) {
+		_loadTextureBufferData: function(geometry) {
 			var instance = this,
 				context = instance.context,
 				texture = geometry.get('texture');
@@ -135,7 +135,7 @@ YUI.add('webgl-scene', function(Y) {
 				return;
 			}
 
-			instance._setBuffer(geometry, 'textureCoordinates', context.ARRAY_BUFFER, Float32Array);
+			instance._loadBufferData(geometry, 'textureCoordinates', context.ARRAY_BUFFER, Float32Array);
 
 			texture.set('webglTexture', context.createTexture());
 		},
