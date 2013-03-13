@@ -86,9 +86,9 @@ YUI.add('webgl-scene', function(Y) {
 
 				context.useProgram(program);
 
-				instance._setVertexAttribute(geometry, 'colorBuffer', program.vertexColorAttribute, 4);
-				instance._setVertexAttribute(geometry, 'normalsBuffer', program.vertexNormalAttribute, 3);
-				instance._setVertexAttribute(geometry, 'verticesBuffer', program.vertexPositionAttribute, 3);
+				instance._setVertexAttribute(geometry['colorBuffer'], program.vertexColorAttribute, 4);
+				instance._setVertexAttribute(geometry['normalsBuffer'], program.vertexNormalAttribute, 3);
+				instance._setVertexAttribute(geometry['verticesBuffer'], program.vertexPositionAttribute, 3);
 
 				instance._setTextureAttribute(program, geometry);
 				instance._setIndices(geometry);
@@ -198,10 +198,9 @@ YUI.add('webgl-scene', function(Y) {
 			context.uniform1i(program.sampler, 0);
 		},
 
-		_setVertexAttribute: function(geometry, bufferName, programAttribute, size) {
+		_setVertexAttribute: function(buffer, programAttribute, size) {
 			var instance = this,
-				context = instance.context,
-				buffer = geometry[bufferName];
+				context = instance.context;
 
 			context.bindBuffer(context.ARRAY_BUFFER, buffer);
 			context.vertexAttribPointer(programAttribute, size, context.FLOAT, false, 0, 0);
