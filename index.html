@@ -83,7 +83,7 @@
 
 			var cube = new Y.Cube();
 
-			cube.set('color', 'teal');
+			cube.set('texture', 'images/grass.png');
 			cube.translate(0, 3.0, -20.0);
 
 			scene.addGeometry(cube);
@@ -94,30 +94,15 @@
 				cube.rotate(1, 1, 0, 3);
 			};
 
-			var debug = function(fps) {
-				console.log(fps);
-			};
+			var anim = new Y.WebGLAnim(scene, animation);
 
-			var anim = new Y.WebGLAnim(scene, animation, debug);
+			new Y.TextureLoader({
+				onLoad: function() {
+					anim.start();
+				},
 
-			anim.start();
-
-			// var cube2 = new Y.Cube();
-
-			// cube2.translate(-3.0, 0.0, -20.0);
-			// cube2.rotate(1, 1, 0, 45);
-
-			// cube2.set('texture', 'images/grass.png');
-
-			// new Y.TextureLoader({
-			// 	onLoad: function() {
-			// 		scene.render();
-			// 	},
-
-			// 	textures: [cube2.get('texture')]
-			// });
-
-			// scene.addGeometry(cube2);
+				textures: [cube.get('texture')]
+			});
 		});
 	</script>	
 </body>

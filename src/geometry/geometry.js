@@ -66,7 +66,7 @@ YUI.add('webgl-geometry', function(Y) {
 				value: null
 			},
 
-			indexBuffer: {
+			indicesBuffer: {
 				value: null
 			},
 
@@ -79,7 +79,7 @@ YUI.add('webgl-geometry', function(Y) {
 				value: null
 			},
 
-			normalBuffer: {
+			normalsBuffer: {
 				value: null
 			},
 
@@ -93,7 +93,7 @@ YUI.add('webgl-geometry', function(Y) {
 				setter: '_setTexture'
 			},
 
-			textureBuffer: {
+			textureCoordinatesBuffer: {
 				value: null
 			},
 
@@ -102,7 +102,7 @@ YUI.add('webgl-geometry', function(Y) {
 				validator: Lang.isArray
 			},
 
-			vertexBuffer: {
+			verticesBuffer: {
 				value: null
 			},
 
