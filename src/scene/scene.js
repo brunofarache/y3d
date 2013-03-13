@@ -86,10 +86,11 @@ YUI.add('webgl-scene', function(Y) {
 
 				context.useProgram(program);
 
-				instance._setVertexAttribute(program, geometry);
-				instance._setColorAttribute(program, geometry);
+				instance._setVertexAttribute(geometry, 'colorBuffer', program.vertexColorAttribute, 4);
+				instance._setVertexAttribute(geometry, 'normalsBuffer', program.vertexNormalAttribute, 3);
+				instance._setVertexAttribute(geometry, 'verticesBuffer', program.vertexPositionAttribute, 3);
+
 				instance._setTextureAttribute(program, geometry);
-				instance._setNormalAttribute(program, geometry);
 				instance._setIndices(geometry);
 				instance._setLightUniforms(program, lights);
 
@@ -155,16 +156,6 @@ YUI.add('webgl-scene', function(Y) {
 			context.bindBuffer(context.ELEMENT_ARRAY_BUFFER, indicesBuffer);
 		},
 
-		_setColorAttribute: function(program, geometry) {
-			var instance = this,
-				context = instance.context,
-				colorBuffer = geometry['colorBuffer'];
-
-			context.bindBuffer(context.ARRAY_BUFFER, colorBuffer);
-			context.vertexAttribPointer(program.vertexColorAttribute, 4, context.FLOAT, false, 0, 0);
-			context.bindBuffer(context.ARRAY_BUFFER, null);
-		},
-
 		_setLightUniforms: function(program, lights) {
 			var instance = this,
 				context = instance.context;
@@ -177,16 +168,6 @@ YUI.add('webgl-scene', function(Y) {
 				context.uniform3f(program.lightColorUniform, color[0], color[1], color[2]);
 				context.uniform3f(program.lightDirectionUniform, direction[0], direction[1], direction[2]);
 			}
-		},
-
-		_setNormalAttribute: function(program, geometry) {
-			var instance = this,
-				context = instance.context,
-				normalsBuffer = geometry['normalsBuffer'];
-
-			context.bindBuffer(context.ARRAY_BUFFER, normalsBuffer);
-			context.vertexAttribPointer(program.vertexNormalAttribute, 3, context.FLOAT, false, 0, 0);
-			context.bindBuffer(context.ARRAY_BUFFER, null);
 		},
 
 		_setTextureAttribute: function(program, geometry) {
@@ -217,13 +198,13 @@ YUI.add('webgl-scene', function(Y) {
 			context.uniform1i(program.sampler, 0);
 		},
 
-		_setVertexAttribute: function(program, geometry) {
+		_setVertexAttribute: function(geometry, bufferName, programAttribute, size) {
 			var instance = this,
 				context = instance.context,
-				verticesBuffer = geometry['verticesBuffer'];
+				buffer = geometry[bufferName];
 
-			context.bindBuffer(context.ARRAY_BUFFER, verticesBuffer);
-			context.vertexAttribPointer(program.vertexPositionAttribute, 3, context.FLOAT, false, 0, 0);
+			context.bindBuffer(context.ARRAY_BUFFER, buffer);
+			context.vertexAttribPointer(programAttribute, size, context.FLOAT, false, 0, 0);
 			context.bindBuffer(context.ARRAY_BUFFER, null);
 		}
 	}, {
