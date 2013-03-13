@@ -111,12 +111,13 @@ YUI.add('webgl-scene', function(Y) {
 			var instance = this,
 				context = instance.context,
 				attribute = geometry.get(attributeName),
-				buffer = context.createBuffer();
+				buffer = context.createBuffer(),
+				bufferName = attributeName + 'Buffer';
 
 			context.bindBuffer(target, buffer);
-			context.bufferData(target, new arrayType(attribute), context.STATIC_DRAW);
+			context.bufferData(target, new arrayType(attribute), context.STATIC_DRAW); 
 
-			geometry.set(attributeName + 'Buffer', buffer);
+			geometry[bufferName] = buffer;
 		},
 
 		_setTextureBuffer: function(geometry) {
@@ -144,7 +145,7 @@ YUI.add('webgl-scene', function(Y) {
 		_setIndices: function(geometry) {
 			var instance = this,
 				context = instance.context,
-				indicesBuffer = geometry.get('indicesBuffer');
+				indicesBuffer = geometry['indicesBuffer'];
 
 			context.bindBuffer(context.ELEMENT_ARRAY_BUFFER, indicesBuffer);
 		},
@@ -152,7 +153,7 @@ YUI.add('webgl-scene', function(Y) {
 		_setColorAttribute: function(program, geometry) {
 			var instance = this,
 				context = instance.context,
-				colorBuffer = geometry.get('colorBuffer');
+				colorBuffer = geometry['colorBuffer'];
 
 			context.bindBuffer(context.ARRAY_BUFFER, colorBuffer);
 			context.vertexAttribPointer(program.vertexColorAttribute, 4, context.FLOAT, false, 0, 0);
@@ -175,7 +176,7 @@ YUI.add('webgl-scene', function(Y) {
 		_setNormalAttribute: function(program, geometry) {
 			var instance = this,
 				context = instance.context,
-				normalsBuffer = geometry.get('normalsBuffer');
+				normalsBuffer = geometry['normalsBuffer'];
 
 			context.bindBuffer(context.ARRAY_BUFFER, normalsBuffer);
 			context.vertexAttribPointer(program.vertexNormalAttribute, 3, context.FLOAT, false, 0, 0);
@@ -190,7 +191,7 @@ YUI.add('webgl-scene', function(Y) {
 				return;
 			}
 
-			var	textureCoordinatesBuffer = geometry.get('textureCoordinatesBuffer'),
+			var	textureCoordinatesBuffer = geometry['textureCoordinatesBuffer'],
 				image = texture.get('image'),
 				webglTexture = texture.get('webglTexture');
 
@@ -212,7 +213,7 @@ YUI.add('webgl-scene', function(Y) {
 		_setVertexAttribute: function(program, geometry) {
 			var instance = this,
 				context = instance.context,
-				verticesBuffer = geometry.get('verticesBuffer');
+				verticesBuffer = geometry['verticesBuffer'];
 
 			context.bindBuffer(context.ARRAY_BUFFER, verticesBuffer);
 			context.vertexAttribPointer(program.vertexPositionAttribute, 3, context.FLOAT, false, 0, 0);
