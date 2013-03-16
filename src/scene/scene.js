@@ -183,9 +183,7 @@ YUI.add('webgl-scene', function(Y) {
 			context.texParameteri(context.TEXTURE_2D, context.TEXTURE_MAG_FILTER, context.NEAREST);
 			context.texParameteri(context.TEXTURE_2D, context.TEXTURE_MIN_FILTER, context.NEAREST);
 
-			context.bindBuffer(context.ARRAY_BUFFER, textureCoordinatesBuffer);
-			context.vertexAttribPointer(program.textureCoordinatesAttribute, 2, context.FLOAT, false, 0, 0);
-			context.bindBuffer(context.ARRAY_BUFFER, null);
+			instance._setVertexAttribute(textureCoordinatesBuffer, program.textureCoordinatesAttribute, 2);
 
 			context.activeTexture(context.TEXTURE0);
 			context.uniform1i(program.sampler, 0);
