@@ -44,73 +44,92 @@ YUI.add('webgl-scene', function(Y) {
 		render: function() {
 			var instance = this,
 				context = instance.context,
-				clearColor = instance.get('clearColor'),
-				height = instance.get('height'),
-				lights = instance.get('lights'),
-				width = instance.get('width');
+				projectionMatrix = instance._createProjectionMatrix(),
+				geometries = instance.get('geometries');
 
-			context.clearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
+			instance._clearColor();
+			instance._enableDepthTest();
 
-			context.enable(context.DEPTH_TEST);
-
-			context.viewport(0, 0, width, height);
-			context.clear(context.COLOR_BUFFER_BIT | context.DEPTH_BUFFER_BIT);
-
-			var projectionMatrix = mat4.create();
-
-			mat4.perspective(45, width/height, 0.1, 100.0, projectionMatrix);
-
-			var geometries = instance.get('geometries');
-
-			for (var i = 0; i < geometries.length; i++) {
-				var geometry = geometries[i],
-					texture = geometry.get('texture'),
-					indicesLength = geometry.get('indices').length,
-					modelViewMatrix = geometry.get('modelViewMatrix'),
-					program = null;
-
-				var options = {
-					context: context
-				}
-
-				if (lights.length > 0) {
-					options.constants = ['#define USE_LIGHT'];
-				}
-
-				if (texture != null) {
-					program = Y.Shader.getTextureProgram(options);
-				}
-				else {
-					program = Y.Shader.getColorProgram(options);
-				}
+			Y.each(geometries, function(geometry) {
+				var program = instance._getProgram(geometry);
 
 				context.useProgram(program);
-
-				context.bindBuffer(context.ELEMENT_ARRAY_BUFFER, geometry['indicesBuffer']);
 
 				instance._setVertexAttribute(geometry['colorBuffer'], program.vertexColorAttribute, 4);
 				instance._setVertexAttribute(geometry['normalsBuffer'], program.vertexNormalAttribute, 3);
 				instance._setVertexAttribute(geometry['verticesBuffer'], program.vertexPositionAttribute, 3);
-
 				instance._setTextureAttribute(program, geometry);
-				instance._setLightUniforms(program, lights);
 
-				context.uniformMatrix4fv(program.projectionMatrixUniform, false, projectionMatrix);
-				context.uniformMatrix4fv(program.modelViewMatrixUniform, false, modelViewMatrix);
+				instance._setUniforms(program, geometry, projectionMatrix);
+				instance._setLightUniforms(program);
 
-				var normalMatrix = mat3.create();
+				instance._drawGeometry(geometry);
 
-				mat4.toInverseMat3(modelViewMatrix, normalMatrix);
-				mat3.transpose(normalMatrix);
+				instance._unbindBuffers();
+			});
+		},
 
-				context.uniformMatrix3fv(program.normalMatrixUniform, false, normalMatrix);
+		_clearColor: function() {
+			var instance = this,
+				context = instance.context,
+				clearColor = instance.get('clearColor');
 
-				context.drawElements(context.TRIANGLES, indicesLength, context.UNSIGNED_SHORT, 0);
+			context.clearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
+		},
 
-				context.bindBuffer(context.ARRAY_BUFFER, null);
-				context.bindBuffer(context.ELEMENT_ARRAY_BUFFER, null);
-				context.bindTexture(context.TEXTURE_2D, null);
+		_createProjectionMatrix: function() {
+			var instance = this,
+				context = instance.context,
+				projectionMatrix = mat4.create(),
+				height = instance.get('height'),
+				width = instance.get('width');
+
+			context.viewport(0, 0, width, height);
+
+			mat4.perspective(45, width/height, 0.1, 100.0, projectionMatrix);
+
+			return projectionMatrix;
+		},
+
+		_drawGeometry: function(geometry) {
+			var instance = this,
+				context = instance.context,
+				size = geometry.get('indices').length,
+				buffer = geometry['indicesBuffer'];
+
+			context.bindBuffer(context.ELEMENT_ARRAY_BUFFER, buffer);
+			context.drawElements(context.TRIANGLES, size, context.UNSIGNED_SHORT, 0);
+		},
+
+		_enableDepthTest: function() {
+			var instance = this,
+				context = instance.context;
+
+			context.enable(context.DEPTH_TEST);
+			context.clear(context.COLOR_BUFFER_BIT | context.DEPTH_BUFFER_BIT);
+		},
+
+		_getProgram: function(geometry) {
+			var instance = this,
+				texture = geometry.get('texture'),
+				lights = instance.get('lights'),
+				program = null,
+				options = {
+					context: instance.context
+				};
+
+			if (lights.length > 0) {
+				options.constants = ['#define USE_LIGHT'];
 			}
+
+			if (texture != null) {
+				program = Y.Shader.getTextureProgram(options);
+			}
+			else {
+				program = Y.Shader.getColorProgram(options);
+			}
+
+			return program;
 		},
 
 		_loadBufferData: function(geometry, attributeName, target, ArrayType) {
@@ -149,9 +168,10 @@ YUI.add('webgl-scene', function(Y) {
 			return value;
 		},
 
-		_setLightUniforms: function(program, lights) {
+		_setLightUniforms: function(program) {
 			var instance = this,
-				context = instance.context;
+				context = instance.context,
+				lights = instance.get('lights');
 
 			if (lights.length > 0) {
 				var light = lights[0],
@@ -189,6 +209,20 @@ YUI.add('webgl-scene', function(Y) {
 			context.uniform1i(program.sampler, 0);
 		},
 
+		_setUniforms: function(program, geometry, projectionMatrix) {
+			var instance = this,
+				context = instance.context,
+				modelViewMatrix = geometry.get('modelViewMatrix'),
+				normalMatrix = mat3.create();
+
+			mat4.toInverseMat3(modelViewMatrix, normalMatrix);
+			mat3.transpose(normalMatrix);
+
+			context.uniformMatrix3fv(program.normalMatrixUniform, false, normalMatrix);
+			context.uniformMatrix4fv(program.projectionMatrixUniform, false, projectionMatrix);
+			context.uniformMatrix4fv(program.modelViewMatrixUniform, false, modelViewMatrix);
+		},
+
 		_setVertexAttribute: function(buffer, programAttribute, size) {
 			var instance = this,
 				context = instance.context;
@@ -196,11 +230,22 @@ YUI.add('webgl-scene', function(Y) {
 			context.bindBuffer(context.ARRAY_BUFFER, buffer);
 			context.vertexAttribPointer(programAttribute, size, context.FLOAT, false, 0, 0);
 			context.bindBuffer(context.ARRAY_BUFFER, null);
+		},
+
+		_unbindBuffers: function() {
+			var instance = this,
+				context = instance.context;
+
+			context.bindBuffer(context.ARRAY_BUFFER, null);
+			context.bindBuffer(context.ELEMENT_ARRAY_BUFFER, null);
+			context.bindTexture(context.TEXTURE_2D, null);
 		}
 	}, {
 		ATTRS: {
 			canvas: {
-				value: Y.Node.create('<canvas></canvas>')
+				valueFn: function() {
+					return Y.Node.create('<canvas></canvas>');
+				}
 			},
 
 			clearColor: {
