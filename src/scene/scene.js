@@ -24,14 +24,14 @@ YUI.add('webgl-scene', function(Y) {
 				context = instance.context,
 				geometries = instance.get('geometries');
 
-			instance._loadBufferData(geometry, 'color', context.ARRAY_BUFFER, Float32Array);
-			instance._loadBufferData(geometry, 'indices', context.ELEMENT_ARRAY_BUFFER, Uint16Array);
-			instance._loadBufferData(geometry, 'normals', context.ARRAY_BUFFER, Float32Array);
-			instance._loadBufferData(geometry, 'vertices', context.ARRAY_BUFFER, Float32Array);
+			instance._loadBufferData(geometry, context.ARRAY_BUFFER, new Float32Array(geometry.get('color')), 'colorBuffer');
+			instance._loadBufferData(geometry, context.ELEMENT_ARRAY_BUFFER, new Uint16Array(geometry.get('indices')), 'indicesBuffer');
+			instance._loadBufferData(geometry, context.ARRAY_BUFFER, new Float32Array(geometry.get('normals')), 'normalsBuffer');
+			instance._loadBufferData(geometry, context.ARRAY_BUFFER, new Float32Array(geometry.get('vertices')), 'verticesBuffer');
 
 			instance._loadTextureBufferData(geometry);
 
-			geometries.push(geometry);
+			geometries[geometry.get('id')] = geometry;
 		},
 
 		addLight: function(light) {
@@ -132,15 +132,13 @@ YUI.add('webgl-scene', function(Y) {
 			return program;
 		},
 
-		_loadBufferData: function(geometry, attributeName, target, ArrayType) {
+		_loadBufferData: function(geometry, target, array, bufferName) {
 			var instance = this,
 				context = instance.context,
-				attribute = geometry.get(attributeName),
-				buffer = context.createBuffer(),
-				bufferName = attributeName + 'Buffer';
+				buffer = context.createBuffer();
 
 			context.bindBuffer(target, buffer);
-			context.bufferData(target, new ArrayType(attribute), context.STATIC_DRAW); 
+			context.bufferData(target, array, context.STATIC_DRAW); 
 			context.bindBuffer(target, null);
 
 			geometry[bufferName] = buffer;
@@ -155,7 +153,7 @@ YUI.add('webgl-scene', function(Y) {
 				return;
 			}
 
-			instance._loadBufferData(geometry, 'textureCoordinates', context.ARRAY_BUFFER, Float32Array);
+			instance._loadBufferData(geometry, context.ARRAY_BUFFER, new Float32Array(geometry.get('textureCoordinates')), 'textureCoordinatesBuffer');
 
 			texture.set('webglTexture', context.createTexture());
 		},
@@ -258,7 +256,7 @@ YUI.add('webgl-scene', function(Y) {
 			},
 
 			geometries: {
-				value: []
+				value: {}
 			},
 
 			height: {
@@ -274,4 +272,4 @@ YUI.add('webgl-scene', function(Y) {
 			}
 		}
 	});
-}, '1.0', {requires: ['base-build', 'node-base', 'webgl-color', 'webgl-shader']});
+}, '1.0', {requires: ['base-build', 'base-pluginhost', 'node-base', 'webgl-color', 'webgl-shader']});

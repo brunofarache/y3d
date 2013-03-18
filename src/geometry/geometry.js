@@ -25,6 +25,10 @@ YUI.add('webgl-geometry', function(Y) {
 			mat4.translate(modelViewMatrix, [x, y, z]);
 		},
 
+		_generateId: function() {
+            return Math.floor(Math.random() * 16777215).toString(16);
+        },
+
 		_setColor: function(value) {
 			var instance = this;
 
@@ -60,6 +64,11 @@ YUI.add('webgl-geometry', function(Y) {
 				validator: function(value) {
 					return Lang.isArray(value) || Lang.isString(value);
 				}
+			},
+
+			id: {
+				writeOnce: true,
+				valueFn: '_generateId'
 			},
 
 			indices: {

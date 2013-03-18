@@ -1,0 +1,113 @@
+<html>
+<head>
+	<title>yui webgl module</title>
+
+	<script src="lib/yui/build/yui/yui.js"></script>
+	<script src="lib/glMatrix-0.9.5.min.js"></script>
+</head>
+<body>
+	<div id='container'></div>
+
+	<script>
+		YUI({
+			groups: {
+				'webgl': {
+					base: 'src/',
+					modules: {
+						'picker': {
+							path: 'picker/picker-plugin.js',
+							requires: ['plugin']
+						},
+
+						'webgl-anim': {
+							path: 'anim/anim.js'
+						},
+
+						'webgl-color': {
+							path: 'color/color.js',
+							requires: ['color']
+						},
+
+						'webgl-cube': {
+							path: 'geometry/cube.js',
+							requires: ['webgl-geometry']
+						},
+
+						'webgl-geometry': {
+							path: 'geometry/geometry.js',
+							requires: ['base-build', 'webgl-texture']
+						},
+
+						'webgl-light': {
+							path: 'light/light.js',
+							requires: ['base-build', 'webgl-color']
+						},
+
+						'webgl-plane': {
+							path: 'geometry/plane.js',
+							requires: ['webgl-geometry']
+						},
+
+						'webgl-scene': {
+							path: 'scene/scene.js',
+							requires: ['base-build', 'base-pluginhost', 'node-base', 'webgl-color', 'webgl-shader']
+						},
+
+						'webgl-shader': {
+							path: 'shader/shader.js'
+						},
+
+						'webgl-texture': {
+							path: 'texture/texture.js',
+							requires: ['base-build']
+						},
+
+						'webgl-triangle': {
+							path: 'geometry/triangle.js',
+							requires: ['webgl-geometry']
+						}
+					}
+				}
+			}	
+		}).use('event', 'node', 'picker', 'webgl-anim', 'webgl-cube', 'webgl-geometry', 'webgl-light', 'webgl-plane', 'webgl-scene', 'webgl-texture', 'webgl-triangle', function(Y) {
+			var scene = new Y.Scene();
+
+			scene.plug(Y.Plugin.Picker);
+
+			var triangle = new Y.Triangle();
+
+			triangle.set('color', 'red');
+			triangle.translate(3.0, 0.0, -20.0);
+
+			scene.addGeometry(triangle);
+
+			var plane = new Y.Plane();
+
+			plane.set('color', 'blue');
+			plane.translate(-3.0, 0.0, -20.0);
+
+			scene.addGeometry(plane);
+
+			var canvas = scene.get('canvas');
+
+			canvas.on('click', function(e) {
+				var x = e.pageX - canvas.getXY()[0];
+				var y = e.pageY - canvas.getXY()[1];
+
+				var geometry = scene.picker.pick(x, y);
+
+				if (geometry) {
+	           		console.log('picked:', geometry.name);
+	           	}
+			});
+
+			var animation = function() {
+				plane.rotate(0, 1, 1, 1);
+				triangle.rotate(1, 1, 0, 1);
+			};
+
+			new Y.WebGLAnim(scene, animation).start();
+		});
+	</script>	
+</body>
+</html>
