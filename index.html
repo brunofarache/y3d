@@ -18,6 +18,11 @@
 							path: 'anim/anim.js'
 						},
 
+						'webgl-camera': {
+							path: 'camera/camera.js',
+							requires: ['base-build']
+						},
+
 						'webgl-color': {
 							path: 'color/color.js',
 							requires: ['color']
@@ -45,7 +50,7 @@
 
 						'webgl-scene': {
 							path: 'scene/scene.js',
-							requires: ['base-build', 'node-base', 'webgl-color', 'webgl-shader']
+							requires: ['base-build', 'node-base', 'webgl-camera', 'webgl-color', 'webgl-shader']
 						},
 
 						'webgl-shader': {
@@ -64,10 +69,14 @@
 					}
 				}
 			}	
-		}).use('webgl-anim', 'webgl-cube', 'webgl-geometry', 'webgl-light', 'webgl-plane', 'webgl-scene', 'webgl-texture', 'webgl-triangle', function(Y) {
+		}).use('webgl-anim', 'webgl-camera', 'webgl-cube', 'webgl-geometry', 'webgl-light', 'webgl-plane', 'webgl-scene', 'webgl-texture', 'webgl-triangle', function(Y) {
 			var scene = new Y.Scene();
 
-			// scene.addLight(new Y.Light({direction: [1, 1, 1]}));
+			var camera = new Y.Camera();
+
+			camera.set('position', [0, 0, -10]);
+
+			scene.set('camera', camera);
 
 			var triangle = new Y.Triangle();
 			triangle.set('color', 'red');

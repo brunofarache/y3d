@@ -210,15 +210,18 @@ YUI.add('webgl-scene', function(Y) {
 		_setUniforms: function(program, geometry, projectionMatrix) {
 			var instance = this,
 				context = instance.context,
+				cameraMatrix = instance.get('camera').get('matrix'),
 				modelViewMatrix = geometry.get('modelViewMatrix'),
 				normalMatrix = mat3.create();
 
 			mat4.toInverseMat3(modelViewMatrix, normalMatrix);
 			mat3.transpose(normalMatrix);
 
+			mat4.multiply(cameraMatrix, modelViewMatrix);
+
 			context.uniformMatrix3fv(program.normalMatrixUniform, false, normalMatrix);
 			context.uniformMatrix4fv(program.projectionMatrixUniform, false, projectionMatrix);
-			context.uniformMatrix4fv(program.modelViewMatrixUniform, false, modelViewMatrix);
+			context.uniformMatrix4fv(program.modelViewMatrixUniform, false, cameraMatrix);
 		},
 
 		_setVertexAttribute: function(buffer, programAttribute, size) {
@@ -240,6 +243,10 @@ YUI.add('webgl-scene', function(Y) {
 		}
 	}, {
 		ATTRS: {
+			camera: {
+				value: new Y.Camera()
+			},
+
 			canvas: {
 				valueFn: function() {
 					return Y.Node.create('<canvas></canvas>');
@@ -272,4 +279,4 @@ YUI.add('webgl-scene', function(Y) {
 			}
 		}
 	});
-}, '1.0', {requires: ['base-build', 'base-pluginhost', 'node-base', 'webgl-color', 'webgl-shader']});
+}, '1.0', {requires: ['base-build', 'base-pluginhost', 'node-base', 'webgl-camera', 'webgl-color', 'webgl-shader']});
