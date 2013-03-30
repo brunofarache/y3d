@@ -69,12 +69,10 @@
 					}
 				}
 			}	
-		}).use('webgl-anim', 'webgl-camera', 'webgl-cube', 'webgl-geometry', 'webgl-light', 'webgl-plane', 'webgl-scene', 'webgl-texture', 'webgl-triangle', function(Y) {
+		}).use('event-mousewheel', 'webgl-anim', 'webgl-camera', 'webgl-cube', 'webgl-geometry', 'webgl-light', 'webgl-plane', 'webgl-scene', 'webgl-texture', 'webgl-triangle', function(Y) {
 			var scene = new Y.Scene();
 
 			var camera = new Y.Camera();
-
-			camera.set('position', [0, 0, -10]);
 
 			scene.set('camera', camera);
 
@@ -111,6 +109,10 @@
 				},
 
 				textures: [cube.get('texture')]
+			});
+
+			Y.on('mousewheel', function(e) {
+				camera.moveZ(-0.1 * e.wheelDelta);
 			});
 		});
 	</script>	

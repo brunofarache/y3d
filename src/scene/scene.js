@@ -210,7 +210,7 @@ YUI.add('webgl-scene', function(Y) {
 		_setUniforms: function(program, geometry, projectionMatrix) {
 			var instance = this,
 				context = instance.context,
-				cameraMatrix = instance.get('camera').get('matrix'),
+				cameraMatrix = instance.get('camera').getMatrix(),
 				modelViewMatrix = geometry.get('modelViewMatrix'),
 				normalMatrix = mat3.create();
 

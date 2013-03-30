@@ -2,8 +2,10 @@ YUI.add('webgl-camera', function(Y) {
 	var Lang = Y.Lang;
 
 	Y.Camera = Y.Base.create('camera', Y.Base, [], {
-		_getMatrix: function(val) {
-			var matrix = mat4.create();
+		getMatrix: function() {
+			var instance = this,
+				val = instance.get('matrix'),
+				matrix = mat4.create();
 
 			mat4.set(val, matrix);
 
@@ -12,29 +14,44 @@ YUI.add('webgl-camera', function(Y) {
 			return matrix;
 		},
 
-		_setPosition: function(position) {
+		moveZ: function(delta) {
+			var instance = this;
+
+			instance._translate([0, 0, delta]);
+		},
+
+		_resetMatrix: function() {
+			var instance = this,
+				matrix = mat4.create();
+
+			mat4.identity(matrix);
+
+			instance.set('matrix', matrix);
+		},
+
+		_setPosition: function(val) {
+			var instance = this;
+
+			instance._resetMatrix();
+			instance._translate(val);
+
+			return val;
+		},
+
+		_translate: function(position) {
 			var instance = this,
 				matrix = instance.get('matrix');
 
 			mat4.translate(matrix, position);
+
 			instance.set('matrix', matrix);
 
 			return position;
 		}
 	}, {
 		ATTRS: {
-			matrix: {
-				getter: '_getMatrix',
-				valueFn: function() {
-					var matrix = mat4.create();
-
-					mat4.identity(matrix);
-
-					return matrix;
-				}
-			},
-
 			position: {
+				lazyAdd: false,
 				setter: '_setPosition',
 				value: [0, 0, 0],
 				validator: Lang.isArray
