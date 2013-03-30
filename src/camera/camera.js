@@ -14,6 +14,18 @@ YUI.add('webgl-camera', function(Y) {
 			return matrix;
 		},
 
+		moveX: function(delta) {
+			var instance = this;
+
+			instance._translate([delta, 0, 0]);
+		},
+
+		moveY: function(delta) {
+			var instance = this;
+
+			instance._translate([0, delta, 0]);
+		},
+
 		moveZ: function(delta) {
 			var instance = this;
 
