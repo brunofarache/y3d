@@ -39,14 +39,15 @@ YUI.add('webgl-geometry', function(Y) {
 				value = Y.Color.normalizedColorArray(value);
 			}
 
-			var vertices = instance.get('vertices'),
-				j = (vertices.length / 3) - 1;
+			var vertices = (instance.get('vertices').length / 3);
 
-			for (var i = 0; i < j; i++) {
-				value = value.concat(value);
+			var colorArray = [];
+
+			for (var i = 0; i < vertices; i++) {
+				colorArray = colorArray.concat(value);
 			}
 
-			return value;
+			return colorArray;
 		},
 
 		_setTexture: function(value) {

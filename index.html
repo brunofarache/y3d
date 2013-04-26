@@ -57,6 +57,11 @@
 							path: 'shader/shader.js'
 						},
 
+						'webgl-sphere': {
+							path: 'geometry/sphere.js',
+							requires: ['webgl-geometry']
+						},
+
 						'webgl-texture': {
 							path: 'texture/texture.js',
 							requires: ['base-build']
@@ -69,7 +74,7 @@
 					}
 				}
 			}	
-		}).use('event', 'webgl-anim', 'webgl-camera', 'webgl-cube', 'webgl-geometry', 'webgl-light', 'webgl-plane', 'webgl-scene', 'webgl-texture', 'webgl-triangle', function(Y) {
+		}).use('event', 'webgl-anim', 'webgl-camera', 'webgl-cube', 'webgl-geometry', 'webgl-light', 'webgl-plane', 'webgl-scene', 'webgl-sphere', 'webgl-texture', 'webgl-triangle', function(Y) {
 			var scene = new Y.Scene();
 
 			var camera = new Y.Camera();
@@ -94,6 +99,12 @@
 			cube.translate(0, 3.0, -20.0);
 
 			scene.addGeometry(cube);
+
+			var sphere = new Y.Sphere();
+			sphere.set('color', 'teal');
+			sphere.translate(0, -3.0, -20.0);
+
+			scene.addGeometry(sphere);
 
 			var animation = function() {
 				plane.rotate(0, 1, 1, 1);
