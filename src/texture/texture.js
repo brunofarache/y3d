@@ -5,7 +5,7 @@ YUI.add('webgl-texture', function(Y) {
 	}, {
 		ATTRS: {
 			image: {
-				value: new Image()
+				value: null
 			},
 
 			imageUrl: {
@@ -27,16 +27,16 @@ YUI.add('webgl-texture', function(Y) {
 
 			for (var i = 0; i < textures.length; i++) {
 				var texture = textures[i],
-					image = texture.get('image'),
+					image = new Image(),
 					imageUrl = texture.get('imageUrl');
 
 				unloadedTextures[imageUrl] = texture;
 
-				image.onload = function() {
-					instance._onLoad(texture);
-				};
+				image.onload = Y.bind(instance._onLoad, instance, texture);
 
 				image.src = imageUrl;
+
+				texture.set('image', image);
 			}
 		},
 

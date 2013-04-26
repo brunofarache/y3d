@@ -3,7 +3,6 @@ YUI.add('webgl-sphere', function(Y) {
 
 	Y.Sphere = Y.Base.create('sphere', Y.Geometry, [], {
 		initializer: function() {
-			 
 			var instance = this,
 				heightBands = instance.get('heightBands'),
 				indices = instance.get('indices'),

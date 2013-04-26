@@ -100,8 +100,8 @@
 
 			scene.addGeometry(cube);
 
-			var sphere = new Y.Sphere();
-			sphere.set('color', 'teal');
+			var sphere = new Y.Sphere({radius: 2});
+			sphere.set('texture', 'images/moon.gif');
 			sphere.translate(0, -3.0, -20.0);
 
 			scene.addGeometry(sphere);
@@ -110,6 +110,7 @@
 				plane.rotate(0, 1, 1, 1);
 				triangle.rotate(1, 1, 0, 1);
 				cube.rotate(1, 1, 0, 3);
+				sphere.rotate(0, 1, 0, 1);
 			};
 
 			var anim = new Y.WebGLAnim(scene, animation);
@@ -119,7 +120,7 @@
 					anim.start();
 				},
 
-				textures: [cube.get('texture')]
+				textures: [cube.get('texture'), sphere.get('texture')]
 			});
 
 			Y.on('mousewheel', function(e) {
