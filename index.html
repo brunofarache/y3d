@@ -33,6 +33,11 @@
 							requires: ['webgl-geometry']
 						},
 
+						'webgl-cylinder': {
+							path: 'geometry/cylinder.js',
+							requires: ['webgl-geometry']
+						},
+
 						'webgl-geometry': {
 							path: 'geometry/geometry.js',
 							requires: ['base-build', 'webgl-texture']
@@ -74,18 +79,18 @@
 					}
 				}
 			}	
-		}).use('event', 'webgl-anim', 'webgl-camera', 'webgl-cube', 'webgl-geometry', 'webgl-light', 'webgl-plane', 'webgl-scene', 'webgl-sphere', 'webgl-texture', 'webgl-triangle', function(Y) {
+		}).use('event', 'webgl-anim', 'webgl-camera', 'webgl-cube', 'webgl-cylinder', 'webgl-geometry', 'webgl-light', 'webgl-plane', 'webgl-scene', 'webgl-sphere', 'webgl-texture', 'webgl-triangle', function(Y) {
 			var scene = new Y.Scene();
 
 			var camera = new Y.Camera();
 
 			scene.set('camera', camera);
 
-			var triangle = new Y.Triangle();
-			triangle.set('color', 'red');
-			triangle.translate(3.0, 0.0, -20.0);
+			var cylinder = new Y.Cylinder();
+			cylinder.set('color', 'teal');
+			cylinder.translate(3.0, 0.0, -20.0);
 
-			scene.addGeometry(triangle);
+			scene.addGeometry(cylinder);
 
 			var plane = new Y.Plane();
 			plane.set('color', 'blue');
@@ -108,9 +113,9 @@
 
 			var animation = function() {
 				plane.rotate(0, 1, 1, 1);
-				triangle.rotate(1, 1, 0, 1);
 				cube.rotate(1, 1, 0, 3);
 				sphere.rotate(0, 1, 0, 1);
+				cylinder.rotate(1, 0, 0, 1);
 			};
 
 			var anim = new Y.WebGLAnim(scene, animation);
