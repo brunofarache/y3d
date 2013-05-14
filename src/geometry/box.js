@@ -1,7 +1,41 @@
-YUI.add('webgl-cube', function(Y) {
-	Y.Cube = Y.Base.create('cube', Y.Geometry, [], {
+YUI.add('webgl-box', function(Y) {
+	Y.Box = Y.Base.create('box', Y.Geometry, [], {
+		initializer: function() {
+			var instance = this,
+				depth = instance.get('depth'),
+				height = instance.get('height'),
+				vertices = instance.get('vertices'),
+				width = instance.get('width');
+
+			var x = width / 2,
+				y = height / 2,
+				z = depth / 2;
+
+
+			for (var i = 0; i < vertices.length; i++) {
+				var mod = i % 3;
+
+				if (mod == 0) {
+					vertices[i] = vertices[i] * x; 
+				}
+				else if (mod == 1) {
+					vertices[i] = vertices[i] * y;	
+				}
+				else if (mod == 2) {
+					vertices[i] = vertices[i] * z;	
+				}
+			}
+		}
 	}, {
 		ATTRS: {
+			depth: {
+				value: 2
+			},
+
+			height: {
+				value: 10
+			},
+
 			indices: {
 				value: [
 					0, 1, 2,      0, 2, 3,    // Front face
@@ -131,6 +165,10 @@ YUI.add('webgl-cube', function(Y) {
 					-1,  1,  1,
 					-1,  1, -1
 				]
+			},
+
+			width: {
+				value: 2
 			}
 		}
 	});

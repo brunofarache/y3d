@@ -18,6 +18,11 @@
 							path: 'anim/anim.js'
 						},
 
+						'webgl-box': {
+							path: 'geometry/box.js',
+							requires: ['webgl-geometry']
+						},
+
 						'webgl-camera': {
 							path: 'camera/camera.js',
 							requires: ['base-build']
@@ -26,11 +31,6 @@
 						'webgl-color': {
 							path: 'color/color.js',
 							requires: ['color']
-						},
-
-						'webgl-cube': {
-							path: 'geometry/cube.js',
-							requires: ['webgl-geometry']
 						},
 
 						'webgl-cylinder': {
@@ -79,7 +79,7 @@
 					}
 				}
 			}	
-		}).use('event', 'webgl-anim', 'webgl-camera', 'webgl-cube', 'webgl-cylinder', 'webgl-geometry', 'webgl-light', 'webgl-plane', 'webgl-scene', 'webgl-sphere', 'webgl-texture', 'webgl-triangle', function(Y) {
+		}).use('event', 'webgl-anim', 'webgl-camera', 'webgl-box', 'webgl-cylinder', 'webgl-geometry', 'webgl-light', 'webgl-plane', 'webgl-scene', 'webgl-sphere', 'webgl-texture', 'webgl-triangle', function(Y) {
 			var scene = new Y.Scene();
 
 			var camera = new Y.Camera();
@@ -98,12 +98,12 @@
 
 			scene.addGeometry(plane);
 
-			var cube = new Y.Cube();
+			var box = new Y.Box();
 
-			cube.set('texture', 'images/grass.png');
-			cube.translate(0, 3.0, -20.0);
+			box.set('texture', 'images/grass.png');
+			box.translate(0, 3.0, -20.0);
 
-			scene.addGeometry(cube);
+			scene.addGeometry(box);
 
 			var sphere = new Y.Sphere({radius: 2});
 			sphere.set('texture', 'images/moon.gif');
@@ -113,7 +113,7 @@
 
 			var animation = function() {
 				plane.rotate(0, 1, 1, 1);
-				cube.rotate(1, 1, 0, 3);
+				box.rotate(1, 1, 0, 3);
 				sphere.rotate(0, 1, 0, 1);
 				cylinder.rotate(1, 0, 0, 1);
 			};
@@ -125,7 +125,7 @@
 					anim.start();
 				},
 
-				textures: [cube.get('texture'), sphere.get('texture')]
+				textures: [box.get('texture'), sphere.get('texture')]
 			});
 
 			Y.on('mousewheel', function(e) {
