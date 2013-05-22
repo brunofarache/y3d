@@ -82,14 +82,14 @@
 			var triangle = new Y.Triangle();
 
 			triangle.set('color', 'blue');
-			triangle.translate(3.0, 0.0, -20.0);
+			triangle.move(3.0, 0.0, -20.0);
 
 			scene.addGeometry(triangle);
 
 			var plane = new Y.Plane();
 
 			plane.set('color', 'blue');
-			plane.translate(-3.0, 0.0, -20.0);
+			plane.move(-3.0, 0.0, -20.0);
 
 			scene.addGeometry(plane);
 
@@ -107,8 +107,8 @@
 			});
 
 			var animation = function() {
-				plane.rotate(0, 1, 1, 1);
-				triangle.rotate(1, 1, 0, 1);
+				plane.rotateX(1);
+				triangle.rotateY(1);
 			};
 
 			new Y.WebGLAnim(scene, animation).start();

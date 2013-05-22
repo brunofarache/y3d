@@ -21,22 +21,29 @@ YUI.add('webgl-camera', function(Y) {
 			return matrix;
 		},
 
-		moveX: function(delta) {
-			var instance = this;
+		move: function(x, y, z) {
+			var instance = this,
+				matrix = instance.get('matrix');
 
-			instance._translate([delta, 0, 0]);
+			mat4.translate(matrix, [x, y, z]);
 		},
 
-		moveY: function(delta) {
+		moveX: function(x) {
 			var instance = this;
 
-			instance._translate([0, delta, 0]);
+			instance.move(x, 0, 0);
 		},
 
-		moveZ: function(delta) {
+		moveY: function(y) {
 			var instance = this;
 
-			instance._translate([0, 0, delta]);
+			instance.move(0, y, 0);
+		},
+
+		moveZ: function(z) {
+			var instance = this;
+
+			instance.move(0, 0, z);
 		},
 
 		_onKeyPress: function(event) {
@@ -83,20 +90,9 @@ YUI.add('webgl-camera', function(Y) {
 			var instance = this;
 
 			instance._resetMatrix();
-			instance._translate(val);
+			instance.move(val[0], val[1], val[2]);
 
 			return val;
-		},
-
-		_translate: function(position) {
-			var instance = this,
-				matrix = instance.get('matrix');
-
-			mat4.translate(matrix, position);
-
-			instance.set('matrix', matrix);
-
-			return position;
 		}
 	}, {
 		ATTRS: {

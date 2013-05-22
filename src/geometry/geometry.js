@@ -11,6 +11,31 @@ YUI.add('webgl-geometry', function(Y) {
 			instance.set('modelViewMatrix', modelViewMatrix);	
 		},
 
+		move: function(x, y, z) {
+			var instance = this,
+				modelViewMatrix = instance.get('modelViewMatrix');
+
+			mat4.translate(modelViewMatrix, [x, y, z]);
+		},
+
+		moveX: function(x) {
+			var instance = this;
+
+			instance.move(x, 0, 0);
+		},
+
+		moveY: function(y) {
+			var instance = this;
+
+			instance.move(0, y, 0);
+		},
+
+		moveZ: function(z) {
+			var instance = this;
+
+			instance.move(0, 0, z);
+		},
+
 		rotate: function(x, y, z, degrees) {
 			var instance = this,
 				modelViewMatrix = instance.get('modelViewMatrix');
@@ -18,11 +43,22 @@ YUI.add('webgl-geometry', function(Y) {
 			mat4.rotate(modelViewMatrix, (degrees * (Math.PI/180)), [x, y, z]);
 		},
 
-		translate: function(x, y, z) {
-			var instance = this,
-				modelViewMatrix = instance.get('modelViewMatrix');
+		rotateX: function(degrees) {
+			var instance = this;
 
-			mat4.translate(modelViewMatrix, [x, y, z]);
+			instance.rotate(1, 0, 0, degrees);
+		},
+
+		rotateY: function(degrees) {
+			var instance = this;
+
+			instance.rotate(0, 1, 0, degrees);
+		},
+
+		rotateZ: function(degrees) {
+			var instance = this;
+
+			instance.rotate(0, 0, 1, degrees);
 		},
 
 		_generateId: function() {
