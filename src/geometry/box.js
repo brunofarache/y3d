@@ -33,7 +33,7 @@ YUI.add('webgl-box', function(Y) {
 			},
 
 			height: {
-				value: 10
+				value: 2
 			},
 
 			indices: {
