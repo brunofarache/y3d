@@ -86,23 +86,29 @@
 
 			var box = new Y.Box({
 				texture: 'images/grass.png',
-				position: [0, 3.0, -20.0]
+				x: 0,
+				y: 3,
+				z: -20
 			});
 
 			var sphere = new Y.Sphere({
 				radius: 2,
 				texture: 'images/moon.gif',
-				position: [0, -3.0, -20.0]
+				x: 0,
+				y: -3,
+				z: -20
 			});
 
 			var cylinder = new Y.Cylinder({
 				color: 'teal',
-				position: [3.0, 0, -20.0]
+				x: 3,
+				y: -0,
+				z: -20
 			});
 
 			var plane = new Y.Plane({
 				color: 'blue',
-				position: [-3.0, 0, -20.0]
+				xyz: [-3.0, 0, -20.0]
 			});
 
 			scene.addGeometry(box);
@@ -111,10 +117,10 @@
 			scene.addGeometry(plane);
 
 			var animation = function() {
-				plane.rotate(0, 1, 1, 1);
 				box.rotate(1, 1, 0, 3);
 				sphere.rotateY(1);
 				cylinder.rotateX(1);
+				plane.rotate(0, 1, 1, 1);
 			};
 
 			var anim = new Y.WebGLAnim(scene, animation);

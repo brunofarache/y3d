@@ -56,14 +56,14 @@ YUI.add('webgl-geometry', function(Y) {
             return Math.floor(Math.random() * 16777215).toString(16);
         },
 
-		_setColor: function(value) {
+		_setColor: function(val) {
 			var instance = this;
 
-			if (Lang.isArray(value) && value.length == 3) {
-				value.push(1.0);
+			if (Lang.isArray(val) && val.length == 3) {
+				val.push(1.0);
 			}
-			else if (Lang.isString(value)) {
-				value = Y.Color.normalizedColorArray(value);
+			else if (Lang.isString(val)) {
+				val = Y.Color.normalizedColorArray(val);
 			}
 
 			var vertices = (instance.get('vertices').length / 3);
@@ -71,30 +71,38 @@ YUI.add('webgl-geometry', function(Y) {
 			var colorArray = [];
 
 			for (var i = 0; i < vertices; i++) {
-				colorArray = colorArray.concat(value);
+				colorArray = colorArray.concat(val);
 			}
 
 			return colorArray;
 		},
 
-		_setPosition: function(val) {
-			var instance = this,
-				matrix = mat4.create();
-
-			mat4.identity(matrix);
-
-			instance.set('matrix', matrix);
-			instance.move(val[0], val[1], val[2]);
+		_setTexture: function(val) {
+			if (Lang.isString(val)) {
+				val = new Y.Texture({'imageUrl': val});
+			}
 
 			return val;
 		},
 
-		_setTexture: function(value) {
-			if (Lang.isString(value)) {
-				value = new Y.Texture({'imageUrl': value});
+		_setXYZ: function(val) {
+			var instance = this,
+				matrix = mat4.create(),
+				x = instance.get('x'),
+				y = instance.get('y'),
+				z = instance.get('z');
+
+			mat4.identity(matrix);
+
+			instance.set('matrix', matrix);
+
+			if (val == null) {
+				val = [x, y, z];
 			}
 
-			return value;
+			instance.move(val[0], val[1], val[2]);
+
+			return val;
 		}
 	}, {
 		ATTRS: {
@@ -125,13 +133,6 @@ YUI.add('webgl-geometry', function(Y) {
 				validator: Lang.isArray
 			},
 
-			position: {
-				lazyAdd: false,
-				setter: '_setPosition',
-				value: [0, 0, 0],
-				validator: Lang.isArray
-			},
-
 			texture: {
 				value: null,
 				setter: '_setTexture'
@@ -145,6 +146,27 @@ YUI.add('webgl-geometry', function(Y) {
 			vertices: {
 				value: [],
 				validator: Lang.isArray
+			},
+
+			// TODO: getters
+
+			xyz: {
+				lazyAdd: false,
+				setter: '_setXYZ',
+				value: null,
+				validator: Lang.isArray
+			},
+
+			x: {
+				value: 0
+			},
+
+			y: {
+				value: 0
+			},
+
+			z: {
+				value: 0
 			}
 		}
 	});
