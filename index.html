@@ -80,39 +80,35 @@
 				}
 			}	
 		}).use('webgl-anim', 'webgl-camera', 'webgl-box', 'webgl-cylinder', 'webgl-geometry', 'webgl-light', 'webgl-plane', 'webgl-scene', 'webgl-sphere', 'webgl-texture', 'webgl-triangle', function(Y) {
-			var scene = new Y.Scene();
+			var scene = new Y.Scene({
+				camera: new Y.Camera()
+			});
 
-			var camera = new Y.Camera();
+			var box = new Y.Box({
+				texture: 'images/grass.png',
+				position: [0, 3.0, -20.0]
+			});
 
-			scene.set('camera', camera);
+			var sphere = new Y.Sphere({
+				radius: 2,
+				texture: 'images/moon.gif',
+				position: [0, -3.0, -20.0]
+			});
 
-			var cylinder = new Y.Cylinder();
+			var cylinder = new Y.Cylinder({
+				color: 'teal',
+				position: [3.0, 0, -20.0]
+			});
 
-			cylinder.set('color', 'teal');
-			cylinder.set('position', [3.0, 0, -20.0]);
-
-			scene.addGeometry(cylinder);
-
-			var plane = new Y.Plane();
-			
-			plane.set('color', 'blue');
-			plane.set('position', [-3.0, 0, -20.0]);
-
-			scene.addGeometry(plane);
-
-			var box = new Y.Box();
-
-			box.set('texture', 'images/grass.png');
-			box.set('position', [0, 3.0, -20.0]);
+			var plane = new Y.Plane({
+				color: 'blue',
+				position: [-3.0, 0, -20.0]
+			});
 
 			scene.addGeometry(box);
-
-			var sphere = new Y.Sphere({radius: 2});
-			
-			sphere.set('texture', 'images/moon.gif');
-			sphere.set('position', [0, -3.0, -20.0]);
-
 			scene.addGeometry(sphere);
+			scene.addGeometry(cylinder);
+			scene.addGeometry(plane);
 
 			var animation = function() {
 				plane.rotate(0, 1, 1, 1);

@@ -79,19 +79,18 @@
 
 			scene.plug(Y.Plugin.Picker);
 
-			var triangle = new Y.Triangle();
+			var plane = new Y.Plane({
+				color: 'blue',
+				position: [-3.0, 0.0, -20.0]
+			});
 
-			triangle.set('color', 'blue');
-			triangle.move(3.0, 0.0, -20.0);
-
-			scene.addGeometry(triangle);
-
-			var plane = new Y.Plane();
-
-			plane.set('color', 'blue');
-			plane.move(-3.0, 0.0, -20.0);
+			var triangle = new Y.Triangle({
+				color: 'blue',
+				position: [3.0, 0.0, -20.0]
+			});
 
 			scene.addGeometry(plane);
+			scene.addGeometry(triangle);
 
 			var canvas = scene.get('canvas');
 
