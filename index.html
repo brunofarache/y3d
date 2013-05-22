@@ -87,27 +87,30 @@
 			scene.set('camera', camera);
 
 			var cylinder = new Y.Cylinder();
+
 			cylinder.set('color', 'teal');
-			cylinder.move(3.0, 0.0, -20.0);
+			cylinder.set('position', [3.0, 0, -20.0]);
 
 			scene.addGeometry(cylinder);
 
 			var plane = new Y.Plane();
+			
 			plane.set('color', 'blue');
-			plane.move(-3.0, 0.0, -20.0);
+			plane.set('position', [-3.0, 0, -20.0]);
 
 			scene.addGeometry(plane);
 
 			var box = new Y.Box();
 
 			box.set('texture', 'images/grass.png');
-			box.move(0, 3.0, -20.0);
+			box.set('position', [0, 3.0, -20.0]);
 
 			scene.addGeometry(box);
 
 			var sphere = new Y.Sphere({radius: 2});
+			
 			sphere.set('texture', 'images/moon.gif');
-			sphere.move(0, -3.0, -20.0);
+			sphere.set('position', [0, -3.0, -20.0]);
 
 			scene.addGeometry(sphere);
 

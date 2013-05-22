@@ -77,19 +77,13 @@ YUI.add('webgl-camera', function(Y) {
 			instance.moveZ(-event.wheelDelta * factor);
 		},
 
-		_resetMatrix: function() {
+		_setPosition: function(val) {
 			var instance = this,
 				matrix = mat4.create();
 
 			mat4.identity(matrix);
 
 			instance.set('matrix', matrix);
-		},
-
-		_setPosition: function(val) {
-			var instance = this;
-
-			instance._resetMatrix();
 			instance.move(val[0], val[1], val[2]);
 
 			return val;

@@ -211,13 +211,13 @@ YUI.add('webgl-scene', function(Y) {
 			var instance = this,
 				context = instance.context,
 				cameraMatrix = instance.get('camera').getMatrix(),
-				modelViewMatrix = geometry.get('modelViewMatrix'),
+				geometryMatrix = geometry.get('matrix'),
 				normalMatrix = mat3.create();
 
-			mat4.toInverseMat3(modelViewMatrix, normalMatrix);
+			mat4.toInverseMat3(geometryMatrix, normalMatrix);
 			mat3.transpose(normalMatrix);
 
-			mat4.multiply(cameraMatrix, modelViewMatrix);
+			mat4.multiply(cameraMatrix, geometryMatrix);
 
 			context.uniformMatrix3fv(program.normalMatrixUniform, false, normalMatrix);
 			context.uniformMatrix4fv(program.projectionMatrixUniform, false, projectionMatrix);

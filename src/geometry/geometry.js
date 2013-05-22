@@ -2,20 +2,11 @@ YUI.add('webgl-geometry', function(Y) {
 	var Lang = Y.Lang;
 
 	Y.Geometry = Y.Base.create('geometry', Y.Base, [], {
-		initializer: function() {
-			var instance = this,
-				modelViewMatrix = mat4.create();
-
-			mat4.identity(modelViewMatrix);
-
-			instance.set('modelViewMatrix', modelViewMatrix);	
-		},
-
 		move: function(x, y, z) {
 			var instance = this,
-				modelViewMatrix = instance.get('modelViewMatrix');
+				matrix = instance.get('matrix');
 
-			mat4.translate(modelViewMatrix, [x, y, z]);
+			mat4.translate(matrix, [x, y, z]);
 		},
 
 		moveX: function(x) {
@@ -38,9 +29,9 @@ YUI.add('webgl-geometry', function(Y) {
 
 		rotate: function(x, y, z, degrees) {
 			var instance = this,
-				modelViewMatrix = instance.get('modelViewMatrix');
+				matrix = instance.get('matrix');
 
-			mat4.rotate(modelViewMatrix, (degrees * (Math.PI/180)), [x, y, z]);
+			mat4.rotate(matrix, (degrees * (Math.PI/180)), [x, y, z]);
 		},
 
 		rotateX: function(degrees) {
@@ -86,6 +77,18 @@ YUI.add('webgl-geometry', function(Y) {
 			return colorArray;
 		},
 
+		_setPosition: function(val) {
+			var instance = this,
+				matrix = mat4.create();
+
+			mat4.identity(matrix);
+
+			instance.set('matrix', matrix);
+			instance.move(val[0], val[1], val[2]);
+
+			return val;
+		},
+
 		_setTexture: function(value) {
 			if (Lang.isString(value)) {
 				value = new Y.Texture({'imageUrl': value});
@@ -113,12 +116,19 @@ YUI.add('webgl-geometry', function(Y) {
 				validator: Lang.isArray
 			},
 
-			modelViewMatrix: {
+			matrix: {
 				value: null
 			},
 
 			normals: {
 				value: [],
+				validator: Lang.isArray
+			},
+
+			position: {
+				lazyAdd: false,
+				setter: '_setPosition',
+				value: [0, 0, 0],
 				validator: Lang.isArray
 			},
 
