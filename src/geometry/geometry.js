@@ -9,22 +9,22 @@ YUI.add('webgl-geometry', function(Y) {
 			mat4.translate(matrix, [x, y, z]);
 		},
 
-		moveX: function(x) {
+		moveX: function(distance) {
 			var instance = this;
 
-			instance.move(x, 0, 0);
+			instance.move(distance, 0, 0);
 		},
 
-		moveY: function(y) {
+		moveY: function(distance) {
 			var instance = this;
 
-			instance.move(0, y, 0);
+			instance.move(0, distance, 0);
 		},
 
-		moveZ: function(z) {
+		moveZ: function(distance) {
 			var instance = this;
 
-			instance.move(0, 0, z);
+			instance.move(0, 0, distance);
 		},
 
 		rotate: function(axis, degrees) {
@@ -176,7 +176,7 @@ YUI.add('webgl-geometry', function(Y) {
 			z: {
 				value: 0
 			},
-			
+
 			xyz: {
 				lazyAdd: false,
 				setter: '_setXYZ',

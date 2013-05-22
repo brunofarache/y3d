@@ -28,53 +28,53 @@ YUI.add('webgl-camera', function(Y) {
 			mat4.translate(matrix, [x, y, z]);
 		},
 
-		moveX: function(x) {
+		moveX: function(distance) {
 			var instance = this;
 
-			instance.move(x, 0, 0);
+			instance.move(distance, 0, 0);
 		},
 
-		moveY: function(y) {
+		moveY: function(distance) {
 			var instance = this;
 
-			instance.move(0, y, 0);
+			instance.move(0, distance, 0);
 		},
 
-		moveZ: function(z) {
+		moveZ: function(distance) {
 			var instance = this;
 
-			instance.move(0, 0, z);
+			instance.move(0, 0, distance);
 		},
 
 		_onKeyPress: function(event) {
 			var instance = this,
 				keys = instance.get('controls.keys'),
-				factor = keys.factor;
+				distance = keys.distance;
 
 			switch (event.keyCode) {
 				case keys.up:
-					instance.moveY(factor);
+					instance.moveY(distance);
 					break;
 
 				case keys.right:
-					instance.moveX(factor);
+					instance.moveX(distance);
 					break;
 				
 				case keys.down:
-					instance.moveY(-factor);
+					instance.moveY(-distance);
 					break;
 
 				case keys.left:
-					instance.moveX(-factor);
+					instance.moveX(-distance);
 					break;
 			}
 		},
 
 		_onMouseWheel: function(event) {
 			var instance = this,
-				factor = instance.get('controls.mouseWheelFactor');
+				distance = instance.get('controls.mouseWheelDistance');
 
-			instance.moveZ(-event.wheelDelta * factor);
+			instance.moveZ(-event.wheelDelta * distance);
 		},
 
 		_setPosition: function(val) {
@@ -97,10 +97,10 @@ YUI.add('webgl-camera', function(Y) {
 						right: 100,
 						down: 115,
 						left: 97,
-						factor: 0.3
+						distance: 0.3
 					},
 
-					mouseWheelFactor: 0.1
+					mouseWheelDistance: 0.1
 				}
 			},
 
