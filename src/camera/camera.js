@@ -77,13 +77,21 @@ YUI.add('webgl-camera', function(Y) {
 			instance.moveZ(-event.wheelDelta * distance);
 		},
 
-		_setPosition: function(val) {
+		_setXYZ: function(val) {
 			var instance = this,
-				matrix = mat4.create();
+				matrix = mat4.create(),
+				x = instance.get('x'),
+				y = instance.get('y'),
+				z = instance.get('z');
 
 			mat4.identity(matrix);
 
 			instance.set('matrix', matrix);
+
+			if (val == null) {
+				val = [x, y, z];
+			}
+
 			instance.move(val[0], val[1], val[2]);
 
 			return val;
@@ -104,10 +112,24 @@ YUI.add('webgl-camera', function(Y) {
 				}
 			},
 
-			position: {
+			// TODO: getters
+
+			x: {
+				value: 0
+			},
+
+			y: {
+				value: 0
+			},
+
+			z: {
+				value: 0
+			},
+
+			xyz: {
 				lazyAdd: false,
-				setter: '_setPosition',
-				value: [0, 0, 0],
+				setter: '_setXYZ',
+				value: null,
 				validator: Lang.isArray
 			}
 		}

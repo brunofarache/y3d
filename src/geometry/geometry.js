@@ -182,7 +182,7 @@ YUI.add('webgl-geometry', function(Y) {
 				setter: '_setXYZ',
 				value: null,
 				validator: Lang.isArray
-			},
+			}
 		}
 	});
 }, '1.0', {requires: ['base-build', 'webgl-texture']});

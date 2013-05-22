@@ -81,34 +81,30 @@
 			}	
 		}).use('webgl-anim', 'webgl-camera', 'webgl-box', 'webgl-cylinder', 'webgl-geometry', 'webgl-light', 'webgl-plane', 'webgl-scene', 'webgl-sphere', 'webgl-texture', 'webgl-triangle', function(Y) {
 			var scene = new Y.Scene({
-				camera: new Y.Camera()
+				camera: new Y.Camera({
+					z: 20
+				})
 			});
 
 			var box = new Y.Box({
 				texture: 'images/grass.png',
-				x: 0,
-				y: 3,
-				z: -20
+				y: 3
 			});
 
 			var sphere = new Y.Sphere({
 				radius: 2,
 				texture: 'images/moon.gif',
-				x: 0,
 				y: -3,
-				z: -20
 			});
 
 			var cylinder = new Y.Cylinder({
 				color: 'teal',
-				x: 3,
-				y: -0,
-				z: -20
+				x: 3
 			});
 
 			var plane = new Y.Plane({
 				color: 'blue',
-				xyz: [-3.0, 0, -20.0]
+				xyz: [-3, 0, 0]
 			});
 
 			scene.addGeometry(box);
