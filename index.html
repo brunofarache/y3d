@@ -25,7 +25,7 @@
 
 						'webgl-camera': {
 							path: 'camera/camera.js',
-							requires: ['base-build']
+							requires: ['base-build', 'event-key', 'event-mousewheel']
 						},
 
 						'webgl-color': {
@@ -79,7 +79,7 @@
 					}
 				}
 			}	
-		}).use('event', 'webgl-anim', 'webgl-camera', 'webgl-box', 'webgl-cylinder', 'webgl-geometry', 'webgl-light', 'webgl-plane', 'webgl-scene', 'webgl-sphere', 'webgl-texture', 'webgl-triangle', function(Y) {
+		}).use('webgl-anim', 'webgl-camera', 'webgl-box', 'webgl-cylinder', 'webgl-geometry', 'webgl-light', 'webgl-plane', 'webgl-scene', 'webgl-sphere', 'webgl-texture', 'webgl-triangle', function(Y) {
 			var scene = new Y.Scene();
 
 			var camera = new Y.Camera();
@@ -126,30 +126,6 @@
 				},
 
 				textures: [box.get('texture'), sphere.get('texture')]
-			});
-
-			Y.on('mousewheel', function(e) {
-				camera.moveZ(-0.1 * e.wheelDelta);
-			});
-
-			Y.on('keypress', function(e) {
-				switch (e.keyCode) {
-					case 97:
-						camera.moveX(-1);
-						break;
-
-					case 115:
-						camera.moveY(-1);
-						break;
-
-					case 100:
-						camera.moveX(1);
-						break;
-
-					case 119:
-						camera.moveY(1);
-						break;
-				}
 			});
 		});
 	</script>	

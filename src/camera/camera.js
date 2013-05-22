@@ -2,6 +2,13 @@ YUI.add('webgl-camera', function(Y) {
 	var Lang = Y.Lang;
 
 	Y.Camera = Y.Base.create('camera', Y.Base, [], {
+		initializer: function() {
+			var instance = this;
+
+			Y.on('keypress', Y.bind(instance._onKeyPress, instance));
+			Y.on('mousewheel', Y.bind(instance._onMouseWheel, instance));
+		},
+
 		getMatrix: function() {
 			var instance = this,
 				val = instance.get('matrix'),
@@ -30,6 +37,37 @@ YUI.add('webgl-camera', function(Y) {
 			var instance = this;
 
 			instance._translate([0, 0, delta]);
+		},
+
+		_onKeyPress: function(event) {
+			var instance = this,
+				keys = instance.get('controls.keys'),
+				factor = keys.factor;
+
+			switch (event.keyCode) {
+				case keys.up:
+					instance.moveY(factor);
+					break;
+
+				case keys.right:
+					instance.moveX(factor);
+					break;
+				
+				case keys.down:
+					instance.moveY(-factor);
+					break;
+
+				case keys.left:
+					instance.moveX(-factor);
+					break;
+			}
+		},
+
+		_onMouseWheel: function(event) {
+			var instance = this,
+				factor = instance.get('controls.mouseWheelFactor');
+
+			instance.moveZ(-event.wheelDelta * factor);
 		},
 
 		_resetMatrix: function() {
@@ -62,6 +100,20 @@ YUI.add('webgl-camera', function(Y) {
 		}
 	}, {
 		ATTRS: {
+			controls: {
+				value: {
+					keys: {
+						up: 119,
+						right: 100,
+						down: 115,
+						left: 97,
+						factor: 0.3
+					},
+
+					mouseWheelFactor: 0.1
+				}
+			},
+
 			position: {
 				lazyAdd: false,
 				setter: '_setPosition',
@@ -70,4 +122,4 @@ YUI.add('webgl-camera', function(Y) {
 			}
 		}
 	});
-}, '1.0', {requires: ['base-build']});
+}, '1.0', {requires: ['base-build', 'event-key', 'event-mousewheel']});
