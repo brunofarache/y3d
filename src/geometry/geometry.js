@@ -27,9 +27,24 @@ YUI.add('webgl-geometry', function(Y) {
 			instance.move(0, 0, z);
 		},
 
-		rotate: function(x, y, z, degrees) {
+		rotate: function(axis, degrees) {
 			var instance = this,
-				matrix = instance.get('matrix');
+				matrix = instance.get('matrix'),
+				x = 0,
+				y = 0,
+				z = 0;
+
+			if (axis.indexOf('x') !== -1) {
+				x = 1;
+			}
+
+			if (axis.indexOf('y') !== -1) {
+				y = 1;
+			}
+
+			if (axis.indexOf('z') !== -1) {
+				z = 1;
+			}
 
 			mat4.rotate(matrix, (degrees * (Math.PI/180)), [x, y, z]);
 		},
@@ -37,19 +52,19 @@ YUI.add('webgl-geometry', function(Y) {
 		rotateX: function(degrees) {
 			var instance = this;
 
-			instance.rotate(1, 0, 0, degrees);
+			instance.rotate('x', degrees);
 		},
 
 		rotateY: function(degrees) {
 			var instance = this;
 
-			instance.rotate(0, 1, 0, degrees);
+			instance.rotate('y', degrees);
 		},
 
 		rotateZ: function(degrees) {
 			var instance = this;
 
-			instance.rotate(0, 0, 1, degrees);
+			instance.rotate('z', degrees);
 		},
 
 		_generateId: function() {
@@ -150,13 +165,6 @@ YUI.add('webgl-geometry', function(Y) {
 
 			// TODO: getters
 
-			xyz: {
-				lazyAdd: false,
-				setter: '_setXYZ',
-				value: null,
-				validator: Lang.isArray
-			},
-
 			x: {
 				value: 0
 			},
@@ -167,7 +175,14 @@ YUI.add('webgl-geometry', function(Y) {
 
 			z: {
 				value: 0
-			}
+			},
+			
+			xyz: {
+				lazyAdd: false,
+				setter: '_setXYZ',
+				value: null,
+				validator: Lang.isArray
+			},
 		}
 	});
 }, '1.0', {requires: ['base-build', 'webgl-texture']});

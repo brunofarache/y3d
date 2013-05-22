@@ -117,10 +117,10 @@
 			scene.addGeometry(plane);
 
 			var animation = function() {
-				box.rotate(1, 1, 0, 3);
+				box.rotate('xy', 3);
 				sphere.rotateY(1);
-				cylinder.rotateX(1);
-				plane.rotate(0, 1, 1, 1);
+				cylinder.rotate('x', 1);
+				plane.rotate('yz', 1);
 			};
 
 			var anim = new Y.WebGLAnim(scene, animation);
