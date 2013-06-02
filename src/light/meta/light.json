@@ -1,0 +1,8 @@
+{
+	"webgl-light": {
+		"requires": [
+			"base-build",
+			"webgl-color"
+		]
+	}
+}
