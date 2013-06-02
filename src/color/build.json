@@ -1,0 +1,10 @@
+{
+    "name": "webgl-color",
+    "builds": {
+        "webgl-color": {
+            "jsfiles": [
+                "color.js"
+            ]
+        }
+    }
+}

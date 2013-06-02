@@ -1,3 +1,5 @@
+YUI.add('webgl-color', function (Y, NAME) {
+
 var Color = {
 	normalizedColorArray: function(str) {
 		var color = Y.Color.toRGBA(str),
@@ -12,3 +14,5 @@ var Color = {
 };
 
 Y.Color = Y.mix(Color, Y.Color);
+
+}, '0.1', {"requires": ["color"]});

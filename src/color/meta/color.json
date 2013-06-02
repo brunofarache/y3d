@@ -1,0 +1,7 @@
+{
+	"webgl-color": {
+		"requires": [
+			"color"
+		]
+	}
+}

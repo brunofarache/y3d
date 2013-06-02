@@ -1,0 +1,1 @@
+YUI.add("webgl-color",function(e,t){var n={normalizedColorArray:function(t){var n=e.Color.toRGBA(t),r=e.Color.toArray(n),i=parseInt(r[0],10)/255,s=parseInt(r[1],10)/255,o=parseInt(r[2],10)/255,u=parseFloat(r[3]);return[i,s,o,u]}};e.Color=e.mix(n,e.Color)},"0.1",{requires:["color"]});
