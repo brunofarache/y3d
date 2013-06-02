@@ -1,0 +1,9 @@
+{
+	"webgl-camera": {
+		"requires": [
+			"base-build",
+			"event-key",
+			"event-mousewheel"
+		]
+	}
+}

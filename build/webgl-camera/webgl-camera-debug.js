@@ -1,3 +1,5 @@
+YUI.add('webgl-camera', function (Y, NAME) {
+
 var Lang = Y.Lang;
 
 Y.Camera = Y.Base.create('camera', Y.Base, [], {
@@ -133,3 +135,5 @@ Y.Camera = Y.Base.create('camera', Y.Base, [], {
 		}
 	}
 });
+
+}, '0.1', {"requires": ["base-build", "event-key", "event-mousewheel"]});

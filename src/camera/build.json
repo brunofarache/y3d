@@ -1,0 +1,10 @@
+{
+    "name": "webgl-camera",
+    "builds": {
+        "webgl-camera": {
+            "jsfiles": [
+                "camera.js"
+            ]
+        }
+    }
+}
