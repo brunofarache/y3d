@@ -1,3 +1,5 @@
+YUI.add('webgl-picker-plugin', function (Y, NAME) {
+
 function Picker() {
     Picker.superclass.constructor.apply(this, arguments);
 }
@@ -63,14 +65,14 @@ Y.extend(Picker, Y.Plugin.Base, {
             renderBuffer = context.createRenderbuffer();
             texture = context.createTexture();
             width = host.get('width');
-
+            
             context.bindTexture(context.TEXTURE_2D, texture);
             context.texImage2D(context.TEXTURE_2D, 0, context.RGBA, width, height, 0, context.RGBA, context.UNSIGNED_BYTE, null);
-
+            
             context.bindRenderbuffer(context.RENDERBUFFER, renderBuffer);
             context.renderbufferStorage(context.RENDERBUFFER, context.DEPTH_COMPONENT16, width, height);
             context.bindRenderbuffer(context.RENDERBUFFER, null);
-
+            
             frameBuffer = context.createFramebuffer();
 
             context.bindFramebuffer(context.FRAMEBUFFER, frameBuffer);
@@ -96,9 +98,9 @@ Y.extend(Picker, Y.Plugin.Base, {
 
         Y.each(geometries, function(geometry) {
             var program = host._getProgram(geometry);
-
+            
             context.useProgram(program);
-
+            
             host._setVertexAttribute(geometry.pickerColorBuffer, program.vertexColorAttribute, 4);
             host._setVertexAttribute(geometry.normalsBuffer, program.vertexNormalAttribute, 3);
             host._setVertexAttribute(geometry.verticesBuffer, program.vertexPositionAttribute, 3);
@@ -121,3 +123,5 @@ Y.extend(Picker, Y.Plugin.Base, {
 });
 
 Y.namespace("Plugin").Picker = Picker;
+
+}, '0.1', {"requires": ["plugin"]});

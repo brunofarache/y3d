@@ -14,8 +14,8 @@
 				'webgl': {
 					base: 'src/',
 					modules: {
-						'picker': {
-							path: 'picker/picker-plugin.js',
+						'webgl-picker-plugin': {
+							path: '../build/webgl-picker-plugin/webgl-picker-plugin.js',
 							requires: ['plugin']
 						},
 
@@ -74,7 +74,7 @@
 					}
 				}
 			}	
-		}).use('event', 'node', 'picker', 'webgl-anim', 'webgl-box', 'webgl-geometry', 'webgl-light', 'webgl-plane', 'webgl-scene', 'webgl-texture', 'webgl-triangle', function(Y) {
+		}).use('event', 'node', 'webgl-picker-plugin', 'webgl-anim', 'webgl-box', 'webgl-geometry', 'webgl-light', 'webgl-plane', 'webgl-scene', 'webgl-texture', 'webgl-triangle', function(Y) {
 			var scene = new Y.Scene();
 
 			scene.plug(Y.Plugin.Picker);

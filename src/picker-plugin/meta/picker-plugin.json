@@ -1,0 +1,7 @@
+{
+	"webgl-picker-plugin": {
+		"requires": [
+			"plugin"
+		]
+	}
+}
