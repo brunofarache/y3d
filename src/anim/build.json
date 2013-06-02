@@ -1,0 +1,10 @@
+{
+    "name": "webgl-anim",
+    "builds": {
+        "webgl-anim": {
+            "jsfiles": [
+                "anim.js"
+            ]
+        }
+    }
+}
