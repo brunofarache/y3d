@@ -1,10 +1,10 @@
 {
-    "name": "webgl-light",
-    "builds": {
-        "webgl-light": {
-            "jsfiles": [
-                "light.js"
-            ]
-        }
-    }
+	"name": "webgl-light",
+	"builds": {
+		"webgl-light": {
+			"jsfiles": [
+				"light.js"
+			]
+		}
+	}
 }

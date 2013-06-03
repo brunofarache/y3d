@@ -1,10 +1,10 @@
 {
-    "name": "webgl-picker-plugin",
-    "builds": {
-        "webgl-picker-plugin": {
-            "jsfiles": [
-                "picker-plugin.js"
-            ]
-        }
-    }
+	"name": "webgl-picker-plugin",
+	"builds": {
+		"webgl-picker-plugin": {
+			"jsfiles": [
+				"picker-plugin.js"
+			]
+		}
+	}
 }
