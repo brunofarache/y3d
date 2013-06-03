@@ -1,0 +1,10 @@
+{
+	"name": "webgl-scene",
+	"builds": {
+		"webgl-scene": {
+			"jsfiles": [
+				"scene.js"
+			]
+		}
+	}
+}

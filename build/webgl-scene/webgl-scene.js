@@ -1,3 +1,5 @@
+YUI.add('webgl-scene', function (Y, NAME) {
+
 var Lang = Y.Lang;
 
 Y.Scene = Y.Base.create('scene', Y.Base, [], {
@@ -279,4 +281,15 @@ Y.Scene = Y.Base.create('scene', Y.Base, [], {
 			value: 1000
 		}
 	}
+});
+
+}, '0.1', {
+    "requires": [
+        "base-build",
+        "base-pluginhost",
+        "node-base",
+        "webgl-camera",
+        "webgl-color",
+        "webgl-shader"
+    ]
 });

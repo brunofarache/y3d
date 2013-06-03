@@ -1,0 +1,12 @@
+{
+	"webgl-scene": {
+		"requires": [
+			"base-build",
+			"base-pluginhost",
+			"node-base",
+			"webgl-camera",
+			"webgl-color",
+			"webgl-shader"
+		]
+	}
+}
