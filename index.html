@@ -107,10 +107,10 @@
 				xyz: [-3, 0, 0]
 			});
 
-			scene.addGeometry(box);
-			scene.addGeometry(sphere);
-			scene.addGeometry(cylinder);
-			scene.addGeometry(plane);
+			scene.add(box);
+			scene.add(sphere);
+			scene.add(cylinder);
+			scene.add(plane);
 
 			var animation = function() {
 				box.rotate('xy', 3);

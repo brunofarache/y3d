@@ -18,7 +18,7 @@ Y.Scene = Y.Base.create('scene', Y.Base, [], {
 		instance.context = canvas.getDOMNode().getContext("experimental-webgl");
 	},
 
-	addGeometry: function(geometry) {
+	add: function(geometry) {
 		var instance = this,
 			context = instance.context,
 			geometries = instance.get('geometries');

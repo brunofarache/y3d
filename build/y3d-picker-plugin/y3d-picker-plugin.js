@@ -14,7 +14,7 @@ Y.extend(Picker, Y.Plugin.Base, {
 	frameBuffer: null,
 
 	initializer: function() {
-		this.afterHostMethod("addGeometry", this._afterAddGeometry);
+		this.afterHostMethod("add", this._afterAdd);
 		this.beforeHostMethod("render", this._beforeRender);
 	},
 
@@ -35,7 +35,7 @@ Y.extend(Picker, Y.Plugin.Base, {
 		return geometries[color];
 	},
 
-	_afterAddGeometry: function(geometry) {
+	_afterAdd: function(geometry) {
 		var instance = this,
 			host = instance.get('host'),
 			context = host.context,
