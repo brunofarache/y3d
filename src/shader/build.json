@@ -1,0 +1,10 @@
+{
+	"name": "webgl-shader",
+	"builds": {
+		"webgl-shader": {
+			"jsfiles": [
+				"shader.js"
+			]
+		}
+	}
+}

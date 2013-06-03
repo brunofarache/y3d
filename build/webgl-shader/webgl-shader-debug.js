@@ -1,3 +1,5 @@
+YUI.add('webgl-shader', function (Y, NAME) {
+
 var colorProgram = null,
 	textureProgram = null,
 
@@ -163,3 +165,5 @@ Y.Shader = {
 		return program;
 	}
 };
+
+}, '0.1');
