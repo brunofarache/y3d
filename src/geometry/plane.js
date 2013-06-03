@@ -1,4 +1,4 @@
-YUI.add('webgl-plane', function(Y) {
+YUI.add('y3d-plane', function(Y) {
 	Y.Plane = Y.Base.create('plane', Y.Geometry, [], {
 	}, {
 		ATTRS: {
@@ -37,4 +37,4 @@ YUI.add('webgl-plane', function(Y) {
 			}
 		}
 	});
-}, '1.0', {requires: ['webgl-geometry']});
+}, '1.0', {requires: ['y3d-geometry']});

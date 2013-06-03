@@ -1,7 +1,7 @@
 {
-	"name": "webgl-light",
+	"name": "y3d-light",
 	"builds": {
-		"webgl-light": {
+		"y3d-light": {
 			"jsfiles": [
 				"light.js"
 			]

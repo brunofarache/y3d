@@ -1,4 +1,4 @@
-YUI.add('webgl-triangle', function(Y) {
+YUI.add('y3d-triangle', function(Y) {
 	Y.Triangle = Y.Base.create('triangle', Y.Geometry, [], {
 	}, {
 		ATTRS: {
@@ -33,4 +33,4 @@ YUI.add('webgl-triangle', function(Y) {
 			}
 		}
 	});
-}, '1.0', {requires: ['webgl-geometry']});
+}, '1.0', {requires: ['y3d-geometry']});

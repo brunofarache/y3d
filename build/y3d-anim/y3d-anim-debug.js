@@ -1,4 +1,4 @@
-YUI.add('webgl-anim', function (Y, NAME) {
+YUI.add('y3d-anim', function (Y, NAME) {
 
 var requestAnimFrame =
 	window.requestAnimationFrame		||

@@ -1,4 +1,4 @@
-YUI.add('webgl-sphere', function(Y) {
+YUI.add('y3d-sphere', function(Y) {
 	var Lang = Y.Lang;
 
 	Y.Sphere = Y.Base.create('sphere', Y.Geometry, [], {
@@ -75,4 +75,4 @@ YUI.add('webgl-sphere', function(Y) {
 			}
 		}
 	});
-}, '1.0', {requires: ['webgl-geometry']});
+}, '1.0', {requires: ['y3d-geometry']});

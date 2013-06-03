@@ -1,4 +1,4 @@
-YUI.add('webgl-shader', function (Y, NAME) {
+YUI.add('y3d-shader', function (Y, NAME) {
 
 var colorProgram = null,
 	textureProgram = null,

@@ -1,4 +1,4 @@
-YUI.add('webgl-camera', function (Y, NAME) {
+YUI.add('y3d-camera', function (Y, NAME) {
 
 var Lang = Y.Lang;
 

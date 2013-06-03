@@ -1,7 +1,7 @@
 {
-	"name": "webgl-shader",
+	"name": "y3d-shader",
 	"builds": {
-		"webgl-shader": {
+		"y3d-shader": {
 			"jsfiles": [
 				"shader.js"
 			]

@@ -1,7 +1,7 @@
 {
-	"name": "webgl-color",
+	"name": "y3d-color",
 	"builds": {
-		"webgl-color": {
+		"y3d-color": {
 			"jsfiles": [
 				"color.js"
 			]

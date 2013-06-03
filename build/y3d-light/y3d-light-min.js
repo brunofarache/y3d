@@ -1,0 +1,1 @@
+YUI.add("y3d-light",function(e,t){var n=e.Lang;e.Light=e.Base.create("light",e.Base,[],{_setColor:function(t){return n.isString(t)&&(t=e.Color.normalizedColorArray(t)),t}},{ATTRS:{color:{value:"white",setter:"_setColor"},direction:{value:[0,0,0]}}})},"0.1",{requires:["base-build","y3d-color"]});

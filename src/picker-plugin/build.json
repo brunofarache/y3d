@@ -1,7 +1,7 @@
 {
-	"name": "webgl-picker-plugin",
+	"name": "y3d-picker-plugin",
 	"builds": {
-		"webgl-picker-plugin": {
+		"y3d-picker-plugin": {
 			"jsfiles": [
 				"picker-plugin.js"
 			]

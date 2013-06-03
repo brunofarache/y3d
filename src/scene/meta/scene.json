@@ -1,12 +1,12 @@
 {
-	"webgl-scene": {
+	"y3d-scene": {
 		"requires": [
 			"base-build",
 			"base-pluginhost",
 			"node-base",
-			"webgl-camera",
-			"webgl-color",
-			"webgl-shader"
+			"y3d-camera",
+			"y3d-color",
+			"y3d-shader"
 		]
 	}
 }

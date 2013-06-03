@@ -1,8 +1,8 @@
 {
-	"webgl-light": {
+	"y3d-light": {
 		"requires": [
 			"base-build",
-			"webgl-color"
+			"y3d-color"
 		]
 	}
 }

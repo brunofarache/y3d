@@ -1,5 +1,5 @@
 {
-	"webgl-color": {
+	"y3d-color": {
 		"requires": [
 			"color"
 		]

@@ -1,4 +1,4 @@
-YUI.add('webgl-geometry', function(Y) {
+YUI.add('y3d-geometry', function(Y) {
 	var Lang = Y.Lang;
 
 	Y.Geometry = Y.Base.create('geometry', Y.Base, [], {
@@ -185,4 +185,4 @@ YUI.add('webgl-geometry', function(Y) {
 			}
 		}
 	});
-}, '1.0', {requires: ['base-build', 'webgl-texture']});
+}, '1.0', {requires: ['base-build', 'y3d-texture']});

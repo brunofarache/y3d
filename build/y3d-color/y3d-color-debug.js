@@ -1,4 +1,4 @@
-YUI.add('webgl-color', function (Y, NAME) {
+YUI.add('y3d-color', function (Y, NAME) {
 
 var Color = {
 	normalizedColorArray: function(str) {

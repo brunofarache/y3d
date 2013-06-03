@@ -1,5 +1,5 @@
 {
-	"webgl-camera": {
+	"y3d-camera": {
 		"requires": [
 			"base-build",
 			"event-key",

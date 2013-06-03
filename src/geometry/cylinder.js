@@ -1,4 +1,4 @@
-YUI.add('webgl-cylinder', function(Y) {
+YUI.add('y3d-cylinder', function(Y) {
 	var Lang = Y.Lang;
 
 	Y.Cylinder = Y.Base.create('cylinder', Y.Geometry, [], {
@@ -84,4 +84,4 @@ YUI.add('webgl-cylinder', function(Y) {
 			}
 		}
 	});
-}, '1.0', {requires: ['webgl-geometry']});
+}, '1.0', {requires: ['y3d-geometry']});

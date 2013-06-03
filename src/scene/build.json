@@ -1,7 +1,7 @@
 {
-	"name": "webgl-scene",
+	"name": "y3d-scene",
 	"builds": {
-		"webgl-scene": {
+		"y3d-scene": {
 			"jsfiles": [
 				"scene.js"
 			]

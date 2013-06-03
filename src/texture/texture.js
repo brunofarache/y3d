@@ -1,4 +1,4 @@
-YUI.add('webgl-texture', function(Y) {
+YUI.add('y3d-texture', function(Y) {
 	var Lang = Y.Lang;
 
 	Y.Texture = Y.Base.create('texture', Y.Base, [], {

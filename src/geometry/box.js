@@ -1,4 +1,4 @@
-YUI.add('webgl-box', function(Y) {
+YUI.add('y3d-box', function(Y) {
 	Y.Box = Y.Base.create('box', Y.Geometry, [], {
 		initializer: function() {
 			var instance = this,
@@ -172,4 +172,4 @@ YUI.add('webgl-box', function(Y) {
 			}
 		}
 	});
-}, '1.0', {requires: ['webgl-geometry']});
+}, '1.0', {requires: ['y3d-geometry']});

@@ -1,4 +1,4 @@
-YUI.add('webgl-light', function (Y, NAME) {
+YUI.add('y3d-light', function (Y, NAME) {
 
 var Lang = Y.Lang;
 
@@ -23,4 +23,4 @@ Y.Light = Y.Base.create('light', Y.Base, [], {
 	}
 });
 
-}, '0.1', {"requires": ["base-build", "webgl-color"]});
+}, '0.1', {"requires": ["base-build", "y3d-color"]});

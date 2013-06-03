@@ -1,5 +1,5 @@
 {
-	"webgl-picker-plugin": {
+	"y3d-picker-plugin": {
 		"requires": [
 			"plugin"
 		]

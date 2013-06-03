@@ -1,7 +1,7 @@
 {
-	"name": "webgl-anim",
+	"name": "y3d-anim",
 	"builds": {
-		"webgl-anim": {
+		"y3d-anim": {
 			"jsfiles": [
 				"anim.js"
 			]

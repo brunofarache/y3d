@@ -11,75 +11,75 @@
 	<script>
 		YUI({
 			groups: {
-				'webgl': {
+				'y3d': {
 					base: 'src/',
 					modules: {
-						'webgl-anim': {
-							path: '../build/webgl-anim/webgl-anim.js'
+						'y3d-anim': {
+							path: '../build/y3d-anim/y3d-anim.js'
 						},
 
-						'webgl-box': {
+						'y3d-box': {
 							path: 'geometry/box.js',
-							requires: ['webgl-geometry']
+							requires: ['y3d-geometry']
 						},
 
-						'webgl-camera': {
-							path: '../build/webgl-camera/webgl-camera.js',
+						'y3d-camera': {
+							path: '../build/y3d-camera/y3d-camera.js',
 							requires: ['base-build', 'event-key', 'event-mousewheel']
 						},
 
-						'webgl-color': {
-							path: '../build/webgl-color/webgl-color.js',
+						'y3d-color': {
+							path: '../build/y3d-color/y3d-color.js',
 							requires: ['color']
 						},
 
-						'webgl-cylinder': {
+						'y3d-cylinder': {
 							path: 'geometry/cylinder.js',
-							requires: ['webgl-geometry']
+							requires: ['y3d-geometry']
 						},
 
-						'webgl-geometry': {
+						'y3d-geometry': {
 							path: 'geometry/geometry.js',
-							requires: ['base-build', 'webgl-texture']
+							requires: ['base-build', 'y3d-texture']
 						},
 
-						'webgl-light': {
-							path: '../build/webgl-light/webgl-light.js',
-							requires: ['base-build', 'webgl-color']
+						'y3d-light': {
+							path: '../build/y3d-light/y3d-light.js',
+							requires: ['base-build', 'y3d-color']
 						},
 
-						'webgl-plane': {
+						'y3d-plane': {
 							path: 'geometry/plane.js',
-							requires: ['webgl-geometry']
+							requires: ['y3d-geometry']
 						},
 
-						'webgl-scene': {
-							path: '../build/webgl-scene/webgl-scene.js',
-							requires: ['base-build', 'node-base', 'webgl-camera', 'webgl-color', 'webgl-shader']
+						'y3d-scene': {
+							path: '../build/y3d-scene/y3d-scene.js',
+							requires: ['base-build', 'node-base', 'y3d-camera', 'y3d-color', 'y3d-shader']
 						},
 
-						'webgl-shader': {
-							path: '../build/webgl-shader/webgl-shader.js',
+						'y3d-shader': {
+							path: '../build/y3d-shader/y3d-shader.js',
 						},
 
-						'webgl-sphere': {
+						'y3d-sphere': {
 							path: 'geometry/sphere.js',
-							requires: ['webgl-geometry']
+							requires: ['y3d-geometry']
 						},
 
-						'webgl-texture': {
+						'y3d-texture': {
 							path: 'texture/texture.js',
 							requires: ['base-build']
 						},
 
-						'webgl-triangle': {
+						'y3d-triangle': {
 							path: 'geometry/triangle.js',
-							requires: ['webgl-geometry']
+							requires: ['y3d-geometry']
 						}
 					}
 				}
 			}	
-		}).use('webgl-anim', 'webgl-camera', 'webgl-box', 'webgl-cylinder', 'webgl-geometry', 'webgl-light', 'webgl-plane', 'webgl-scene', 'webgl-sphere', 'webgl-texture', 'webgl-triangle', function(Y) {
+		}).use('y3d-anim', 'y3d-camera', 'y3d-box', 'y3d-cylinder', 'y3d-geometry', 'y3d-light', 'y3d-plane', 'y3d-scene', 'y3d-sphere', 'y3d-texture', 'y3d-triangle', function(Y) {
 			var scene = new Y.Scene({
 				camera: new Y.Camera({
 					z: 20
