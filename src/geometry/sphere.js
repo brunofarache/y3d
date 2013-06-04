@@ -75,4 +75,4 @@ YUI.add('y3d-sphere', function(Y) {
 			}
 		}
 	});
-}, '1.0', {requires: ['y3d-geometry']});
+}, '1.0', {requires: ['y3d-geometry-base']});

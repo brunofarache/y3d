@@ -25,7 +25,7 @@
 
 						'y3d-box': {
 							path: 'geometry/box.js',
-							requires: ['y3d-geometry']
+							requires: ['y3d-geometry-base']
 						},
 
 						'y3d-camera': {
@@ -38,8 +38,8 @@
 							requires: ['color']
 						},
 
-						'y3d-geometry': {
-							path: 'geometry/geometry.js',
+						'y3d-geometry-base': {
+							path: '../build/y3d-geometry-base/y3d-geometry-base.js',
 							requires: ['base-build', 'y3d-texture']
 						},
 
@@ -50,7 +50,7 @@
 
 						'y3d-plane': {
 							path: 'geometry/plane.js',
-							requires: ['y3d-geometry']
+							requires: ['y3d-geometry-base']
 						},
 
 						'y3d-scene': {
@@ -67,14 +67,14 @@
 							requires: ['base-build']
 						},
 
-						'y3d-triangle': {
-							path: 'geometry/triangle.js',
-							requires: ['y3d-geometry']
+						'y3d-geometry-triangle': {
+							path: '../build/y3d-geometry-triangle/y3d-geometry-triangle.js',
+							requires: ['y3d-geometry-base']
 						}
 					}
 				}
 			}	
-		}).use('event', 'node', 'y3d-picker-plugin', 'y3d-anim', 'y3d-box', 'y3d-geometry', 'y3d-light', 'y3d-plane', 'y3d-scene', 'y3d-texture', 'y3d-triangle', function(Y) {
+		}).use('event', 'node', 'y3d-picker-plugin', 'y3d-anim', 'y3d-box', 'y3d-geometry-base', 'y3d-light', 'y3d-plane', 'y3d-scene', 'y3d-texture', 'y3d-geometry-triangle', function(Y) {
 			var scene = new Y.Scene();
 
 			scene.plug(Y.Plugin.Picker);

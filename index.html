@@ -20,7 +20,7 @@
 
 						'y3d-box': {
 							path: 'geometry/box.js',
-							requires: ['y3d-geometry']
+							requires: ['y3d-geometry-base']
 						},
 
 						'y3d-camera': {
@@ -35,11 +35,11 @@
 
 						'y3d-cylinder': {
 							path: 'geometry/cylinder.js',
-							requires: ['y3d-geometry']
+							requires: ['y3d-geometry-base']
 						},
 
-						'y3d-geometry': {
-							path: 'geometry/geometry.js',
+						'y3d-geometry-base': {
+							path: '../build/y3d-geometry-base/y3d-geometry-base.js',
 							requires: ['base-build', 'y3d-texture']
 						},
 
@@ -50,7 +50,7 @@
 
 						'y3d-plane': {
 							path: 'geometry/plane.js',
-							requires: ['y3d-geometry']
+							requires: ['y3d-geometry-base']
 						},
 
 						'y3d-scene': {
@@ -64,22 +64,17 @@
 
 						'y3d-sphere': {
 							path: 'geometry/sphere.js',
-							requires: ['y3d-geometry']
+							requires: ['y3d-geometry-base']
 						},
 
 						'y3d-texture': {
 							path: 'texture/texture.js',
 							requires: ['base-build']
-						},
-
-						'y3d-triangle': {
-							path: 'geometry/triangle.js',
-							requires: ['y3d-geometry']
 						}
 					}
 				}
 			}	
-		}).use('y3d-anim', 'y3d-camera', 'y3d-box', 'y3d-cylinder', 'y3d-geometry', 'y3d-light', 'y3d-plane', 'y3d-scene', 'y3d-sphere', 'y3d-texture', 'y3d-triangle', function(Y) {
+		}).use('y3d-anim', 'y3d-camera', 'y3d-box', 'y3d-cylinder', 'y3d-geometry-base', 'y3d-light', 'y3d-plane', 'y3d-scene', 'y3d-sphere', 'y3d-texture', function(Y) {
 			var scene = new Y.Scene({
 				camera: new Y.Camera({
 					z: 20
