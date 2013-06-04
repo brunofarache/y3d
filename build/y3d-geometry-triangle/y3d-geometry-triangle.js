@@ -1,3 +1,5 @@
+YUI.add('y3d-geometry-triangle', function (Y, NAME) {
+
 Y.Triangle = Y.Base.create('triangle', Y.Geometry, [], {
 }, {
 	ATTRS: {
@@ -32,3 +34,5 @@ Y.Triangle = Y.Base.create('triangle', Y.Geometry, [], {
 		}
 	}
 });
+
+}, '0.1', {"requires": ["y3d-geometry-base"]});

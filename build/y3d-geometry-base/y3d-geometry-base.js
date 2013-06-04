@@ -186,4 +186,4 @@ Y.Geometry = Y.Base.create('geometry', Y.Base, [], {
 	}
 });
 
-}, '0.1');
+}, '0.1', {"requires": ["base-build", "y3d-texture"]});

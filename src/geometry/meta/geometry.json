@@ -1,16 +1,21 @@
 {
 	"y3d-geometry": {
 		"use": [
-			"y3d-geometry-base"
+			"y3d-geometry-base",
+			"y3d-geometry-triangle"
 		]
 	},
 
-	"submodules": {
-		"y3d-geometry-base": {
-			"requires": [
-				"base-build",
-				"y3d-texture"
-			]
-		}		
+	"y3d-geometry-base": {
+		"requires": [
+			"base-build",
+			"y3d-texture"
+		]
+	},
+
+	"y3d-geometry-triangle": {
+		"requires": [
+			"y3d-geometry-base"
+		]
 	}
 }

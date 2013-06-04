@@ -5,6 +5,12 @@
 			"jsfiles": [
 				"geometry-base.js"
 			]
+		},
+
+		"y3d-geometry-triangle": {
+			"jsfiles": [
+				"triangle.js"
+			]
 		}
 	}
 }
