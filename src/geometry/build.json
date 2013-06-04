@@ -1,0 +1,10 @@
+{
+	"name": "y3d-geometry",
+	"builds": {
+		"y3d-geometry-base": {
+			"jsfiles": [
+				"geometry-base.js"
+			]
+		}
+	}
+}

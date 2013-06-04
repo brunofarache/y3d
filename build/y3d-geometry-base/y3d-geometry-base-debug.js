@@ -1,3 +1,5 @@
+YUI.add('y3d-geometry-base', function (Y, NAME) {
+
 var Lang = Y.Lang;
 
 Y.Geometry = Y.Base.create('geometry', Y.Base, [], {
@@ -183,3 +185,5 @@ Y.Geometry = Y.Base.create('geometry', Y.Base, [], {
 		}
 	}
 });
+
+}, '0.1');
