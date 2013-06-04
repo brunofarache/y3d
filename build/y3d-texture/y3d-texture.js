@@ -19,7 +19,6 @@ Y.Texture = Y.Base.create('texture', Y.Base, [], {
 		}
 	}
 });
-
 Y.TextureLoader = Y.Base.create('texture-loader', Y.Base, [], {
 	initializer: function() {
 		var instance = this,

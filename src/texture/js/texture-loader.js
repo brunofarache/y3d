@@ -1,24 +1,4 @@
-YUI.add('y3d-texture', function (Y, NAME) {
 
-var Lang = Y.Lang;
-
-Y.Texture = Y.Base.create('texture', Y.Base, [], {
-}, {
-	ATTRS: {
-		image: {
-			value: null
-		},
-
-		imageUrl: {
-			value: '',
-			validator: Lang.isString
-		},
-
-		webglTexture: {
-			value: null
-		}
-	}
-});
 Y.TextureLoader = Y.Base.create('texture-loader', Y.Base, [], {
 	initializer: function() {
 		var instance = this,
@@ -83,5 +63,3 @@ Y.TextureLoader = Y.Base.create('texture-loader', Y.Base, [], {
 		}
 	}
 });
-
-}, '0.1', {"requires": ["base-build"]});

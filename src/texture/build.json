@@ -3,7 +3,8 @@
 	"builds": {
 		"y3d-texture": {
 			"jsfiles": [
-				"texture.js"
+				"texture.js",
+				"texture-loader.js"
 			]
 		}
 	}
