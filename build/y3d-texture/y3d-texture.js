@@ -1,3 +1,5 @@
+YUI.add('y3d-texture', function (Y, NAME) {
+
 var Lang = Y.Lang;
 
 Y.Texture = Y.Base.create('texture', Y.Base, [], {
@@ -82,3 +84,5 @@ Y.TextureLoader = Y.Base.create('texture-loader', Y.Base, [], {
 		}
 	}
 });
+
+}, '0.1', {"requires": ["base-build"]});
