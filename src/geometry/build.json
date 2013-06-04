@@ -19,6 +19,12 @@
 			]
 		},
 
+		"y3d-geometry-plane": {
+			"jsfiles": [
+				"plane.js"
+			]
+		},
+
 		"y3d-geometry-triangle": {
 			"jsfiles": [
 				"triangle.js"

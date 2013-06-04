@@ -1,3 +1,5 @@
+YUI.add('y3d-geometry-plane', function (Y, NAME) {
+
 Y.Plane = Y.Base.create('plane', Y.Geometry, [], {
 }, {
 	ATTRS: {
@@ -36,3 +38,5 @@ Y.Plane = Y.Base.create('plane', Y.Geometry, [], {
 		}
 	}
 });
+
+}, '0.1', {"requires": ["y3d-geometry-base"]});

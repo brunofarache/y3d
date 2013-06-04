@@ -48,8 +48,8 @@
 							requires: ['base-build', 'y3d-color']
 						},
 
-						'y3d-plane': {
-							path: 'geometry/plane.js',
+						'y3d-geometry-plane': {
+							path: '../build/y3d-geometry-plane/y3d-geometry-plane.js',
 							requires: ['y3d-geometry-base']
 						},
 
@@ -74,7 +74,7 @@
 					}
 				}
 			}	
-		}).use('y3d-anim', 'y3d-camera', 'y3d-geometry-box', 'y3d-geometry-cylinder', 'y3d-geometry-base', 'y3d-light', 'y3d-plane', 'y3d-scene', 'y3d-sphere', 'y3d-texture', function(Y) {
+		}).use('y3d-anim', 'y3d-camera', 'y3d-geometry-box', 'y3d-geometry-cylinder', 'y3d-geometry-base', 'y3d-light', 'y3d-geometry-plane', 'y3d-scene', 'y3d-sphere', 'y3d-texture', function(Y) {
 			var scene = new Y.Scene({
 				camera: new Y.Camera({
 					z: 20
