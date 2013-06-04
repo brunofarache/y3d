@@ -2,6 +2,8 @@
 	"y3d-geometry": {
 		"use": [
 			"y3d-geometry-base",
+			"y3d-geometry-box",
+			"y3d-geometry-cylinder",
 			"y3d-geometry-triangle"
 		]
 	},
@@ -14,6 +16,12 @@
 	},
 
 	"y3d-geometry-box": {
+		"requires": [
+			"y3d-geometry-base"
+		]
+	},
+
+	"y3d-geometry-cylinder": {
 		"requires": [
 			"y3d-geometry-base"
 		]

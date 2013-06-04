@@ -1,3 +1,5 @@
+YUI.add('y3d-geometry-cylinder', function (Y, NAME) {
+
 var Lang = Y.Lang;
 
 Y.Cylinder = Y.Base.create('cylinder', Y.Geometry, [], {
@@ -83,3 +85,5 @@ Y.Cylinder = Y.Base.create('cylinder', Y.Geometry, [], {
 		}
 	}
 });
+
+}, '0.1', {"requires": ["y3d-geometry-base"]});
