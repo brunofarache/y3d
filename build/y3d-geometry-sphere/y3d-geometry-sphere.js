@@ -1,3 +1,5 @@
+YUI.add('y3d-geometry-sphere', function (Y, NAME) {
+
 var Lang = Y.Lang;
 
 Y.Sphere = Y.Base.create('sphere', Y.Geometry, [], {
@@ -75,3 +77,5 @@ Y.Sphere = Y.Base.create('sphere', Y.Geometry, [], {
 		}
 	}
 });
+
+}, '0.1', {"requires": ["y3d-geometry-base"]});

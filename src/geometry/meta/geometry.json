@@ -5,6 +5,7 @@
 			"y3d-geometry-box",
 			"y3d-geometry-cylinder",
 			"y3d-geometry-plane",
+			"y3d-geometry-sphere",
 			"y3d-geometry-triangle"
 		]
 	},
@@ -29,6 +30,12 @@
 	},
 
 	"y3d-geometry-plane": {
+		"requires": [
+			"y3d-geometry-base"
+		]
+	},
+
+	"y3d-geometry-sphere": {
 		"requires": [
 			"y3d-geometry-base"
 		]

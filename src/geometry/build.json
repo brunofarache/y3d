@@ -25,6 +25,12 @@
 			]
 		},
 
+		"y3d-geometry-sphere": {
+			"jsfiles": [
+				"sphere.js"
+			]
+		},
+
 		"y3d-geometry-triangle": {
 			"jsfiles": [
 				"triangle.js"
