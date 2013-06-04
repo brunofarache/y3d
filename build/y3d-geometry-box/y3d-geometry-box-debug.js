@@ -1,3 +1,5 @@
+YUI.add('y3d-geometry-box', function (Y, NAME) {
+
 Y.Box = Y.Base.create('box', Y.Geometry, [], {
 	initializer: function() {
 		var instance = this,
@@ -171,3 +173,5 @@ Y.Box = Y.Base.create('box', Y.Geometry, [], {
 		}
 	}
 });
+
+}, '0.1', {"requires": ["y3d-geometry-base"]});

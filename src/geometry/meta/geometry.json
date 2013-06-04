@@ -13,6 +13,12 @@
 		]
 	},
 
+	"y3d-geometry-box": {
+		"requires": [
+			"y3d-geometry-base"
+		]
+	},
+
 	"y3d-geometry-triangle": {
 		"requires": [
 			"y3d-geometry-base"
