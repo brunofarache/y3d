@@ -1,0 +1,19 @@
+{
+	"name": "y3d",
+	"exec": [
+		"yogi loader --yes --mix --json js/y3d-config-modules.json --start ../",
+		"./scripts/build.js"
+	],
+
+	"builds": {
+		"y3d": {
+			"jsfiles": [
+				"js/y3d.js"
+			]
+		}
+	},
+
+	"shifter": {
+		"jsstamp": false
+	}
+}

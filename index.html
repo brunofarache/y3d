@@ -4,77 +4,13 @@
 
 	<script src="http://yui.yahooapis.com/3.10.1/build/yui/yui-min.js"></script>
 	<script src="lib/gl-matrix.1.3.7.min.js"></script>
+	<script src="build/y3d/y3d.js"></script>
 </head>
 <body>
 	<div id='container'></div>
 
 	<script>
-		YUI({
-			groups: {
-				'y3d': {
-					base: 'src/',
-					modules: {
-						'y3d-anim': {
-							path: '../build/y3d-anim/y3d-anim.js'
-						},
-
-						'y3d-geometry-box': {
-							path: '../build/y3d-geometry-box/y3d-geometry-box.js',
-							requires: ['y3d-geometry-base']
-						},
-
-						'y3d-camera': {
-							path: '../build/y3d-camera/y3d-camera.js',
-							requires: ['base-build', 'event-key', 'event-mousewheel']
-						},
-
-						'y3d-color': {
-							path: '../build/y3d-color/y3d-color.js',
-							requires: ['color']
-						},
-
-						'y3d-geometry-cylinder': {
-							path: '../build/y3d-geometry-cylinder/y3d-geometry-cylinder.js',
-							requires: ['y3d-geometry-base']
-						},
-
-						'y3d-geometry-base': {
-							path: '../build/y3d-geometry-base/y3d-geometry-base.js',
-							requires: ['base-build', 'y3d-texture']
-						},
-
-						'y3d-light': {
-							path: '../build/y3d-light/y3d-light.js',
-							requires: ['base-build', 'y3d-color']
-						},
-
-						'y3d-geometry-plane': {
-							path: '../build/y3d-geometry-plane/y3d-geometry-plane.js',
-							requires: ['y3d-geometry-base']
-						},
-
-						'y3d-scene': {
-							path: '../build/y3d-scene/y3d-scene.js',
-							requires: ['base-build', 'node-base', 'y3d-camera', 'y3d-color', 'y3d-shader']
-						},
-
-						'y3d-shader': {
-							path: '../build/y3d-shader/y3d-shader.js',
-						},
-
-						'y3d-geometry-sphere': {
-							path: '../build/y3d-geometry-sphere/y3d-geometry-sphere.js',
-							requires: ['y3d-geometry-base']
-						},
-
-						'y3d-texture': {
-							path: '../build/y3d-texture/y3d-texture.js',
-							requires: ['base-build']
-						}
-					}
-				}
-			}	
-		}).use('y3d-anim', 'y3d-camera', 'y3d-geometry-box', 'y3d-geometry-cylinder', 'y3d-geometry-base', 'y3d-light', 'y3d-geometry-plane', 'y3d-scene', 'y3d-geometry-sphere', 'y3d-texture', function(Y) {
+		YUI().use('y3d-anim', 'y3d-camera', 'y3d-geometry', 'y3d-light', 'y3d-scene', 'y3d-texture', function(Y) {
 			var scene = new Y.Scene({
 				camera: new Y.Camera({
 					z: 20
