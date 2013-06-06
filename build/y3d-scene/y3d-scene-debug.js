@@ -81,13 +81,13 @@ Y.Scene = Y.Base.create('scene', Y.Base, [], {
 	_createProjectionMatrix: function() {
 		var instance = this,
 			context = instance.context,
-			projectionMatrix = mat4.create(),
+			projectionMatrix = Y.WebGLMatrix.mat4.create(),
 			height = instance.get('height'),
 			width = instance.get('width');
 
 		context.viewport(0, 0, width, height);
 
-		mat4.perspective(45, width/height, 0.1, 100.0, projectionMatrix);
+		Y.WebGLMatrix.mat4.perspective(45, width/height, 0.1, 100.0, projectionMatrix);
 
 		return projectionMatrix;
 	},
@@ -215,12 +215,12 @@ Y.Scene = Y.Base.create('scene', Y.Base, [], {
 			context = instance.context,
 			cameraMatrix = instance.get('camera').getMatrix(),
 			geometryMatrix = geometry.get('matrix'),
-			normalMatrix = mat3.create();
+			normalMatrix = Y.WebGLMatrix.mat3.create();
 
-		mat4.toInverseMat3(geometryMatrix, normalMatrix);
-		mat3.transpose(normalMatrix);
+		Y.WebGLMatrix.mat4.toInverseMat3(geometryMatrix, normalMatrix);
+		Y.WebGLMatrix.mat3.transpose(normalMatrix);
 
-		mat4.multiply(cameraMatrix, geometryMatrix);
+		Y.WebGLMatrix.mat4.multiply(cameraMatrix, geometryMatrix);
 
 		context.uniformMatrix3fv(program.normalMatrixUniform, false, normalMatrix);
 		context.uniformMatrix4fv(program.projectionMatrixUniform, false, projectionMatrix);
@@ -283,4 +283,14 @@ Y.Scene = Y.Base.create('scene', Y.Base, [], {
 	}
 });
 
-}, '0.1', {"requires": ["base-build", "base-pluginhost", "node-base", "y3d-camera", "y3d-color", "y3d-shader"]});
+}, '0.1', {
+    "requires": [
+        "base-build",
+        "base-pluginhost",
+        "node-base",
+        "y3d-camera",
+        "y3d-color",
+        "y3d-matrix",
+        "y3d-shader"
+    ]
+});

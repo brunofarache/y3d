@@ -9,7 +9,8 @@ window.YUI_config = {
 		"requires": [
 			"base-build",
 			"event-key",
-			"event-mousewheel"
+			"event-mousewheel",
+			"y3d-matrix"
 		]
 	},
 	"y3d-color": {
@@ -30,7 +31,8 @@ window.YUI_config = {
 	"y3d-geometry-base": {
 		"requires": [
 			"base-build",
-			"y3d-texture"
+			"y3d-texture",
+			"y3d-matrix"
 		]
 	},
 	"y3d-geometry-box": {
@@ -64,6 +66,7 @@ window.YUI_config = {
 			"y3d-color"
 		]
 	},
+	"y3d-matrix": {},
 	"y3d-picker-plugin": {
 		"requires": [
 			"plugin"
@@ -76,6 +79,7 @@ window.YUI_config = {
 			"node-base",
 			"y3d-camera",
 			"y3d-color",
+			"y3d-matrix",
 			"y3d-shader"
 		]
 	},

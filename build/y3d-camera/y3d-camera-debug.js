@@ -13,11 +13,11 @@ Y.Camera = Y.Base.create('camera', Y.Base, [], {
 	getMatrix: function() {
 		var instance = this,
 			val = instance.get('matrix'),
-			matrix = mat4.create();
+			matrix = Y.WebGLMatrix.mat4.create();
 
-		mat4.set(val, matrix);
+		Y.WebGLMatrix.mat4.set(val, matrix);
 
-		mat4.inverse(matrix);
+		Y.WebGLMatrix.mat4.inverse(matrix);
 
 		return matrix;
 	},
@@ -26,7 +26,7 @@ Y.Camera = Y.Base.create('camera', Y.Base, [], {
 		var instance = this,
 			matrix = instance.get('matrix');
 
-		mat4.translate(matrix, [x, y, z]);
+		Y.WebGLMatrix.mat4.translate(matrix, [x, y, z]);
 	},
 
 	moveX: function(distance) {
@@ -80,12 +80,12 @@ Y.Camera = Y.Base.create('camera', Y.Base, [], {
 
 	_setXYZ: function(val) {
 		var instance = this,
-			matrix = mat4.create(),
+			matrix = Y.WebGLMatrix.mat4.create(),
 			x = instance.get('x'),
 			y = instance.get('y'),
 			z = instance.get('z');
 
-		mat4.identity(matrix);
+		Y.WebGLMatrix.mat4.identity(matrix);
 
 		instance.set('matrix', matrix);
 
@@ -136,4 +136,4 @@ Y.Camera = Y.Base.create('camera', Y.Base, [], {
 	}
 });
 
-}, '0.1', {"requires": ["base-build", "event-key", "event-mousewheel"]});
+}, '0.1', {"requires": ["base-build", "event-key", "event-mousewheel", "y3d-matrix"]});
