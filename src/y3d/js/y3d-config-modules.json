@@ -4,7 +4,8 @@
         "requires": [
             "base-build",
             "event-key",
-            "event-mousewheel"
+            "event-mousewheel",
+            "y3d-matrix"
         ]
     },
     "y3d-color": {
@@ -25,7 +26,8 @@
     "y3d-geometry-base": {
         "requires": [
             "base-build",
-            "y3d-texture"
+            "y3d-texture",
+            "y3d-matrix"
         ]
     },
     "y3d-geometry-box": {
@@ -59,6 +61,7 @@
             "y3d-color"
         ]
     },
+    "y3d-matrix": {},
     "y3d-picker-plugin": {
         "requires": [
             "plugin"
@@ -71,6 +74,7 @@
             "node-base",
             "y3d-camera",
             "y3d-color",
+            "y3d-matrix",
             "y3d-shader"
         ]
     },

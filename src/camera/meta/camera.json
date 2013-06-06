@@ -3,7 +3,8 @@
 		"requires": [
 			"base-build",
 			"event-key",
-			"event-mousewheel"
+			"event-mousewheel",
+			"y3d-matrix"
 		]
 	}
 }

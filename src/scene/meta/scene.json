@@ -6,6 +6,7 @@
 			"node-base",
 			"y3d-camera",
 			"y3d-color",
+			"y3d-matrix",
 			"y3d-shader"
 		]
 	}

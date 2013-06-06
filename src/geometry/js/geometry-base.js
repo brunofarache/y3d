@@ -5,7 +5,7 @@ Y.Geometry = Y.Base.create('geometry', Y.Base, [], {
 		var instance = this,
 			matrix = instance.get('matrix');
 
-		mat4.translate(matrix, [x, y, z]);
+		Y.WebGLMatrix.mat4.translate(matrix, [x, y, z]);
 	},
 
 	moveX: function(distance) {
@@ -45,7 +45,7 @@ Y.Geometry = Y.Base.create('geometry', Y.Base, [], {
 			z = 1;
 		}
 
-		mat4.rotate(matrix, (degrees * (Math.PI/180)), [x, y, z]);
+		Y.WebGLMatrix.mat4.rotate(matrix, (degrees * (Math.PI/180)), [x, y, z]);
 	},
 
 	rotateX: function(degrees) {
@@ -100,12 +100,12 @@ Y.Geometry = Y.Base.create('geometry', Y.Base, [], {
 
 	_setXYZ: function(val) {
 		var instance = this,
-			matrix = mat4.create(),
+			matrix = Y.WebGLMatrix.mat4.create(),
 			x = instance.get('x'),
 			y = instance.get('y'),
 			z = instance.get('z');
 
-		mat4.identity(matrix);
+		Y.WebGLMatrix.mat4.identity(matrix);
 
 		instance.set('matrix', matrix);
 

@@ -1,0 +1,10 @@
+{
+	"name": "y3d-math",
+	"builds": {
+		"y3d-matrix": {
+			"jsfiles": [
+				"matrix.js"
+			]
+		}
+	}
+}

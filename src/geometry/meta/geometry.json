@@ -13,7 +13,8 @@
 	"y3d-geometry-base": {
 		"requires": [
 			"base-build",
-			"y3d-texture"
+			"y3d-texture",
+			"y3d-matrix"
 		]
 	},
 
