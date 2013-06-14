@@ -2,63 +2,56 @@
 <head>
 	<title>yui webgl module</title>
 
-	<script src="http://yui.yahooapis.com/3.10.1/build/yui/yui-min.js"></script>
+	<script src="http://cdn.alloyui.com/2.0.0pr5/aui/aui-min.js"></script>
 	<script src="../build/y3d/y3d.js"></script>
+
+	<style type="text/css">
+		#container {
+			background-color: #272822;
+			border-radius: 6px;
+			padding: 6px;
+			width: 700;
+			height: 700;
+		}
+	</style>
 </head>
 <body>
 	<div id='container'></div>
+	<div id="editor"></div>
 
-	<script>
-		YUI().use('y3d-anim', 'y3d-camera', 'y3d-geometry', 'y3d-light', 'y3d-scene', 'y3d-texture', function(Y) {
+	<script id="example">
+		YUI().use('y3d-camera', 'y3d-geometry-box', 'y3d-scene', function(Y) {
 			var scene = new Y.Scene({
 				camera: new Y.Camera({
 					z: 20
-				})
+				}),
+
+				height: 700,
+				width: 700,
+				clearColor: '#272822'
 			});
 
 			var box = new Y.Box({
-				texture: 'images/grass.png',
-				y: 3
+				color: '#ff7700'
 			});
 
-			var sphere = new Y.Sphere({
-				radius: 2,
-				texture: 'images/moon.gif',
-				y: -3,
-			});
-
-			var cylinder = new Y.Cylinder({
-				color: 'teal',
-				x: 3
-			});
-
-			var plane = new Y.Plane({
-				color: 'blue',
-				xyz: [-3, 0, 0]
-			});
-
+			box.rotate('xy', 45);
 			scene.add(box);
-			scene.add(sphere);
-			scene.add(cylinder);
-			scene.add(plane);
 
-			var animation = function() {
-				box.rotate('xy', 3);
-				sphere.rotateY(1);
-				cylinder.rotate('x', 1);
-				plane.rotate('yz', 1);
-			};
-
-			var anim = new Y.WebGLAnim(scene, animation);
-
-			new Y.TextureLoader({
-				onLoad: function() {
-					anim.start();
-				},
-
-				textures: [box.get('texture'), sphere.get('texture')]
-			});
+			scene.render();
 		});
-	</script>	
+	</script>
+
+	<script>
+		YUI().use('aui-ace-editor', 'node', function(Y) {
+			new Y.AceEditor({
+				boundingBox: '#editor',
+				height: '200',
+				mode: 'javascript',
+				value: Y.Node.one('#example').get('text'),
+				width: '700'
+			}).render();
+		});
+	</script>
 </body>
 </html>
