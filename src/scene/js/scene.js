@@ -13,7 +13,7 @@ Y.Scene = Y.Base.create('scene', Y.Base, [], {
 		canvas.set('height', height);
 		canvas.set('width', width);
 
-		container.append(canvas);
+		container.setHTML(canvas);
 
 		instance.context = canvas.getDOMNode().getContext("experimental-webgl");
 	},
