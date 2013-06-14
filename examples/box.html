@@ -9,47 +9,61 @@
 		#container {
 			background-color: #272822;
 			border-radius: 6px;
+			float: left;
 			padding: 6px;
-			width: 700;
 			height: 700;
+			width: 700;
+		}
+
+		#editorContainer {
+			padding: 6px;
 		}
 	</style>
 </head>
 <body>
 	<div id='container'></div>
-	<div id="editor"></div>
+	<div id="editorContainer"><div id="editor"></div></div>
+	<button id="run"></button>
 
-	<script id="example">
-		YUI().use('y3d-camera', 'y3d-geometry-box', 'y3d-scene', function(Y) {
-			var scene = new Y.Scene({
-				camera: new Y.Camera({
-					z: 20
-				}),
+	<script id="example">YUI().use('y3d-camera', 'y3d-geometry-box', 'y3d-scene', function(Y) {
+	var scene = new Y.Scene({
+		camera: new Y.Camera({
+			z: 20
+		}),
+		height: 700,
+		width: 700,
+		clearColor: '#272822'
+	});
 
-				height: 700,
-				width: 700,
-				clearColor: '#272822'
-			});
+	var box = new Y.Box({
+		color: '#ff7700'
+	});
 
-			var box = new Y.Box({
-				color: '#ff7700'
-			});
+	box.rotate('xy', 45);
+	scene.add(box);
 
-			box.rotate('xy', 45);
-			scene.add(box);
-
-			scene.render();
-		});
-	</script>
+	scene.render();
+});</script>
 
 	<script>
-		YUI().use('aui-ace-editor', 'node', function(Y) {
-			new Y.AceEditor({
+		YUI().use('aui-ace-editor', 'aui-button', 'node', function(Y) {
+			var editor = new Y.AceEditor({
 				boundingBox: '#editor',
-				height: '200',
+				height: '310',
 				mode: 'javascript',
+				showPrintMargin: false,
 				value: Y.Node.one('#example').get('text'),
 				width: '700'
+			}).render();
+
+			new Y.Button({
+				label: 'Run',
+				on: {
+					'click': function(){
+						eval(editor.get('value'));
+					}
+				},
+				srcNode: '#run'
 			}).render();
 		});
 	</script>
