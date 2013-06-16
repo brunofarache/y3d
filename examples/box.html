@@ -1,37 +1,59 @@
 <html>
 <head>
-	<title>yui webgl module</title>
+	<title>3d playground</title>
 
-	<script src="http://cdn.alloyui.com/2.0.0pr5/aui/aui-min.js"></script>
+	<script src="http://cdn.alloyui.com/2.0.x/aui/aui-min.js"></script>
+	<link href="http://cdn.alloyui.com/2.0.x/aui-css/css/bootstrap.css" rel="stylesheet">
 	<script src="../build/y3d/y3d.js"></script>
 
 	<style type="text/css">
-		#container {
-			background-color: #272822;
-			border-radius: 6px;
-			float: left;
-			padding: 6px;
-			height: 700;
-			width: 700;
+		.toolbar {
+			position: absolute;
+			top: 10px;
+			right: 30px;
 		}
 
-		#editorContainer {
-			padding: 6px;
+		.span6 {
+			padding: 0 !important;
+			margin: 0 !important;
+			width: 50% !important;
+		}
+
+		.row {
+			margin-left: 0 !important;
+		}
+
+		.container-fluid {
+			padding-right: 0 !important;
+			padding-left: 0 !important;
+		}
+
+		#wrapper {
+			position: relative;
 		}
 	</style>
 </head>
 <body>
-	<div id='container'></div>
-	<div id="editorContainer"><div id="editor"></div></div>
-	<button id="run"></button>
+	<div class="container-fluid">
+		<div class="row row-fluid">
+			<div id="wrapper" class="span6">
+				<div id='container'></div>
+				<button id="run" class="btn-primary"></button>
+			</div>
+			<div class="span6">
+				<div id="editorContainer"><div id="editor"></div></div>
+			</div>
+		</div>
+	</div>
 
-	<script id="example">YUI().use('y3d-camera', 'y3d-geometry-box', 'y3d-scene', function(Y) {
+
+	<script id="example">YUI().use('y3d-camera', 'dom', 'y3d-geometry-box', 'y3d-scene', function(Y) {
 	var scene = new Y.Scene({
 		camera: new Y.Camera({
 			z: 20
 		}),
-		height: 700,
-		width: 700,
+		height: Y.DOM.winHeight(),
+		width: Y.DOM.winWidth()/2,
 		clearColor: '#272822'
 	});
 
@@ -46,25 +68,58 @@
 });</script>
 
 	<script>
-		YUI().use('aui-ace-editor', 'aui-button', 'node', function(Y) {
+		YUI().use('aui-ace-editor', 'aui-button', 'aui-toolbar', 'event-resize', 'event-key', 'node', function(Y) {
+
 			var editor = new Y.AceEditor({
 				boundingBox: '#editor',
-				height: '310',
 				mode: 'javascript',
 				showPrintMargin: false,
-				value: Y.Node.one('#example').get('text'),
-				width: '700'
-			}).render();
+				value: Y.Node.one('#example').get('text')
+			});
 
-			new Y.Button({
-				label: 'Run',
-				on: {
-					'click': function(){
-						eval(editor.get('value'));
-					}
-				},
-				srcNode: '#run'
-			}).render();
+			editor.getEditor().setTheme("ace/theme/monokai");
+
+			window.tool = new Y.Toolbar({
+				children: [
+					[
+						{
+							label: 'Run',
+							on: {
+								'click': function(){
+									eval(editor.get('value'));
+								}
+							},
+							primary: true,
+							srcNode: '#run'
+						}
+					],
+					[
+						{
+							label: 'Reset'
+						}
+					]
+				]
+			}).render('#wrapper');
+
+			Y.one('doc').on('key', function(event) {
+				// eval(editor.get('value'));
+				alert('ásdas');
+				event.preventDefault();
+			}, 'ctrl+n');
+
+			var syncSize = function() {
+				var width = Y.DOM.winWidth()/2,
+					height = Y.DOM.winHeight();
+
+				editor.set('width', width);
+				editor.set('height', height);
+
+				editor.render();
+			};
+
+			syncSize();
+
+			Y.on('windowresize', syncSize);
 		});
 	</script>
 </body>
