@@ -3,50 +3,20 @@
 	<title>3d playground</title>
 
 	<script src="http://cdn.alloyui.com/2.0.x/aui/aui-min.js"></script>
-	<link href="http://cdn.alloyui.com/2.0.x/aui-css/css/bootstrap.css" rel="stylesheet">
 	<script src="../build/y3d/y3d.js"></script>
 
-	<style type="text/css">
-		.toolbar {
-			position: absolute;
-			top: 10px;
-			right: 30px;
-		}
-
-		.span6 {
-			padding: 0 !important;
-			margin: 0 !important;
-			width: 50% !important;
-		}
-
-		#y3d {
-			height: 100%;
-			width: 100%;
-		}
-
-		.row {
-			margin-left: 0 !important;
-		}
-
-		.container-fluid {
-			padding-right: 0 !important;
-			padding-left: 0 !important;
-		}
-
-		#wrapper {
-			position: relative;
-		}
-	</style>
+	<link href="http://cdn.alloyui.com/2.0.x/aui-css/css/bootstrap.css" rel="stylesheet">
+	<link href="./css/playground.css" rel="stylesheet">
 </head>
 <body>
 	<div class="container-fluid">
 		<div class="row row-fluid">
-			<div id="wrapper" class="span6">
+			<div id="output" class="span6">
 				<canvas id='y3d'></canvas>
 				<button id="runButton" class="btn-primary"></button>
 			</div>
 			<div class="span6">
-				<div id="editorContainer"><div id="editor"></div></div>
+				<div id="editor"></div>
 			</div>
 		</div>
 	</div>
@@ -105,7 +75,7 @@
 						}
 					]
 				]
-			}).render('#wrapper');
+			}).render('#output');
 
 			var syncSize = function() {
 				var width = Y.DOM.winWidth()/2,
