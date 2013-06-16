@@ -12,6 +12,11 @@
 	padding-left: 0 !important;
 }
 
+input[type="text"] {
+	height: 30px;
+	margin-bottom: 0px;
+}
+
 .row {
 	margin-left: 0 !important;
 }

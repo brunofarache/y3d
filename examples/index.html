@@ -13,6 +13,8 @@
 		<div class="row row-fluid">
 			<div id="output" class="span6">
 				<canvas id='y3d'></canvas>
+
+				<button id="save"></button>
 				<button id="run" class="btn-primary"></button>
 				<button id="reset" class="btn-danger"></button>
 			</div>
@@ -23,7 +25,7 @@
 	</div>
 
 
-	<script id="source" type="y3d-script">YUI().use('y3d-camera', 'dom', 'y3d-geometry-box', 'y3d-scene', function(Y) {
+	<script id="source" type="y3d-script">YUI().use('y3d-scene', 'y3d-camera', 'y3d-geometry-box', function(Y) {
 	var scene = new Y.Scene({
 		camera: new Y.Camera({
 			z: 20
@@ -44,7 +46,7 @@
 });</script>
 
 	<script>
-		YUI().use('aui-ace-editor', 'aui-button', 'aui-toolbar', 'event-resize', 'event-key', 'node', function(Y) {
+		YUI().use('aui-ace-editor', 'aui-button', 'aui-popover', 'aui-toolbar', 'event-key', 'event-resize', 'io-base', 'node', function(Y) {
 			var editor = new Y.AceEditor({
 				boundingBox: '#editor',
 				mode: 'javascript',
@@ -53,6 +55,41 @@
 			});
 
 			editor.getEditor().setTheme("ace/theme/monokai");
+
+			var save = function() {
+				var content = editor.get('value');
+
+				var io = new Y.IO({emitFacade: true});
+
+				io.send('https://api.github.com/gists', {
+					method: 'POST',
+					data: JSON.stringify({
+						"public": true,
+						"files": {
+							"y3d-script.js": {
+								"content": content
+							}
+						}
+					}),
+					headers: {
+						'Accept': 'application/vnd.github.raw',
+						'Content-Type': 'application/json'
+					},
+					on: {
+						complete: function(e) {
+							var response = JSON.parse(e.data.responseText);
+
+							var url = Y.Node.one('#gistURL');
+
+							url('value', response.html_url);
+
+							popover.set('visible', true);
+
+							input.select();
+						}
+					}
+				});
+			};
 
 			var run = function() {
 				eval(editor.get('value'));
@@ -64,23 +101,47 @@
 
 			var tool = new Y.Toolbar({
 				children: [
-					[{
-						label: 'Run',
-						on: {
-							'click': run
-						},
-						primary: true,
-						srcNode: '#run'
-					}],
-					[{
-						label: 'Reset',
-						on: {
-							'click': reset
-						},
-						srcNode: '#reset'
-					}]
+					[
+						{
+							label: 'Save',
+							on: {
+								'click': save
+							},
+							srcNode: '#save'
+						}
+					],
+					[
+						{
+							label: 'Run',
+							on: {
+								'click': run
+							},
+							primary: true,
+							srcNode: '#run'
+						}
+					],
+					[
+						{
+							label: 'Reset',
+							on: {
+								'click': reset
+							},
+							srcNode: '#reset'
+						}
+					]
 				]
 			}).render('#output');
+
+			var popover = new Y.Popover({
+				align: {
+					node: Y.Node.one('#save'),
+					points:[Y.WidgetPositionAlign.TC, Y.WidgetPositionAlign.BC]
+				},
+				bodyContent: '<input id="gistURL" type="text" />',
+				position: 'bottom',
+				zIndex: 1,
+				visible: false
+			}).render();
 
 			var syncSize = function() {
 				var width = Y.DOM.winWidth()/2,
