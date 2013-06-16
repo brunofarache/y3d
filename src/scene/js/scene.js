@@ -5,23 +5,7 @@ Y.Scene = Y.Base.create('scene', Y.Base, [], {
 
 	initializer: function() {
 		var instance = this,
-			srcNode = instance.get('srcNode'),
-			height = instance.get('height'),
-			width = instance.get('width');
-
-		if (height !== null) {
-			srcNode.set('height', height);
-		}
-		else {
-			instance.set('height', srcNode.get('height'));
-		}
-
-		if (width !== null) {
-			srcNode.set('width', width);
-		}
-		else {
-			instance.set('width', srcNode.get('width'));
-		}
+			srcNode = instance.get('srcNode');
 
 		instance.context = srcNode.getDOMNode().getContext("experimental-webgl");
 	},
@@ -266,7 +250,21 @@ Y.Scene = Y.Base.create('scene', Y.Base, [], {
 		},
 
 		height: {
-			value: null
+			valueFn: function() {
+				var instance = this,
+					srcNode = instance.get('srcNode');
+
+				return srcNode.get('height');
+			},
+
+			setter: function(val) {
+				var instance = this,
+					srcNode = instance.get('srcNode');
+
+				srcNode.set('height', val);
+
+				return val;
+			}
 		},
 
 		lights: {
@@ -280,7 +278,21 @@ Y.Scene = Y.Base.create('scene', Y.Base, [], {
 		},
 
 		width: {
-			value: null
+			valueFn: function() {
+				var instance = this,
+					srcNode = instance.get('srcNode');
+
+				return srcNode.get('width');
+			},
+
+			setter: function(val) {
+				var instance = this,
+					srcNode = instance.get('srcNode');
+
+				srcNode.set('width', val);
+
+				return val;
+			}
 		}
 	}
 });
