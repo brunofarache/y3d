@@ -63,9 +63,9 @@ Y.Scene = Y.Base.create('scene', Y.Base, [], {
 	_clearColor: function() {
 		var instance = this,
 			context = instance.context,
-			clearColor = instance.get('clearColor');
+			background = instance.get('background');
 
-		context.clearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
+		context.clearColor(background[0], background[1], background[2], background[3]);
 	},
 
 	_createProjectionMatrix: function() {
@@ -236,13 +236,13 @@ Y.Scene = Y.Base.create('scene', Y.Base, [], {
 	}
 }, {
 	ATTRS: {
-		camera: {
-			value: new Y.Camera()
-		},
-
-		clearColor: {
+		background: {
 			value: 'black',
 			setter: '_setClearColor'
+		},
+
+		camera: {
+			value: new Y.Camera()
 		},
 
 		geometries: {
