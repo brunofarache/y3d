@@ -7,17 +7,25 @@ Y.Scene = Y.Base.create('scene', Y.Base, [], {
 
 	initializer: function() {
 		var instance = this,
-			canvas = instance.get('canvas'),
-			container = instance.get('container'),
+			srcNode = instance.get('srcNode'),
 			height = instance.get('height'),
 			width = instance.get('width');
 
-		canvas.set('height', height);
-		canvas.set('width', width);
+		if (height !== null) {
+			srcNode.set('height', height);
+		}
+		else {
+			instance.set('height', srcNode.get('height'));
+		}
 
-		container.setHTML(canvas);
+		if (width !== null) {
+			srcNode.set('width', width);
+		}
+		else {
+			instance.set('width', srcNode.get('width'));
+		}
 
-		instance.context = canvas.getDOMNode().getContext("experimental-webgl");
+		instance.context = srcNode.getDOMNode().getContext("experimental-webgl");
 	},
 
 	add: function(geometry) {
@@ -250,19 +258,9 @@ Y.Scene = Y.Base.create('scene', Y.Base, [], {
 			value: new Y.Camera()
 		},
 
-		canvas: {
-			valueFn: function() {
-				return Y.Node.create('<canvas></canvas>');
-			}
-		},
-
 		clearColor: {
 			value: 'black',
 			setter: '_setClearColor'
-		},
-
-		container: {
-			value: Y.Node.one('#container')
 		},
 
 		geometries: {
@@ -270,15 +268,21 @@ Y.Scene = Y.Base.create('scene', Y.Base, [], {
 		},
 
 		height: {
-			value: 800
+			value: null
 		},
 
 		lights: {
 			value: []
 		},
 
+		srcNode: {
+			value: Y.Node.one('#y3d'),
+			setter: Y.Node.one,
+			writeOnce: true
+		},
+
 		width: {
-			value: 1000
+			value: null
 		}
 	}
 });

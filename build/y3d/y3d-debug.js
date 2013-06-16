@@ -3,6 +3,7 @@ window.YUI_config = {
         y3d: {
             base: location.origin + '/y3d/build/',
             combine: false,
+            filter: 'RAW',
             modules: {
 	"y3d-anim": {},
 	"y3d-camera": {

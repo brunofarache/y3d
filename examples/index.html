@@ -19,6 +19,11 @@
 			width: 50% !important;
 		}
 
+		#y3d {
+			height: 100%;
+			width: 100%;
+		}
+
 		.row {
 			margin-left: 0 !important;
 		}
@@ -37,8 +42,8 @@
 	<div class="container-fluid">
 		<div class="row row-fluid">
 			<div id="wrapper" class="span6">
-				<div id='container'></div>
-				<button id="run" class="btn-primary"></button>
+				<canvas id='y3d'></canvas>
+				<button id="runButton" class="btn-primary"></button>
 			</div>
 			<div class="span6">
 				<div id="editorContainer"><div id="editor"></div></div>
@@ -47,13 +52,12 @@
 	</div>
 
 
-	<script id="example">YUI().use('y3d-camera', 'dom', 'y3d-geometry-box', 'y3d-scene', function(Y) {
+	<script id="source" type="y3d-script">YUI().use('y3d-camera', 'dom', 'y3d-geometry-box', 'y3d-scene', function(Y) {
 	var scene = new Y.Scene({
 		camera: new Y.Camera({
 			z: 20
 		}),
-		height: Y.DOM.winHeight(),
-		width: Y.DOM.winWidth()/2,
+
 		clearColor: '#272822'
 	});
 
@@ -62,6 +66,7 @@
 	});
 
 	box.rotate('xy', 45);
+
 	scene.add(box);
 
 	scene.render();
@@ -69,28 +74,29 @@
 
 	<script>
 		YUI().use('aui-ace-editor', 'aui-button', 'aui-toolbar', 'event-resize', 'event-key', 'node', function(Y) {
-
 			var editor = new Y.AceEditor({
 				boundingBox: '#editor',
 				mode: 'javascript',
 				showPrintMargin: false,
-				value: Y.Node.one('#example').get('text')
+				value: Y.Node.one('#source').get('text')
 			});
 
 			editor.getEditor().setTheme("ace/theme/monokai");
 
-			window.tool = new Y.Toolbar({
+			var run = function() {
+				eval(editor.get('value'));
+			};
+
+			var tool = new Y.Toolbar({
 				children: [
 					[
 						{
 							label: 'Run',
 							on: {
-								'click': function(){
-									eval(editor.get('value'));
-								}
+								'click': run
 							},
 							primary: true,
-							srcNode: '#run'
+							srcNode: '#runButton'
 						}
 					],
 					[
@@ -101,19 +107,18 @@
 				]
 			}).render('#wrapper');
 
-			Y.one('doc').on('key', function(event) {
-				// eval(editor.get('value'));
-				alert('ásdas');
-				event.preventDefault();
-			}, 'ctrl+n');
-
 			var syncSize = function() {
 				var width = Y.DOM.winWidth()/2,
-					height = Y.DOM.winHeight();
+					height = Y.DOM.winHeight(),
+					canvas = Y.Node.one('#y3d');
 
-				editor.set('width', width);
+				canvas.set('height', height);
+				canvas.set('width', width);;
+
 				editor.set('height', height);
+				editor.set('width', width);
 
+				run();
 				editor.render();
 			};
 
