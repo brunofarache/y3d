@@ -58,6 +58,14 @@
 			editor.getEditor().setTheme("ace/theme/monokai");
 
 			var save = function() {
+				var visible = savePopover.get('visible');
+
+				if (visible) {
+					savePopover.set('visible', false);
+
+					return;
+				}
+				
 				var content = editor.get('value');
 
 				var io = new Y.IO({emitFacade: true});
@@ -105,7 +113,7 @@
 
 				var url = Y.Node.one('#loadUrl');
 
-				url.on('key', function(event) {
+				url.once('key', function(event) {
 					var gistId = url.get('value');
 
 					gistId = gistId.slice(gistId.lastIndexOf('/') + 1);
@@ -126,11 +134,11 @@
 								var response = JSON.parse(e.data.responseText);
 
 								editor.set('value', response.files['y3d-script.js'].content);
+
+								loadPopover.set('visible', false);
 							}
 						}
 					});
-
-					url.detach();
 				}, 'enter');
 			};
 
