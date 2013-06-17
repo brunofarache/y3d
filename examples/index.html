@@ -15,6 +15,7 @@
 				<canvas id='y3d'></canvas>
 
 				<button id="save"></button>
+				<button id="load"></button>
 				<button id="run" class="btn-primary"></button>
 				<button id="reset" class="btn-danger"></button>
 			</div>
@@ -79,16 +80,58 @@
 						complete: function(e) {
 							var response = JSON.parse(e.data.responseText);
 
-							var url = Y.Node.one('#gistURL');
+							var url = Y.Node.one('#saveUrl');
 
-							url('value', response.html_url);
+							url.set('value', response.html_url);
 
-							popover.set('visible', true);
+							savePopover.set('visible', true);
 
 							input.select();
 						}
 					}
 				});
+			};
+
+			var load = function() {
+				var visible = loadPopover.get('visible');
+
+				if (visible) {
+					loadPopover.set('visible', false);
+
+					return;
+				}
+
+				loadPopover.set('visible', true);
+
+				var url = Y.Node.one('#loadUrl');
+
+				url.on('key', function(event) {
+					var gistId = url.get('value');
+
+					gistId = gistId.slice(gistId.lastIndexOf('/') + 1);
+
+					if (gistId.indexOf('.git') > 0) {
+						gistId = gistId.slice(0,  gistId.length - 4);
+					}
+
+					var io = new Y.IO({emitFacade: true});
+
+					io.send('https://api.github.com/gists/' + gistId, {
+						headers: {
+							'Accept': 'application/vnd.github.raw',
+							'Content-Type': 'application/json'
+						},
+						on: {
+							complete: function(e) {
+								var response = JSON.parse(e.data.responseText);
+
+								editor.set('value', response.files['y3d-script.js'].content);
+							}
+						}
+					});
+
+					url.detach();
+				}, 'enter');
 			};
 
 			var run = function() {
@@ -108,6 +151,15 @@
 								'click': save
 							},
 							srcNode: '#save'
+						}
+					],
+					[
+						{
+							label: 'Load',
+							on: {
+								'click': load
+							},
+							srcNode: '#load'
 						}
 					],
 					[
@@ -132,12 +184,23 @@
 				]
 			}).render('#output');
 
-			var popover = new Y.Popover({
+			var savePopover = new Y.Popover({
 				align: {
 					node: Y.Node.one('#save'),
 					points:[Y.WidgetPositionAlign.TC, Y.WidgetPositionAlign.BC]
 				},
-				bodyContent: '<input id="gistURL" type="text" />',
+				bodyContent: '<input id="saveUrl" type="text" />',
+				position: 'bottom',
+				zIndex: 1,
+				visible: false
+			}).render();
+
+			var loadPopover = new Y.Popover({
+				align: {
+					node: Y.Node.one('#load'),
+					points:[Y.WidgetPositionAlign.TC, Y.WidgetPositionAlign.BC]
+				},
+				bodyContent: '<input id="loadUrl" type="text" />',
 				position: 'bottom',
 				zIndex: 1,
 				visible: false
