@@ -3,10 +3,10 @@
 	<title>yui webgl module</title>
 
 	<script src="http://yui.yahooapis.com/3.10.1/build/yui/yui-min.js"></script>
-	<script src="../build/y3d/y3d.js"></script>
+	<script src="./build/y3d/y3d.js"></script>
 </head>
 <body>
-	<div id='container'></div>
+	<canvas id='y3d' height="700px" width="700px"></canvas>
 
 	<script>
 		YUI().use('event', 'node', 'y3d-anim', 'y3d-geometry', 'y3d-picker-plugin', 'y3d-scene', function(Y) {
@@ -27,7 +27,7 @@
 			scene.add(plane);
 			scene.add(triangle);
 
-			var canvas = scene.get('canvas');
+			var canvas = scene.get('srcNode');
 
 			canvas.on('click', function(e) {
 				var x = e.pageX - canvas.getXY()[0];
