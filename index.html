@@ -26,7 +26,8 @@
 	</div>
 
 
-	<script id="source" type="y3d-script">YUI().use('y3d-scene', 'y3d-camera', 'y3d-geometry-box', function(Y) {
+	<script id="source" type="y3d-script">
+YUI().use('y3d-scene', 'y3d-camera', 'y3d-geometry-box', function(Y) {
 	var scene = new Y.Scene({
 		camera: new Y.Camera({
 			z: 20
@@ -44,7 +45,8 @@
 	scene.add(box);
 
 	scene.render();
-});</script>
+});
+	</script>
 
 	<script>
 		YUI().use('aui-ace-editor', 'aui-button', 'aui-popover', 'aui-toolbar', 'event-key', 'event-resize', 'io-base', 'node', function(Y) {
@@ -52,7 +54,7 @@
 				boundingBox: '#editor',
 				mode: 'javascript',
 				showPrintMargin: false,
-				value: Y.Node.one('#source').get('text')
+				value: Y.Lang.trim(Y.Node.one('#source').get('text'))
 			});
 
 			editor.getEditor().setTheme("ace/theme/monokai");
@@ -147,8 +149,17 @@
 			};
 
 			var reset = function() {
-				editor.set('value', Y.Node.one('#source').get('text'));
+				editor.set('value', Y.Lang.trim(Y.Node.one('#source').get('text')));
 			};
+
+			editor.getEditor().commands.addCommand({
+				name: 'runCommand',
+				bindKey: {win: 'Ctrl-R',  mac: 'Command-R'},
+				exec: function(editor) {
+					run();
+				},
+				readOnly: false
+			});
 
 			var tool = new Y.Toolbar({
 				children: [
