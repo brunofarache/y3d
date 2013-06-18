@@ -11,16 +11,16 @@
 <body>
 	<div class="container-fluid">
 		<div class="row row-fluid">
-			<div id="output" class="span6">
+			<div class="span6">
 				<canvas id='y3d'></canvas>
+			</div>
+			<div id="right" class="span6">
+				<div id="editor"></div>
 
 				<button id="save"></button>
 				<button id="load"></button>
 				<button id="run" class="btn-primary"></button>
 				<button id="reset" class="btn-danger"></button>
-			</div>
-			<div class="span6">
-				<div id="editor"></div>
 			</div>
 		</div>
 	</div>
@@ -190,7 +190,7 @@
 						}
 					]
 				]
-			}).render('#output');
+			}).render('#right');
 
 			var savePopover = new Y.Popover({
 				align: {
