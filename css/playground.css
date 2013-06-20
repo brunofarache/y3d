@@ -17,8 +17,19 @@ input[type="text"] {
 	padding-left: 0 !important;
 }
 
+.dg.ac {
+	float: left;
+	margin: 20px;
+}
+
+.dg .c input[type=text] {
+	border-radius: 0px;
+	height: 19px;
+	font: 11px 'Lucida Grande', sans-serif;
+}
+
 .popover.bottom {
-	top: 41px !important;
+	top: 50px !important;
 }
 
 .row {

@@ -4,6 +4,7 @@
 
 	<script src="http://cdn.alloyui.com/2.0.x/aui/aui-min.js"></script>
 	<script src="./build/y3d/y3d.js"></script>
+	<script src="./lib/dat.gui.min.js"></script>
 
 	<link href="http://cdn.alloyui.com/2.0.x/aui-css/css/bootstrap.css" rel="stylesheet">
 	<link href="./css/playground.css" rel="stylesheet">
@@ -25,6 +26,7 @@
 		</div>
 	</div>
 
+	<div id="controls" class="dg ac"></div>
 
 	<script id="source" type="y3d-script">
 YUI().use('y3d-scene', 'y3d-camera', 'y3d-geometry-box', function(Y) {
@@ -40,16 +42,77 @@ YUI().use('y3d-scene', 'y3d-camera', 'y3d-geometry-box', function(Y) {
 		color: '#ff7700'
 	});
 
-	box.rotate('xy', 45);
-
 	scene.add(box);
 
 	scene.render();
+	controls.render();
+
+	controls.color.onChange(function(value) {
+		box.set('color', value);
+
+		scene.render();
+	});
+
+	var x = y = z = 0;
+
+	controls.rotation.x.onChange(function(value) {
+		box.rotate('x', value - x);
+
+		scene.render();
+
+		x = value;
+	});
+
+	controls.rotation.y.onChange(function(value) {
+		box.rotate('y', value - y);
+
+		scene.render();
+
+		y = value;
+	});
+
+	controls.rotation.z.onChange(function(value) {
+		box.rotate('z', value - z);
+
+		scene.render();
+
+		z = value;
+	});
 });
 	</script>
 
 	<script>
 		YUI().use('aui-ace-editor', 'aui-button', 'aui-popover', 'aui-toolbar', 'event-key', 'event-resize', 'io-base', 'node', function(Y) {
+			var values = {
+				x: 0,
+				y: 0,
+				z: 0,
+				color: '#ff7700'
+			};
+
+			window.controls = new dat.GUI({ autoPlace: false });
+
+			controls.render = function() {
+				var customContainer = document.getElementById('controls');
+				customContainer.appendChild(controls.domElement);
+			};
+
+			controls.rotation = {};
+
+			var rotationFolder = controls.addFolder('Rotation');
+
+			controls.rotation.x = rotationFolder.add(values, 'x', -180, 180);
+			controls.rotation.y = rotationFolder.add(values, 'y', -180, 180);
+			controls.rotation.z = rotationFolder.add(values, 'z', -180, 180);
+
+			rotationFolder.open();
+
+			var colorFolder = controls.addFolder('Color');
+
+			controls.color = colorFolder.addColor(values, 'color');
+
+			colorFolder.open();
+
 			var editor = new Y.AceEditor({
 				boundingBox: '#editor',
 				mode: 'javascript',
@@ -221,7 +284,7 @@ YUI().use('y3d-scene', 'y3d-camera', 'y3d-geometry-box', function(Y) {
 				},
 				bodyContent: '<input id="loadUrl" type="text" />',
 				position: 'bottom',
-				zIndex: 1,
+				zIndex: 2,
 				visible: false
 			}).render();
 
