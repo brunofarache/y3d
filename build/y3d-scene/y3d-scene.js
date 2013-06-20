@@ -17,7 +17,6 @@ Y.Scene = Y.Base.create('scene', Y.Base, [], {
 			context = instance.context,
 			geometries = instance.get('geometries');
 
-		instance._loadBufferData(geometry, context.ARRAY_BUFFER, new Float32Array(geometry.get('color')), 'colorBuffer');
 		instance._loadBufferData(geometry, context.ELEMENT_ARRAY_BUFFER, new Uint16Array(geometry.get('indices')), 'indicesBuffer');
 		instance._loadBufferData(geometry, context.ARRAY_BUFFER, new Float32Array(geometry.get('normals')), 'normalsBuffer');
 		instance._loadBufferData(geometry, context.ARRAY_BUFFER, new Float32Array(geometry.get('vertices')), 'verticesBuffer');
@@ -48,7 +47,9 @@ Y.Scene = Y.Base.create('scene', Y.Base, [], {
 
 			context.useProgram(program);
 
+			instance._loadBufferData(geometry, context.ARRAY_BUFFER, new Float32Array(geometry.get('color')), 'colorBuffer');
 			instance._setVertexAttribute(geometry.colorBuffer, program.vertexColorAttribute, 4);
+
 			instance._setVertexAttribute(geometry.normalsBuffer, program.vertexNormalAttribute, 3);
 			instance._setVertexAttribute(geometry.verticesBuffer, program.vertexPositionAttribute, 3);
 			instance._setTextureAttribute(program, geometry);
