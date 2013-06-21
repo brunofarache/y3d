@@ -2,9 +2,11 @@ YUI().use('align-plugin', 'aui-ace-editor', 'aui-button', 'aui-popover', 'aui-to
 
 var playground = {
 	controls: new dat.GUI({ autoPlace: false }),
+	editor: null,
 
 	init: function() {
 		this.setupControls();
+		this.setupEditor();
 	},
 
 	setupControls: function() {
@@ -32,21 +34,37 @@ var playground = {
 		instance.controls.render = function() {
 			Y.one('#controls').appendChild(instance.controls.domElement);
 		};
+	},
+
+	setupEditor: function() {
+		var instance = this,
+			ace;
+
+		instance.editor = new Y.AceEditor({
+			boundingBox: '#editor',
+			mode: 'javascript',
+			showPrintMargin: false,
+			value: Y.Lang.trim(Y.Node.one('#source').get('text'))
+		});
+
+		ace = instance.editor.getEditor();
+
+		ace.setTheme("ace/theme/monokai");
+
+		ace.commands.addCommand({
+			name: 'runCommand',
+			bindKey: {win: 'Ctrl-R',  mac: 'Command-R'},
+			exec: function(editor) {
+				run();
+			},
+			readOnly: false
+		});
 	}
 };
 
 playground.init();
 
 window.controls = playground.controls;
-
-	var editor = new Y.AceEditor({
-		boundingBox: '#editor',
-		mode: 'javascript',
-		showPrintMargin: false,
-		value: Y.Lang.trim(Y.Node.one('#source').get('text'))
-	});
-
-	editor.getEditor().setTheme("ace/theme/monokai");
 
 	var save = function() {
 		var visible = savePopover.get('visible');
@@ -57,7 +75,7 @@ window.controls = playground.controls;
 			return;
 		}
 		
-		var content = editor.get('value');
+		var content = playground.editor.get('value');
 
 		var io = new Y.IO({emitFacade: true});
 
@@ -103,7 +121,7 @@ window.controls = playground.controls;
 				complete: function(e) {
 					var response = JSON.parse(e.data.responseText);
 
-					editor.set('value', response.files['y3d-script.js'].content);
+					playground.editor.set('value', response.files['y3d-script.js'].content);
 
 					Y.one('.dropdown-menu').setStyle('display', 'none');
 				}
@@ -146,21 +164,12 @@ window.controls = playground.controls;
 	};
 
 	var run = function() {
-		eval(editor.get('value'));
+		eval(playground.editor.get('value'));
 	};
 
 	var reset = function() {
-		editor.set('value', Y.Lang.trim(Y.Node.one('#source').get('text')));
+		playground.editor.set('value', Y.Lang.trim(Y.Node.one('#source').get('text')));
 	};
-
-	editor.getEditor().commands.addCommand({
-		name: 'runCommand',
-		bindKey: {win: 'Ctrl-R',  mac: 'Command-R'},
-		exec: function(editor) {
-			run();
-		},
-		readOnly: false
-	});
 
 	var tool = new Y.Toolbar({
 		children: [
@@ -223,11 +232,11 @@ window.controls = playground.controls;
 		canvas.set('height', height);
 		canvas.set('width', width);;
 
-		editor.set('height', height);
-		editor.set('width', width);
+		playground.editor.set('height', height);
+		playground.editor.set('width', width);
 
 		run();
-		editor.render();
+		playground.editor.render();
 	};
 
 	syncSize();
