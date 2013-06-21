@@ -8,16 +8,17 @@ var playground = {
 	init: function() {
 		this.setupControls();
 		this.setupEditor();
-		this.loadIntroduction();
+		this.loadIntroductionTemplate();
 	},
 
-	loadIntroduction: function() {
-		var instance = this;
+	loadIntroductionTemplate: function() {
+		var instance = this,
+			url = Y.one('#introduction').get('href');
 
-		instance.loadTemplate(5819929, Y.bind(instance.run, instance));
+		instance.loadTemplate(url, Y.bind(instance.run, instance));
 	},
 
-	loadTemplate: function(gistId, afterComplete) {
+	loadTemplate: function(gistURL, afterComplete) {
 		var instance = this,
 			io = new Y.IO({emitFacade: true}),
 			config = {
@@ -43,7 +44,12 @@ var playground = {
 						}
 					}
 				}
-			};
+			},
+			gistId = gistURL.slice(gistURL.lastIndexOf('/') + 1);
+
+		if (gistId.indexOf('.git') > 0) {
+			gistId = gistId.slice(0,  gistId.length - 4);
+		}
 
 		io.send('https://api.github.com/gists/' + gistId, config);
 	},
@@ -181,15 +187,9 @@ window.controls = playground.controls;
 		var url = Y.Node.one('#loadUrl');
 
 		url.once('key', function(event) {
-			var gistId = url.get('value');
+			var gistURL = url.get('value');
 
-			gistId = gistId.slice(gistId.lastIndexOf('/') + 1);
-
-			if (gistId.indexOf('.git') > 0) {
-				gistId = gistId.slice(0,  gistId.length - 4);
-			}
-
-			playground.loadTemplate(gistId);
+			playground.loadTemplate(gistURL);
 		}, 'enter');
 	};
 
@@ -265,15 +265,9 @@ window.controls = playground.controls;
 
 	Y.on('windowresize', syncSize);
 
-	Y.one('#introduction').on('click', function(event) {
+	Y.one('#menu').delegate('click', function(event) {
 		event.preventDefault();
 
-		playground.loadTemplate(5819929);
-	});
-
-	Y.one('#controlsTemplate').on('click', function(event) {
-		event.preventDefault();
-
-		playground.loadTemplate(5819876);
-	});
+		playground.loadTemplate(this.get('href'));
+	}, 'a.template');
 });
