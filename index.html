@@ -10,6 +10,14 @@
 	<link href="./css/playground.css" rel="stylesheet">
 </head>
 <body>
+	<div class="dropdown">
+		<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+			<li><a tabindex="-1" href="#"><input id="loadUrl" type="text" /></a></li>
+			<li class="divider"></li>
+			<li><a id="introduction" tabindex="-1" href="#">Introduction</a></li>
+			<li><a id="controlsTemplate" tabindex="-1" href="#">Controls</a></li>
+		</ul>
+	</div>
 	<div class="container-fluid">
 		<div class="row row-fluid">
 			<div class="span6">
@@ -18,8 +26,8 @@
 			<div id="right" class="span6">
 				<div id="editor"></div>
 
+				<button id="templates"></button>
 				<button id="save"></button>
-				<button id="load"></button>
 				<button id="run" class="btn-primary"></button>
 				<button id="reset" class="btn-danger"></button>
 			</div>
@@ -42,47 +50,16 @@ YUI().use('y3d-scene', 'y3d-camera', 'y3d-geometry-box', function(Y) {
 		color: '#ff7700'
 	});
 
+	box.rotate('xy', 45);
+
 	scene.add(box);
 
 	scene.render();
-	controls.render();
-
-	controls.color.onChange(function(value) {
-		box.set('color', value);
-
-		scene.render();
-	});
-
-	var x = y = z = 0;
-
-	controls.rotation.x.onChange(function(value) {
-		box.rotate('x', value - x);
-
-		scene.render();
-
-		x = value;
-	});
-
-	controls.rotation.y.onChange(function(value) {
-		box.rotate('y', value - y);
-
-		scene.render();
-
-		y = value;
-	});
-
-	controls.rotation.z.onChange(function(value) {
-		box.rotate('z', value - z);
-
-		scene.render();
-
-		z = value;
-	});
 });
 	</script>
 
 	<script>
-		YUI().use('aui-ace-editor', 'aui-button', 'aui-popover', 'aui-toolbar', 'event-key', 'event-resize', 'io-base', 'node', function(Y) {
+		YUI().use('align-plugin', 'aui-ace-editor', 'aui-button', 'aui-popover', 'aui-toolbar', 'event-key', 'event-resize', 'io-base', 'node', function(Y) {
 			var values = {
 				x: 0,
 				y: 0,
@@ -165,16 +142,44 @@ YUI().use('y3d-scene', 'y3d-camera', 'y3d-geometry-box', function(Y) {
 				});
 			};
 
-			var load = function() {
-				var visible = loadPopover.get('visible');
+			var loadTemplate = function(gistId) {
+				var io = new Y.IO({emitFacade: true});
 
-				if (visible) {
-					loadPopover.set('visible', false);
+				io.send('https://api.github.com/gists/' + gistId, {
+					headers: {
+						'Accept': 'application/vnd.github.raw',
+						'Content-Type': 'application/json'
+					},
+					on: {
+						complete: function(e) {
+							var response = JSON.parse(e.data.responseText);
+
+							editor.set('value', response.files['y3d-script.js'].content);
+
+							Y.one('.dropdown-menu').setStyle('display', 'none');
+						}
+					}
+				});
+			};
+
+			var dropdown = Y.one('.dropdown');
+
+			dropdown.plug(Y.Plugin.Align);
+
+			var templates = function() {
+				dropdown.align.to(Y.one('#templates'), 'bl', 'tl');
+
+				var menu = Y.one('.dropdown-menu');
+
+				var visible = menu.getStyle('display');
+
+				if (visible == 'block') {
+					menu.setStyle('display', 'none');
 
 					return;
 				}
 
-				loadPopover.set('visible', true);
+				menu.setStyle('display', 'block');
 
 				var url = Y.Node.one('#loadUrl');
 
@@ -187,23 +192,7 @@ YUI().use('y3d-scene', 'y3d-camera', 'y3d-geometry-box', function(Y) {
 						gistId = gistId.slice(0,  gistId.length - 4);
 					}
 
-					var io = new Y.IO({emitFacade: true});
-
-					io.send('https://api.github.com/gists/' + gistId, {
-						headers: {
-							'Accept': 'application/vnd.github.raw',
-							'Content-Type': 'application/json'
-						},
-						on: {
-							complete: function(e) {
-								var response = JSON.parse(e.data.responseText);
-
-								editor.set('value', response.files['y3d-script.js'].content);
-
-								loadPopover.set('visible', false);
-							}
-						}
-					});
+					loadTemplate(gistId);
 				}, 'enter');
 			};
 
@@ -228,20 +217,20 @@ YUI().use('y3d-scene', 'y3d-camera', 'y3d-geometry-box', function(Y) {
 				children: [
 					[
 						{
+							label: 'Templates',
+							on: {
+								'click': templates
+							},
+							srcNode: '#templates'
+						}
+					],
+					[
+						{
 							label: 'Save',
 							on: {
 								'click': save
 							},
 							srcNode: '#save'
-						}
-					],
-					[
-						{
-							label: 'Load',
-							on: {
-								'click': load
-							},
-							srcNode: '#load'
 						}
 					],
 					[
@@ -277,17 +266,6 @@ YUI().use('y3d-scene', 'y3d-camera', 'y3d-geometry-box', function(Y) {
 				visible: false
 			}).render();
 
-			var loadPopover = new Y.Popover({
-				align: {
-					node: Y.Node.one('#load'),
-					points:[Y.WidgetPositionAlign.TC, Y.WidgetPositionAlign.BC]
-				},
-				bodyContent: '<input id="loadUrl" type="text" />',
-				position: 'bottom',
-				zIndex: 2,
-				visible: false
-			}).render();
-
 			var syncSize = function() {
 				var width = Y.DOM.winWidth()/2,
 					height = Y.DOM.winHeight(),
@@ -306,6 +284,18 @@ YUI().use('y3d-scene', 'y3d-camera', 'y3d-geometry-box', function(Y) {
 			syncSize();
 
 			Y.on('windowresize', syncSize);
+
+			Y.one('#introduction').on('click', function(event) {
+				event.preventDefault();
+
+				loadTemplate(5819929);
+			});
+
+			Y.one('#controlsTemplate').on('click', function(event) {
+				event.preventDefault();
+
+				loadTemplate(5819876);
+			});
 		});
 	</script>
 

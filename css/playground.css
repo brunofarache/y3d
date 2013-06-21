@@ -28,6 +28,10 @@ input[type="text"] {
 	font: 11px 'Lucida Grande', sans-serif;
 }
 
+.dropdown {
+	position: absolute;
+}
+
 .popover.bottom {
 	top: 50px !important;
 }
