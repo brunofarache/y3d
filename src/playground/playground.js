@@ -3,10 +3,61 @@ YUI().use('align-plugin', 'aui-ace-editor', 'aui-button', 'aui-popover', 'aui-to
 var playground = {
 	controls: new dat.GUI({ autoPlace: false }),
 	editor: null,
+	source: null,
 
 	init: function() {
 		this.setupControls();
 		this.setupEditor();
+		this.loadIntroduction();
+	},
+
+	loadIntroduction: function() {
+		var instance = this;
+
+		instance.loadTemplate(5819929, Y.bind(instance.run, instance));
+	},
+
+	loadTemplate: function(gistId, afterComplete) {
+		var instance = this,
+			io = new Y.IO({emitFacade: true}),
+			config = {
+				arguments: {
+					afterComplete: afterComplete
+				},
+				headers: {
+					'Accept': 'application/vnd.github.raw',
+					'Content-Type': 'application/json'
+				},
+				on: {
+					complete: function(event) {
+						var response = JSON.parse(event.data.responseText);
+
+						instance.source = response.files['y3d-script.js'].content;
+
+						instance.reset();
+
+						Y.one('.dropdown-menu').setStyle('display', 'none');
+
+						if (event.arguments.afterComplete) {
+							event.arguments.afterComplete();
+						}
+					}
+				}
+			};
+
+		io.send('https://api.github.com/gists/' + gistId, config);
+	},
+
+	reset: function() {
+		var instance = this;
+
+		instance.editor.set('value', instance.source);
+	},
+
+	run: function() {
+		var instance = this;
+
+		eval(instance.editor.get('value'));
 	},
 
 	setupControls: function() {
@@ -43,8 +94,7 @@ var playground = {
 		instance.editor = new Y.AceEditor({
 			boundingBox: '#editor',
 			mode: 'javascript',
-			showPrintMargin: false,
-			value: Y.Lang.trim(Y.Node.one('#source').get('text'))
+			showPrintMargin: false
 		});
 
 		ace = instance.editor.getEditor();
@@ -55,7 +105,7 @@ var playground = {
 			name: 'runCommand',
 			bindKey: {win: 'Ctrl-R',  mac: 'Command-R'},
 			exec: function(editor) {
-				run();
+				instance.run();
 			},
 			readOnly: false
 		});
@@ -109,26 +159,6 @@ window.controls = playground.controls;
 		});
 	};
 
-	var loadTemplate = function(gistId) {
-		var io = new Y.IO({emitFacade: true});
-
-		io.send('https://api.github.com/gists/' + gistId, {
-			headers: {
-				'Accept': 'application/vnd.github.raw',
-				'Content-Type': 'application/json'
-			},
-			on: {
-				complete: function(e) {
-					var response = JSON.parse(e.data.responseText);
-
-					playground.editor.set('value', response.files['y3d-script.js'].content);
-
-					Y.one('.dropdown-menu').setStyle('display', 'none');
-				}
-			}
-		});
-	};
-
 	var dropdown = Y.one('.dropdown');
 
 	dropdown.plug(Y.Plugin.Align);
@@ -159,16 +189,8 @@ window.controls = playground.controls;
 				gistId = gistId.slice(0,  gistId.length - 4);
 			}
 
-			loadTemplate(gistId);
+			playground.loadTemplate(gistId);
 		}, 'enter');
-	};
-
-	var run = function() {
-		eval(playground.editor.get('value'));
-	};
-
-	var reset = function() {
-		playground.editor.set('value', Y.Lang.trim(Y.Node.one('#source').get('text')));
 	};
 
 	var tool = new Y.Toolbar({
@@ -195,7 +217,7 @@ window.controls = playground.controls;
 				{
 					label: 'Run',
 					on: {
-						'click': run
+						'click': Y.bind(playground.run, playground)
 					},
 					primary: true,
 					srcNode: '#run'
@@ -205,7 +227,7 @@ window.controls = playground.controls;
 				{
 					label: 'Reset',
 					on: {
-						'click': reset
+						'click': Y.bind(playground.reset, playground)
 					},
 					srcNode: '#reset'
 				}
@@ -235,7 +257,7 @@ window.controls = playground.controls;
 		playground.editor.set('height', height);
 		playground.editor.set('width', width);
 
-		run();
+		playground.run();
 		playground.editor.render();
 	};
 
@@ -246,12 +268,12 @@ window.controls = playground.controls;
 	Y.one('#introduction').on('click', function(event) {
 		event.preventDefault();
 
-		loadTemplate(5819929);
+		playground.loadTemplate(5819929);
 	});
 
 	Y.one('#controlsTemplate').on('click', function(event) {
 		event.preventDefault();
 
-		loadTemplate(5819876);
+		playground.loadTemplate(5819876);
 	});
 });
