@@ -1,7 +1,7 @@
 YUI().use('align-plugin', 'aui-ace-editor', 'aui-button', 'aui-popover', 'aui-toolbar', 'event-key', 'event-resize', 'io-base', 'node', function(Y) {
 
 var playground = {
-	controls: new dat.GUI({ autoPlace: false }),
+	controls: new dat.GUI({autoPlace: false}),
 	editor: null,
 	source: null,
 
@@ -66,6 +66,50 @@ var playground = {
 		eval(instance.editor.get('value'));
 	},
 
+	saveTemplate: function() {
+		var instance = this,
+			visible = savePopover.get('visible'),
+			io, config;
+
+		if (visible) {
+			savePopover.set('visible', false);
+
+			return;
+		}
+		
+		io = new Y.IO({emitFacade: true});
+
+		config = {
+			method: 'POST',
+			data: JSON.stringify({
+				'public': true,
+				'files': {
+					'y3d-script.js': {
+						'content': instance.editor.get('value')
+					}
+				}
+			}),
+			headers: {
+				'Accept': 'application/vnd.github.raw',
+				'Content-Type': 'application/json'
+			},
+			on: {
+				complete: function(event) {
+					var response = JSON.parse(event.data.responseText),
+						input = savePopover.get('contentBox').one('input');
+
+					input.set('value', response.html_url);
+
+					savePopover.set('visible', true);
+
+					input.select();
+				}
+			}
+		};
+
+		io.send('https://api.github.com/gists', config);
+	},
+
 	setupControls: function() {
 		var instance = this,
 			values = {
@@ -122,49 +166,6 @@ playground.init();
 
 window.controls = playground.controls;
 
-	var save = function() {
-		var visible = savePopover.get('visible');
-
-		if (visible) {
-			savePopover.set('visible', false);
-
-			return;
-		}
-		
-		var content = playground.editor.get('value');
-
-		var io = new Y.IO({emitFacade: true});
-
-		io.send('https://api.github.com/gists', {
-			method: 'POST',
-			data: JSON.stringify({
-				"public": true,
-				"files": {
-					"y3d-script.js": {
-						"content": content
-					}
-				}
-			}),
-			headers: {
-				'Accept': 'application/vnd.github.raw',
-				'Content-Type': 'application/json'
-			},
-			on: {
-				complete: function(e) {
-					var response = JSON.parse(e.data.responseText);
-
-					var url = Y.Node.one('#saveUrl');
-
-					url.set('value', response.html_url);
-
-					savePopover.set('visible', true);
-
-					input.select();
-				}
-			}
-		});
-	};
-
 	var dropdown = Y.one('.dropdown');
 
 	dropdown.plug(Y.Plugin.Align);
@@ -208,7 +209,7 @@ window.controls = playground.controls;
 				{
 					label: 'Save',
 					on: {
-						'click': save
+						'click': Y.bind(playground.saveTemplate, playground)
 					},
 					srcNode: '#save'
 				}
@@ -240,7 +241,7 @@ window.controls = playground.controls;
 			node: Y.Node.one('#save'),
 			points:[Y.WidgetPositionAlign.TC, Y.WidgetPositionAlign.BC]
 		},
-		bodyContent: '<input id="saveUrl" type="text" />',
+		bodyContent: '<input type="text" />',
 		position: 'bottom',
 		zIndex: 1,
 		visible: false
