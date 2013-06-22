@@ -3,15 +3,29 @@ YUI().use('align-plugin', 'aui-ace-editor', 'aui-button', 'aui-popover', 'aui-to
 var playground = {
 	controls: new dat.GUI({autoPlace: false}),
 	editor: null,
+	savePopover: null,
 	source: null,
+	templatesMenu: null,
 
 	init: function() {
 		var instance = this;
 
 		instance.setupControls();
 		instance.setupEditor();
-		instance.load(Y.one('#introduction').get('href'), Y.bind(instance.run, instance));
 		instance.setupToolbar();
+		instance.load(Y.one('#introduction').get('href'), Y.bind(instance.run, instance));
+	},
+
+	hideSavePopover: function() {
+		var instance = this;
+
+		instance.savePopover.set('visible', false);
+	},
+
+	hideTemplatesMenu: function() {
+		var instance = this;
+
+		instance.templatesMenu.removeClass('open');
 	},
 
 	load: function(gistURL, afterComplete) {
@@ -38,7 +52,7 @@ var playground = {
 
 						instance.reset();
 
-						Y.one('#templates-menu .dropdown-menu').setStyle('display', 'none');
+						instance.hideTemplatesMenu();
 
 						if (event.arguments.afterComplete) {
 							event.arguments.afterComplete();
@@ -68,11 +82,12 @@ var playground = {
 
 	save: function() {
 		var instance = this,
+			savePopover = instance.savePopover,
 			visible = savePopover.get('visible'),
 			io, config;
 
 		if (visible) {
-			savePopover.set('visible', false);
+			hideSavePopover();
 
 			return;
 		}
@@ -100,6 +115,7 @@ var playground = {
 
 					input.set('value', response.html_url);
 
+					instance.hideTemplatesMenu();
 					savePopover.set('visible', true);
 
 					input.select();
@@ -163,7 +179,7 @@ var playground = {
 
 	setupToolbar: function() {
 		var instance = this,
-			loadUrl = Y.Node.one('#load-url'),
+			loadUrl = Y.Node.one('#load-url');
 			templatesMenu = Y.one('#templates-menu');
 
 		new Y.Toolbar({
@@ -173,7 +189,7 @@ var playground = {
 					on: {
 						'click': Y.bind(instance.toggleTemplatesMenu, instance)
 					},
-					srcNode: '#templates-button'
+					srcNode: '#templates'
 				}],
 				[{
 					label: 'Save',
@@ -206,6 +222,8 @@ var playground = {
 			instance.load(gistURL);
 		}, 'enter');
 
+		instance.templatesMenu = templatesMenu;
+
 		if (!templatesMenu.hasPlugin()) {
 			templatesMenu.plug(Y.Plugin.Align);
 		}
@@ -217,23 +235,29 @@ var playground = {
 
 			instance.load(gistURL, Y.bind(instance.run, instance));
 		}, 'a.template');
+
+		instance.savePopover = new Y.Popover({
+			align: {
+				node: Y.Node.one('#save'),
+				points:[Y.WidgetPositionAlign.TC, Y.WidgetPositionAlign.BC]
+			},
+			bodyContent: '<input type="text" />',
+			position: 'bottom',
+			zIndex: 1,
+			visible: false
+		}).render();
 	},
 
 	toggleTemplatesMenu: function() {
 		var instance = this,
-			templatesMenu = Y.one('#templates-menu'),
-			dropdownMenu = templatesMenu.one('.dropdown-menu'),
-			visible = dropdownMenu.getStyle('display');
+			templatesMenu = instance.templatesMenu;
 
-		if (visible == 'block') {
-			dropdownMenu.setStyle('display', 'none');
+		templatesMenu.toggleClass('open');
 
-			return;
+		if (templatesMenu.hasClass('open')) {
+			templatesMenu.align.to(Y.one('#templates'), Y.WidgetPositionAlign.BL, Y.WidgetPositionAlign.TL);
+			instance.hideSavePopover();
 		}
-
-		templatesMenu.align.to(Y.one('#templates-button'), Y.WidgetPositionAlign.BL, Y.WidgetPositionAlign.TL);
-
-		dropdownMenu.setStyle('display', 'block');
 	}
 };
 
@@ -241,17 +265,6 @@ playground.init();
 
 window.playground = playground;
 window.controls = playground.controls;
-
-	var savePopover = new Y.Popover({
-		align: {
-			node: Y.Node.one('#save'),
-			points:[Y.WidgetPositionAlign.TC, Y.WidgetPositionAlign.BC]
-		},
-		bodyContent: '<input type="text" />',
-		position: 'bottom',
-		zIndex: 1,
-		visible: false
-	}).render();
 
 	var syncSize = function() {
 		var width = Y.DOM.winWidth()/2,

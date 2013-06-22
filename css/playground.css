@@ -31,6 +31,9 @@ input[type="text"] {
 	height: 19px;
 	font: 11px 'Lucida Grande', sans-serif;
 }
+.open > .dropdown-menu {
+  display: block !important;
+}
 
 .popover.bottom {
 	top: 50px !important;
