@@ -6,19 +6,14 @@ var playground = {
 	source: null,
 
 	init: function() {
-		this.setupControls();
-		this.setupEditor();
-		this.loadIntroductionTemplate();
+		var instance = this;
+
+		instance.setupControls();
+		instance.setupEditor();
+		instance.load(Y.one('#introduction').get('href'), Y.bind(instance.run, instance));
 	},
 
-	loadIntroductionTemplate: function() {
-		var instance = this,
-			url = Y.one('#introduction').get('href');
-
-		instance.loadTemplate(url, Y.bind(instance.run, instance));
-	},
-
-	loadTemplate: function(gistURL, afterComplete) {
+	load: function(gistURL, afterComplete) {
 		var instance = this,
 			io = new Y.IO({emitFacade: true}),
 			config = {
@@ -66,7 +61,7 @@ var playground = {
 		eval(instance.editor.get('value'));
 	},
 
-	saveTemplate: function() {
+	save: function() {
 		var instance = this,
 			visible = savePopover.get('visible'),
 			io, config;
@@ -190,7 +185,7 @@ window.controls = playground.controls;
 		url.once('key', function(event) {
 			var gistURL = url.get('value');
 
-			playground.loadTemplate(gistURL);
+			playground.load(gistURL);
 		}, 'enter');
 	};
 
@@ -209,7 +204,7 @@ window.controls = playground.controls;
 				{
 					label: 'Save',
 					on: {
-						'click': Y.bind(playground.saveTemplate, playground)
+						'click': Y.bind(playground.save, playground)
 					},
 					srcNode: '#save'
 				}
@@ -269,6 +264,6 @@ window.controls = playground.controls;
 	Y.one('#menu').delegate('click', function(event) {
 		event.preventDefault();
 
-		playground.loadTemplate(this.get('href'));
+		playground.load(this.get('href'), Y.bind(playground.run, playground));
 	}, 'a.template');
 });
