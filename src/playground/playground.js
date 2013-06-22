@@ -14,6 +14,7 @@ var playground = {
 		instance.setupEditor();
 		instance.setupToolbar();
 		instance.load(Y.one('#introduction').get('href'), Y.bind(instance.run, instance));
+		instance.render();
 	},
 
 	hideSavePopover: function() {
@@ -66,6 +67,31 @@ var playground = {
 		}
 
 		io.send('https://api.github.com/gists/' + gistId, config);
+	},
+
+	render: function() {
+		var instance = this,
+			resize = function() {
+				var width = Y.DOM.winWidth()/2,
+					height = Y.DOM.winHeight(),
+					canvas = Y.Node.one('#y3d');
+
+				instance.editor.set('height', height);
+				instance.editor.set('width', width);
+
+				canvas.set('height', height);
+				canvas.set('width', width);;
+
+				instance.editor.render();
+				instance.run();
+
+				instance.hideTemplatesMenu();
+				instance.hideSavePopover();
+			};
+
+		resize();
+
+		Y.on('windowresize', Y.bind(resize, instance));
 	},
 
 	reset: function() {
@@ -265,23 +291,4 @@ playground.init();
 
 window.playground = playground;
 window.controls = playground.controls;
-
-	var syncSize = function() {
-		var width = Y.DOM.winWidth()/2,
-			height = Y.DOM.winHeight(),
-			canvas = Y.Node.one('#y3d');
-
-		canvas.set('height', height);
-		canvas.set('width', width);;
-
-		playground.editor.set('height', height);
-		playground.editor.set('width', width);
-
-		playground.run();
-		playground.editor.render();
-	};
-
-	syncSize();
-
-	Y.on('windowresize', syncSize);
 });
