@@ -1,3 +1,7 @@
+#templates-menu {
+	position: absolute;
+}
+
 #y3d {
 	height: 100%;
 	width: 100%;
@@ -26,10 +30,6 @@ input[type="text"] {
 	border-radius: 0px;
 	height: 19px;
 	font: 11px 'Lucida Grande', sans-serif;
-}
-
-.dropdown {
-	position: absolute;
 }
 
 .popover.bottom {

@@ -11,11 +11,17 @@ var playground = {
 		instance.setupControls();
 		instance.setupEditor();
 		instance.load(Y.one('#introduction').get('href'), Y.bind(instance.run, instance));
+		instance.setupToolbar();
 	},
 
 	load: function(gistURL, afterComplete) {
+		if (gistURL === '') {
+			return;
+		}
+
 		var instance = this,
 			io = new Y.IO({emitFacade: true}),
+			gistId = gistURL.slice(gistURL.lastIndexOf('/') + 1),
 			config = {
 				arguments: {
 					afterComplete: afterComplete
@@ -32,15 +38,14 @@ var playground = {
 
 						instance.reset();
 
-						Y.one('.dropdown-menu').setStyle('display', 'none');
+						Y.one('#templates-menu .dropdown-menu').setStyle('display', 'none');
 
 						if (event.arguments.afterComplete) {
 							event.arguments.afterComplete();
 						}
 					}
 				}
-			},
-			gistId = gistURL.slice(gistURL.lastIndexOf('/') + 1);
+			};
 
 		if (gistId.indexOf('.git') > 0) {
 			gistId = gistId.slice(0,  gistId.length - 4);
@@ -154,82 +159,88 @@ var playground = {
 			},
 			readOnly: false
 		});
+	},
+
+	setupToolbar: function() {
+		var instance = this,
+			loadUrl = Y.Node.one('#load-url'),
+			templatesMenu = Y.one('#templates-menu');
+
+		new Y.Toolbar({
+			children: [
+				[{
+					label: 'Templates',
+					on: {
+						'click': Y.bind(instance.toggleTemplatesMenu, instance)
+					},
+					srcNode: '#templates-button'
+				}],
+				[{
+					label: 'Save',
+					on: {
+						'click': Y.bind(instance.save, instance)
+					},
+					srcNode: '#save'
+				}],
+				[{
+					label: 'Run',
+					on: {
+						'click': Y.bind(instance.run, instance)
+					},
+					primary: true,
+					srcNode: '#run'
+				}],
+				[{
+					label: 'Reset',
+					on: {
+						'click': Y.bind(instance.reset, instance)
+					},
+					srcNode: '#reset'
+				}]
+			]
+		}).render('#right');
+
+		loadUrl.once('key', function(event) {
+			var gistURL = loadUrl.get('value');
+
+			instance.load(gistURL);
+		}, 'enter');
+
+		if (!templatesMenu.hasPlugin()) {
+			templatesMenu.plug(Y.Plugin.Align);
+		}
+
+		templatesMenu.delegate('click', function(event) {
+			var gistURL = this.get('href');
+
+			event.preventDefault();
+
+			instance.load(gistURL, Y.bind(instance.run, instance));
+		}, 'a.template');
+	},
+
+	toggleTemplatesMenu: function() {
+		var instance = this,
+			templatesMenu = Y.one('#templates-menu'),
+			dropdownMenu = templatesMenu.one('.dropdown-menu'),
+			visible = dropdownMenu.getStyle('display');
+
+		if (visible == 'block') {
+			dropdownMenu.setStyle('display', 'none');
+
+			return;
+		}
+
+		templatesMenu.align.to(Y.one('#templates-button'), Y.WidgetPositionAlign.BL, Y.WidgetPositionAlign.TL);
+
+		dropdownMenu.setStyle('display', 'block');
 	}
 };
 
 playground.init();
 
+window.playground = playground;
 window.controls = playground.controls;
-
-	var dropdown = Y.one('.dropdown');
-
-	dropdown.plug(Y.Plugin.Align);
-
-	var templates = function() {
-		dropdown.align.to(Y.one('#templates'), 'bl', 'tl');
-
-		var menu = Y.one('.dropdown-menu');
-
-		var visible = menu.getStyle('display');
-
-		if (visible == 'block') {
-			menu.setStyle('display', 'none');
-
-			return;
-		}
-
-		menu.setStyle('display', 'block');
-
-		var url = Y.Node.one('#loadUrl');
-
-		url.once('key', function(event) {
-			var gistURL = url.get('value');
-
-			playground.load(gistURL);
-		}, 'enter');
-	};
-
-	var tool = new Y.Toolbar({
-		children: [
-			[
-				{
-					label: 'Templates',
-					on: {
-						'click': templates
-					},
-					srcNode: '#templates'
-				}
-			],
-			[
-				{
-					label: 'Save',
-					on: {
-						'click': Y.bind(playground.save, playground)
-					},
-					srcNode: '#save'
-				}
-			],
-			[
-				{
-					label: 'Run',
-					on: {
-						'click': Y.bind(playground.run, playground)
-					},
-					primary: true,
-					srcNode: '#run'
-				}
-			],
-			[
-				{
-					label: 'Reset',
-					on: {
-						'click': Y.bind(playground.reset, playground)
-					},
-					srcNode: '#reset'
-				}
-			]
-		]
-	}).render('#right');
 
 	var savePopover = new Y.Popover({
 		align: {
@@ -260,10 +271,4 @@ window.controls = playground.controls;
 	syncSize();
 
 	Y.on('windowresize', syncSize);
-
-	Y.one('#menu').delegate('click', function(event) {
-		event.preventDefault();
-
-		playground.load(this.get('href'), Y.bind(playground.run, playground));
-	}, 'a.template');
 });
