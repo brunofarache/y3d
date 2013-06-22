@@ -17,6 +17,15 @@ var playground = {
 		instance.render();
 	},
 
+	hideControls: function() {
+		var instance = this,
+			controls = Y.one('.dg .main');
+
+		if (controls) {
+			controls.remove(true);
+		}
+	},
+
 	hideSavePopover: function() {
 		var instance = this;
 
@@ -61,6 +70,8 @@ var playground = {
 					}
 				}
 			};
+
+		instance.hideControls();
 
 		if (gistId.indexOf('.git') > 0) {
 			gistId = gistId.slice(0,  gistId.length - 4);
