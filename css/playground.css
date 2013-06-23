@@ -31,6 +31,12 @@ input[type="text"] {
 	height: 19px;
 	font: 11px 'Lucida Grande', sans-serif;
 }
+
+.dropdown-menu li > input {
+	margin-left: 20px;
+	margin-right: 20px;
+}
+
 .open > .dropdown-menu {
   display: block !important;
 }

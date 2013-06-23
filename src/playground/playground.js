@@ -289,10 +289,11 @@ var playground = {
 		var instance = this,
 			templatesMenu = instance.templatesMenu;
 
+		templatesMenu.align.to(Y.one('#templates'), Y.WidgetPositionAlign.BL, Y.WidgetPositionAlign.TL);
+
 		templatesMenu.toggleClass('open');
 
 		if (templatesMenu.hasClass('open')) {
-			templatesMenu.align.to(Y.one('#templates'), Y.WidgetPositionAlign.BL, Y.WidgetPositionAlign.TL);
 			instance.hideSavePopover();
 		}
 	}
