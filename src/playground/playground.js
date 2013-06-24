@@ -188,9 +188,9 @@ var playground = {
 		};
 
 		instance.controls.rotation = {
-			x: rotationFolder.add(values, 'x', -180, 180),
-			y: rotationFolder.add(values, 'y', -180, 180),
-			z: rotationFolder.add(values, 'z', -180, 180)
+			x: rotationFolder.add(values, 'x', -180, 180).step(1),
+			y: rotationFolder.add(values, 'y', -180, 180).step(1),
+			z: rotationFolder.add(values, 'z', -180, 180).step(1)
 		};
 
 		instance.controls.color = colorFolder.addColor(values, 'color');
