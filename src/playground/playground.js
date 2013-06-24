@@ -23,6 +23,8 @@ var playground = {
 
 		if (controls) {
 			controls.remove(true);
+
+			instance.controls.revert(instance.controls);
 		}
 	},
 
@@ -71,8 +73,6 @@ var playground = {
 				}
 			};
 
-		instance.hideControls();
-
 		if (gistId.indexOf('.git') > 0) {
 			gistId = gistId.slice(0,  gistId.length - 4);
 		}
@@ -113,6 +113,8 @@ var playground = {
 
 	run: function() {
 		var instance = this;
+
+		instance.hideControls();
 
 		eval(instance.editor.get('value'));
 	},
@@ -171,11 +173,19 @@ var playground = {
 				z: 0,
 				color: '#ff7700'
 			},
+			positionFolder = instance.controls.addFolder('Position'),
 			rotationFolder = instance.controls.addFolder('Rotation'),
 			colorFolder = instance.controls.addFolder('Color');
 
+		positionFolder.open();
 		rotationFolder.open();
 		colorFolder.open();
+
+		instance.controls.position = {
+			x: positionFolder.add(values, 'x', -6, 6),
+			y: positionFolder.add(values, 'y', -6, 6),
+			z: positionFolder.add(values, 'z', -6, 6)
+		};
 
 		instance.controls.rotation = {
 			x: rotationFolder.add(values, 'x', -180, 180),
