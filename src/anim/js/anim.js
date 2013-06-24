@@ -1,17 +1,39 @@
-var requestAnimFrame =
-	window.requestAnimationFrame		||
-	window.webkitRequestAnimationFrame	||
-	window.mozRequestAnimationFrame		||
-	window.oRequestAnimationFrame		||
-	window.msRequestAnimationFrame		||
-	function(callback) {
-		window.setTimeout(callback, 1000 / 60);
+var lastTime = 0,
+	vendors = ['webkit', 'moz'],
+	x;
+
+for (x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+	window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+
+	window.cancelAnimationFrame =
+		window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame'];
+}
+
+if (!window.requestAnimationFrame) {
+	window.requestAnimationFrame = function(callback) {
+		var currTime = new Date().getTime(),
+			timeToCall = Math.max(0, 16 - (currTime - lastTime)),
+			id = window.setTimeout(function() {
+				callback(currTime + timeToCall);
+			}, timeToCall);
+
+		lastTime = currTime + timeToCall;
+
+		return id;
 	};
+}
+
+if (!window.cancelAnimationFrame) {
+	window.cancelAnimationFrame = function(id) {
+		clearTimeout(id);
+	};
+}
 
 function WebGLAnim(scene, animationFn, debugFn) {
 	this.scene = scene;
 	this.animationFn = animationFn;
 	this.debugFn = debugFn;
+	this.requestId = 0;
 }
 
 WebGLAnim.prototype = {
@@ -28,7 +50,11 @@ WebGLAnim.prototype = {
 			this.debugFn(parseInt(1000 / elapsed, 10));
 		}
 
-		requestAnimFrame(Y.bind(this.start, this));
+		this.requestId = requestAnimationFrame(Y.bind(this.start, this));
+	},
+
+	stop: function() {
+		cancelAnimationFrame(this.requestId);
 	}
 };
 

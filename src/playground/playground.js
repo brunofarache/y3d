@@ -1,6 +1,7 @@
 YUI().use('align-plugin', 'aui-ace-editor', 'aui-button', 'aui-popover', 'aui-toolbar', 'event-key', 'event-resize', 'io-base', 'node', function(Y) {
 
 var playground = {
+	anim: null,
 	controls: new dat.GUI({autoPlace: false}),
 	editor: null,
 	savePopover: null,
@@ -117,6 +118,11 @@ var playground = {
 		var instance = this;
 
 		instance.hideControls();
+
+		if (instance.anim) {
+			instance.anim.stop();
+			instance.anim = undefined;
+		}
 
 		eval(instance.editor.get('value'));
 	},
