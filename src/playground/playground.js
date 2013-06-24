@@ -263,7 +263,7 @@ var playground = {
 			]
 		}).render('#right');
 
-		loadUrl.once('key', function(event) {
+		loadUrl.on('key', function(event) {
 			var gistURL = loadUrl.get('value');
 
 			instance.load(gistURL);
