@@ -38,6 +38,8 @@ var playground = {
 		var instance = this;
 
 		instance.templatesMenu.removeClass('open');
+
+		Y.Node.one('#load-url').set('value', '');
 	},
 
 	load: function(gistURL, afterComplete) {
@@ -264,9 +266,11 @@ var playground = {
 		}).render('#right');
 
 		loadUrl.on('key', function(event) {
-			var gistURL = loadUrl.get('value');
+			var gistURL = Y.Lang.trim(loadUrl.get('value'));
 
-			instance.load(gistURL);
+			if (gistURL) {
+				instance.load(gistURL);
+			}
 		}, 'enter');
 
 		instance.templatesMenu = templatesMenu;
