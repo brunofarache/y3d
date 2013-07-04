@@ -26,7 +26,7 @@ Y.Sphere = Y.Base.create('sphere', Y.Geometry, [], {
 
 				x = cosPhi * sinTheta;
 				y = cosTheta;
-				z = sinPhi * sinTheta;					
+				z = sinPhi * sinTheta;
 
 				vertices.push(radius * x);
 				vertices.push(radius * y);

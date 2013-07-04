@@ -57,7 +57,12 @@ Y.Scene = Y.Base.create('scene', Y.Base, [], {
 			instance._setUniforms(program, geometry, projectionMatrix);
 			instance._setLightUniforms(program);
 
-			instance._drawGeometry(geometry);
+			if (geometry.get('wireframe')) {
+				instance._drawWireframe(geometry);
+			}
+			else {
+				instance._drawGeometry(geometry);
+			}
 
 			instance._unbindBuffers();
 		});
@@ -85,14 +90,36 @@ Y.Scene = Y.Base.create('scene', Y.Base, [], {
 		return projectionMatrix;
 	},
 
+	_drawElements: function(type, size, buffer) {
+		var instance = this,
+			context = instance.context;
+
+		context.bindBuffer(context.ELEMENT_ARRAY_BUFFER, buffer);
+		context.drawElements(type, size, context.UNSIGNED_SHORT, 0);
+	},
+
 	_drawGeometry: function(geometry) {
 		var instance = this,
 			context = instance.context,
+			type = context.TRIANGLES,
 			size = geometry.get('indices').length,
 			buffer = geometry.indicesBuffer;
 
-		context.bindBuffer(context.ELEMENT_ARRAY_BUFFER, buffer);
-		context.drawElements(context.TRIANGLES, size, context.UNSIGNED_SHORT, 0);
+		instance._drawElements(type, size, buffer);
+	},
+
+	_drawWireframe: function(geometry) {
+		var instance = this,
+			context = instance.context,
+			type = context.LINES,
+			size =  geometry.get('lines').length,
+			buffer = geometry.linesBuffer;
+
+		if (!buffer) {
+			instance._loadBufferData(geometry, context.ELEMENT_ARRAY_BUFFER, new Uint16Array(geometry.get('lines')), 'linesBuffer');
+		}
+
+		instance._drawElements(type, size, geometry.linesBuffer);
 	},
 
 	_enableDepthTest: function() {

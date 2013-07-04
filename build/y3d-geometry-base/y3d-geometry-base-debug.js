@@ -100,6 +100,30 @@ Y.Geometry = Y.Base.create('geometry', Y.Base, [], {
 		return val;
 	},
 
+	_setWireframe: function(val) {
+		var instance = this,
+			lines = instance.get('lines'),
+			indices = instance.get('indices'),
+			i;
+
+		if (val && (lines === null)) {
+			lines = [];
+
+			for (i = 0; i < indices.length; i = i + 3) {
+				lines.push(indices[i]);
+				lines.push(indices[i + 1]);
+				lines.push(indices[i + 1]);
+				lines.push(indices[i + 2]);
+				lines.push(indices[i + 2]);
+				lines.push(indices[i]);
+			}
+
+			instance.set('lines', lines);
+		}
+
+		return val;
+	},
+
 	_setXYZ: function(val) {
 		var instance = this,
 			matrix = Y.WebGLMatrix.mat4.create(),
@@ -139,6 +163,11 @@ Y.Geometry = Y.Base.create('geometry', Y.Base, [], {
 			validator: Lang.isArray
 		},
 
+		lines: {
+			value: null,
+			validator: Lang.isArray
+		},
+
 		matrix: {
 			value: null
 		},
@@ -161,6 +190,12 @@ Y.Geometry = Y.Base.create('geometry', Y.Base, [], {
 		vertices: {
 			value: [],
 			validator: Lang.isArray
+		},
+
+		wireframe: {
+			value: false,
+			setter: '_setWireframe',
+			validator: Lang.isBoolean
 		},
 
 		// TODO: getters
