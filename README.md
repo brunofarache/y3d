@@ -22,6 +22,30 @@ Add a `<canvas>` element to your page:
 <canvas id='y3d'></canvas>
 ```
 
+Create scene and camera objects and add an object to your scene:
+
+``` javascript
+YUI().use('y3d-scene', 'y3d-camera', 'y3d-geometry-box', function(Y) {
+	var scene = new Y.Scene({
+		camera: new Y.Camera({
+			z: 20
+		}),
+
+		background: '#272822'
+	});
+
+	var box = new Y.Box({
+		color: '#ff7700'
+	});
+
+	box.rotate('xy', 45);
+
+	scene.add(box);
+
+	scene.render();
+});
+```
+
 ## License
 
-Code is under [MIT](http://mit-license.org) license
+Code is under [MIT](http://mit-license.org) license.
