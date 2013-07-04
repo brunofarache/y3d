@@ -181,13 +181,10 @@ var playground = {
 				z: 0,
 				color: '#ff7700'
 			},
-			positionFolder = instance.controls.addFolder('Position'),
-			rotationFolder = instance.controls.addFolder('Rotation'),
-			colorFolder = instance.controls.addFolder('Color');
+			positionFolder = instance.controls.addFolder('Position and color'),
+			rotationFolder;
 
 		positionFolder.open();
-		rotationFolder.open();
-		colorFolder.open();
 
 		instance.controls.position = {
 			x: positionFolder.add(values, 'x', -6, 6),
@@ -195,13 +192,15 @@ var playground = {
 			z: positionFolder.add(values, 'z', -6, 6)
 		};
 
+		instance.controls.color = positionFolder.addColor(values, 'color');
+
+		rotationFolder = instance.controls.addFolder('Rotation');
+
 		instance.controls.rotation = {
 			x: rotationFolder.add(values, 'x', -180, 180).step(1),
 			y: rotationFolder.add(values, 'y', -180, 180).step(1),
 			z: rotationFolder.add(values, 'z', -180, 180).step(1)
 		};
-
-		instance.controls.color = colorFolder.addColor(values, 'color');
 
 		instance.controls.render = function() {
 			Y.one('#controls').appendChild(instance.controls.domElement);
