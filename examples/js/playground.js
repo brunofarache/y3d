@@ -6,7 +6,7 @@ var playground = {
 	editor: null,
 	savePopover: null,
 	source: null,
-	templatesMenu: null,
+	examplesMenu: null,
 
 	init: function() {
 		var instance = this;
@@ -14,7 +14,7 @@ var playground = {
 		instance.setupControls();
 		instance.setupEditor();
 		instance.setupToolbar();
-		instance.load(Y.one('#introduction').get('href'), Y.bind(instance.run, instance));
+		instance.load(Y.one('#examples-menu .example').get('href'), Y.bind(instance.run, instance));
 		instance.render();
 	},
 
@@ -35,10 +35,10 @@ var playground = {
 		instance.savePopover.set('visible', false);
 	},
 
-	hideTemplatesMenu: function() {
+	hideExamplesMenu: function() {
 		var instance = this;
 
-		instance.templatesMenu.removeClass('open');
+		instance.examplesMenu.removeClass('open');
 
 		Y.Node.one('#load-url').set('value', '');
 	},
@@ -67,7 +67,7 @@ var playground = {
 
 						instance.reset();
 
-						instance.hideTemplatesMenu();
+						instance.hideExamplesMenu();
 
 						if (event.arguments.afterComplete) {
 							event.arguments.afterComplete();
@@ -99,7 +99,7 @@ var playground = {
 				instance.editor.render();
 				instance.run();
 
-				instance.hideTemplatesMenu();
+				instance.hideExamplesMenu();
 				instance.hideSavePopover();
 			};
 
@@ -162,7 +162,7 @@ var playground = {
 
 					input.set('value', response.html_url);
 
-					instance.hideTemplatesMenu();
+					instance.hideExamplesMenu();
 					savePopover.set('visible', true);
 
 					input.select();
@@ -234,16 +234,16 @@ var playground = {
 	setupToolbar: function() {
 		var instance = this,
 			loadUrl = Y.Node.one('#load-url');
-			templatesMenu = Y.one('#templates-menu');
+			examplesMenu = Y.one('#examples-menu');
 
 		new Y.Toolbar({
 			children: [
 				[{
-					label: 'Templates',
+					label: 'Examples',
 					on: {
-						'click': Y.bind(instance.toggleTemplatesMenu, instance)
+						'click': Y.bind(instance.toggleExamplesMenu, instance)
 					},
-					srcNode: '#templates'
+					srcNode: '#examples'
 				}],
 				[{
 					label: 'Save',
@@ -278,19 +278,19 @@ var playground = {
 			}
 		}, 'enter');
 
-		instance.templatesMenu = templatesMenu;
+		instance.examplesMenu = examplesMenu;
 
-		if (!templatesMenu.hasPlugin()) {
-			templatesMenu.plug(Y.Plugin.Align);
+		if (!examplesMenu.hasPlugin()) {
+			examplesMenu.plug(Y.Plugin.Align);
 		}
 
-		templatesMenu.delegate('click', function(event) {
+		examplesMenu.delegate('click', function(event) {
 			var gistURL = this.get('href');
 
 			event.preventDefault();
 
 			instance.load(gistURL, Y.bind(instance.run, instance));
-		}, 'a.template');
+		}, 'a.example');
 
 		instance.savePopover = new Y.Popover({
 			align: {
@@ -304,15 +304,15 @@ var playground = {
 		}).render();
 	},
 
-	toggleTemplatesMenu: function() {
+	toggleExamplesMenu: function() {
 		var instance = this,
-			templatesMenu = instance.templatesMenu;
+			examplesMenu = instance.examplesMenu;
 
-		templatesMenu.align.to(Y.one('#templates'), Y.WidgetPositionAlign.BL, Y.WidgetPositionAlign.TL);
+		examplesMenu.align.to(Y.one('#examples'), Y.WidgetPositionAlign.BL, Y.WidgetPositionAlign.TL);
 
-		templatesMenu.toggleClass('open');
+		examplesMenu.toggleClass('open');
 
-		if (templatesMenu.hasClass('open')) {
+		if (examplesMenu.hasClass('open')) {
 			instance.hideSavePopover();
 		}
 	}
