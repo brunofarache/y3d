@@ -21,3 +21,7 @@ Add a `<canvas>` element to your page:
 ``` html
 <canvas id='y3d'></canvas>
 ```
+
+## License
+
+Code is under [MIT](http://mit-license.org) license
