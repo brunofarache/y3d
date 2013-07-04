@@ -16,7 +16,7 @@ Import y3d:
 <script src="http://brunofarache.github.io/y3d/build/y3d/y3d.js"></script>
 ```
 
-Add a canvas element to your page:
+Add a `<canvas>` element to your page:
 
 ``` html
 <canvas id='y3d'></canvas>
