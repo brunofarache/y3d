@@ -47,7 +47,7 @@ YUI().use('y3d-scene', 'y3d-camera', 'y3d-geometry-box', function(Y) {
 ```
 ## Documentation
 
-Check the [demo site](http://http://brunofarache.github.io/y3d). There are many examples there, click on the `Examples` button to load several examples and learn how to use y3d.
+Check the [demo site](http://brunofarache.github.io/y3d). There are many examples there, click on the `Examples` button to load several examples and learn how to use y3d.
 
 ## License
 
