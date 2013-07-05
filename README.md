@@ -22,7 +22,7 @@ Add a `<canvas>` element to your page:
 <canvas id='y3d'></canvas>
 ```
 
-Create scene and camera objects and add an object to your scene:
+Create a scene and add a 3D object to it:
 
 ``` javascript
 YUI().use('y3d-scene', 'y3d-camera', 'y3d-geometry-box', function(Y) {
@@ -47,7 +47,7 @@ YUI().use('y3d-scene', 'y3d-camera', 'y3d-geometry-box', function(Y) {
 ```
 ## Documentation
 
-Check the [demo site](http://brunofarache.github.io/y3d). There are many examples there, click on the `Examples` button to load several examples and learn how to use y3d.
+Check the **[demo site](http://brunofarache.github.io/y3d)**, there are many examples. Click on the `Examples` button to load other scripts and learn how to use y3d.
 
 ## License
 
