@@ -3,29 +3,26 @@ YUI.add('y3d-geometry-base', function (Y, NAME) {
 var Lang = Y.Lang;
 
 Y.Geometry = Y.Base.create('geometry', Y.Base, [], {
-	move: function(x, y, z) {
+	move: function(axis, distance) {
 		var instance = this,
-			matrix = instance.get('matrix');
+			matrix = instance.get('matrix'),
+			x = 0,
+			y = 0,
+			z = 0;
+
+		if (axis.indexOf('x') !== -1) {
+			x = distance;
+		}
+
+		if (axis.indexOf('y') !== -1) {
+			y = distance;
+		}
+
+		if (axis.indexOf('z') !== -1) {
+			z = distance;
+		}
 
 		Y.WebGLMatrix.mat4.translate(matrix, [x, y, z]);
-	},
-
-	moveX: function(distance) {
-		var instance = this;
-
-		instance.move(distance, 0, 0);
-	},
-
-	moveY: function(distance) {
-		var instance = this;
-
-		instance.move(0, distance, 0);
-	},
-
-	moveZ: function(distance) {
-		var instance = this;
-
-		instance.move(0, 0, distance);
 	},
 
 	rotate: function(axis, degrees) {
@@ -48,24 +45,6 @@ Y.Geometry = Y.Base.create('geometry', Y.Base, [], {
 		}
 
 		Y.WebGLMatrix.mat4.rotate(matrix, (degrees * (Math.PI/180)), [x, y, z]);
-	},
-
-	rotateX: function(degrees) {
-		var instance = this;
-
-		instance.rotate('x', degrees);
-	},
-
-	rotateY: function(degrees) {
-		var instance = this;
-
-		instance.rotate('y', degrees);
-	},
-
-	rotateZ: function(degrees) {
-		var instance = this;
-
-		instance.rotate('z', degrees);
 	},
 
 	_generateId: function() {
@@ -139,7 +118,9 @@ Y.Geometry = Y.Base.create('geometry', Y.Base, [], {
 			val = [x, y, z];
 		}
 
-		instance.move(val[0], val[1], val[2]);
+		instance.move('x', val[0]);
+		instance.move('y', val[1]);
+		instance.move('z', val[2]);
 
 		return val;
 	}
