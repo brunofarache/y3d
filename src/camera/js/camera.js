@@ -20,29 +20,26 @@ Y.Camera = Y.Base.create('camera', Y.Base, [], {
 		return matrix;
 	},
 
-	move: function(x, y, z) {
+	move: function(axis, distance) {
 		var instance = this,
-			matrix = instance.get('matrix');
+			matrix = instance.get('matrix'),
+			x = 0,
+			y = 0,
+			z = 0;
+
+		if (axis.indexOf('x') !== -1) {
+			x = distance;
+		}
+
+		if (axis.indexOf('y') !== -1) {
+			y = distance;
+		}
+
+		if (axis.indexOf('z') !== -1) {
+			z = distance;
+		}
 
 		Y.WebGLMatrix.mat4.translate(matrix, [x, y, z]);
-	},
-
-	moveX: function(distance) {
-		var instance = this;
-
-		instance.move(distance, 0, 0);
-	},
-
-	moveY: function(distance) {
-		var instance = this;
-
-		instance.move(0, distance, 0);
-	},
-
-	moveZ: function(distance) {
-		var instance = this;
-
-		instance.move(0, 0, distance);
 	},
 
 	_onKeyPress: function(event) {
@@ -52,19 +49,19 @@ Y.Camera = Y.Base.create('camera', Y.Base, [], {
 
 		switch (event.keyCode) {
 			case keys.up:
-				instance.moveY(distance);
+				instance.move('y', distance);
 				break;
 
 			case keys.right:
-				instance.moveX(distance);
+				instance.move('x', distance);
 				break;
 
 			case keys.down:
-				instance.moveY(-distance);
+				instance.move('y', -distance);
 				break;
 
 			case keys.left:
-				instance.moveX(-distance);
+				instance.move('x', -distance);
 				break;
 		}
 	},
@@ -73,7 +70,7 @@ Y.Camera = Y.Base.create('camera', Y.Base, [], {
 		var instance = this,
 			distance = instance.get('controls.mouseWheelDistance');
 
-		instance.moveZ(-event.wheelDelta * distance);
+		instance.move('z', -event.wheelDelta * distance);
 	},
 
 	_setXYZ: function(val) {
@@ -91,7 +88,9 @@ Y.Camera = Y.Base.create('camera', Y.Base, [], {
 			val = [x, y, z];
 		}
 
-		instance.move(val[0], val[1], val[2]);
+		instance.move('x', val[0]);
+		instance.move('y', val[1]);
+		instance.move('z', val[2]);
 
 		return val;
 	}
