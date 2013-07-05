@@ -14,7 +14,7 @@ var playground = {
 		instance.setupControls();
 		instance.setupEditor();
 		instance.setupToolbar();
-		instance.load(Y.one('#examples-menu .example').get('href'), Y.bind(instance.run, instance));
+		instance.load(Y.one('#examples-menu .example').get('href'));
 		instance.render();
 	},
 
@@ -43,7 +43,7 @@ var playground = {
 		Y.Node.one('#load-url').set('value', '');
 	},
 
-	load: function(gistURL, afterComplete) {
+	load: function(gistURL) {
 		if (gistURL === '') {
 			return;
 		}
@@ -52,9 +52,6 @@ var playground = {
 			io = new Y.IO({emitFacade: true}),
 			gistId = gistURL.slice(gistURL.lastIndexOf('/') + 1),
 			config = {
-				arguments: {
-					afterComplete: afterComplete
-				},
 				headers: {
 					'Accept': 'application/vnd.github.raw',
 					'Content-Type': 'application/json'
@@ -66,12 +63,8 @@ var playground = {
 						instance.source = response.files['y3d-script.js'].content;
 
 						instance.reset();
-
 						instance.hideExamplesMenu();
-
-						if (event.arguments.afterComplete) {
-							event.arguments.afterComplete();
-						}
+						instance.run();
 					}
 				}
 			};
@@ -291,7 +284,7 @@ var playground = {
 
 			event.preventDefault();
 
-			instance.load(gistURL, Y.bind(instance.run, instance));
+			instance.load(gistURL);
 		}, 'a.example');
 
 		instance.savePopover = new Y.Popover({
