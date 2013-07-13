@@ -36,26 +36,24 @@ Y.Geometry = Y.Base.create('geometry', Y.Base, [], {
 
 	_setPosition: function(val) {
 		var instance = this,
-			position = instance.get('position');
+			position = instance.get('position') || {x: 0, y: 0, z: 0};
 
-		if (position) {
-			return Y.merge(position, val);
-		}
-		else {
-			return Y.merge({x: 0, y: 0, z: 0}, val);
-		}
+		position.x = (val.x !== undefined) ? val.x : position.x;
+		position.y = (val.y !== undefined) ? val.y : position.y;
+		position.z = (val.z !== undefined) ? val.z : position.z;
+
+		return position;
 	},
 
 	_setRotation: function(val) {
 		var instance = this,
-			rotation = instance.get('rotation');
+			rotation = instance.get('rotation') || {x: 0, y: 0, z: 0};
 
-		if (rotation) {
-			return Y.merge(rotation, val);
-		}
-		else {
-			return Y.merge({x: 0, y: 0, z: 0}, val);
-		}
+		rotation.x = (val.x !== undefined) ? val.x : rotation.x;
+		rotation.y = (val.y !== undefined) ? val.y : rotation.y;
+		rotation.z = (val.z !== undefined) ? val.z : rotation.z;
+
+		return rotation;
 	},
 
 	_setTexture: function(val) {
