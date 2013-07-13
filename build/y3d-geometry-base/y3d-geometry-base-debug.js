@@ -36,25 +36,33 @@ Y.Geometry = Y.Base.create('geometry', Y.Base, [], {
 		return colorArray;
 	},
 
+	_setPosition: function(val) {
+		var instance = this,
+			position = instance.get('position');
+
+		if (position) {
+			return Y.merge(position, val);
+		}
+		else {
+			return Y.merge({x: 0, y: 0, z: 0}, val);
+		}
+	},
+
+	_setRotation: function(val) {
+		var instance = this,
+			rotation = instance.get('rotation');
+
+		if (rotation) {
+			return Y.merge(rotation, val);
+		}
+		else {
+			return Y.merge({x: 0, y: 0, z: 0}, val);
+		}
+	},
+
 	_setTexture: function(val) {
 		if (Lang.isString(val)) {
 			val = new Y.Texture({'imageUrl': val});
-		}
-
-		return val;
-	},
-
-	_setVector: function(val) {
-		if (val.x === undefined) {
-			val.x = 0;
-		}
-
-		if (val.y === undefined) {
-			val.y = 0;
-		}
-
-		if (val.z === undefined) {
-			val.z = 0;
 		}
 
 		return val;
@@ -87,22 +95,18 @@ Y.Geometry = Y.Base.create('geometry', Y.Base, [], {
 	_updateMatrix: function() {
 		var instance = this,
 			matrix = Y.WebGLMatrix.mat4.create(),
-			posX = instance.get('position.x'),
-			posY = instance.get('position.y'),
-			posZ = instance.get('position.z'),
-			rotX = instance.get('rotation.x'),
-			rotY = instance.get('rotation.y'),
-			rotZ = instance.get('rotation.z');
+			position = instance.get('position'),
+			rotation = instance.get('rotation');
 
 		Y.WebGLMatrix.mat4.identity(matrix);
 
 		instance.set('matrix', matrix);
 
-		Y.WebGLMatrix.mat4.translate(matrix, [posX, posY, posZ]);
+		Y.WebGLMatrix.mat4.translate(matrix, [position.x, position.y, position.z]);
 
-		Y.WebGLMatrix.mat4.rotateX(matrix, (rotX * (Math.PI / 180)));
-		Y.WebGLMatrix.mat4.rotateY(matrix, (rotY * (Math.PI / 180)));
-		Y.WebGLMatrix.mat4.rotateZ(matrix, (rotZ * (Math.PI / 180)));
+		Y.WebGLMatrix.mat4.rotateX(matrix, (rotation.x * (Math.PI / 180)));
+		Y.WebGLMatrix.mat4.rotateY(matrix, (rotation.y * (Math.PI / 180)));
+		Y.WebGLMatrix.mat4.rotateZ(matrix, (rotation.z * (Math.PI / 180)));
 	}
 }, {
 	ATTRS: {
@@ -144,7 +148,7 @@ Y.Geometry = Y.Base.create('geometry', Y.Base, [], {
 				y: 0,
 				z: 0
 			},
-			setter: '_setVector'
+			setter: '_setPosition'
 		},
 
 		rotation: {
@@ -153,7 +157,7 @@ Y.Geometry = Y.Base.create('geometry', Y.Base, [], {
 				y: 0,
 				z: 0
 			},
-			setter: '_setVector'
+			setter: '_setRotation'
 		},
 
 		texture: {
