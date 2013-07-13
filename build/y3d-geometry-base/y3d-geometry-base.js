@@ -3,48 +3,13 @@ YUI.add('y3d-geometry-base', function (Y, NAME) {
 var Lang = Y.Lang;
 
 Y.Geometry = Y.Base.create('geometry', Y.Base, [], {
-	move: function(axis, distance) {
-		var instance = this,
-			matrix = instance.get('matrix'),
-			x = 0,
-			y = 0,
-			z = 0;
+	initializer: function() {
+		var instance = this;
 
-		if (axis.indexOf('x') !== -1) {
-			x = distance;
-		}
+		instance._updateMatrix();
 
-		if (axis.indexOf('y') !== -1) {
-			y = distance;
-		}
-
-		if (axis.indexOf('z') !== -1) {
-			z = distance;
-		}
-
-		Y.WebGLMatrix.mat4.translate(matrix, [x, y, z]);
-	},
-
-	rotate: function(axis, degrees) {
-		var instance = this,
-			matrix = instance.get('matrix'),
-			x = 0,
-			y = 0,
-			z = 0;
-
-		if (axis.indexOf('x') !== -1) {
-			x = 1;
-		}
-
-		if (axis.indexOf('y') !== -1) {
-			y = 1;
-		}
-
-		if (axis.indexOf('z') !== -1) {
-			z = 1;
-		}
-
-		Y.WebGLMatrix.mat4.rotate(matrix, (degrees * (Math.PI/180)), [x, y, z]);
+		instance.after('positionChange', instance._updateMatrix);
+		instance.after('rotationChange', instance._updateMatrix);
 	},
 
 	_generateId: function() {
@@ -79,6 +44,22 @@ Y.Geometry = Y.Base.create('geometry', Y.Base, [], {
 		return val;
 	},
 
+	_setVector: function(val) {
+		if (val.x === undefined) {
+			val.x = 0;
+		}
+
+		if (val.y === undefined) {
+			val.y = 0;
+		}
+
+		if (val.z === undefined) {
+			val.z = 0;
+		}
+
+		return val;
+	},
+
 	_setWireframe: function(val) {
 		var instance = this,
 			lines = instance.get('lines'),
@@ -103,26 +84,25 @@ Y.Geometry = Y.Base.create('geometry', Y.Base, [], {
 		return val;
 	},
 
-	_setXYZ: function(val) {
+	_updateMatrix: function() {
 		var instance = this,
 			matrix = Y.WebGLMatrix.mat4.create(),
-			x = instance.get('x'),
-			y = instance.get('y'),
-			z = instance.get('z');
+			posX = instance.get('position.x'),
+			posY = instance.get('position.y'),
+			posZ = instance.get('position.z'),
+			rotX = instance.get('rotation.x'),
+			rotY = instance.get('rotation.y'),
+			rotZ = instance.get('rotation.z');
 
 		Y.WebGLMatrix.mat4.identity(matrix);
 
 		instance.set('matrix', matrix);
 
-		if (val === null) {
-			val = [x, y, z];
-		}
+		Y.WebGLMatrix.mat4.translate(matrix, [posX, posY, posZ]);
 
-		instance.move('x', val[0]);
-		instance.move('y', val[1]);
-		instance.move('z', val[2]);
-
-		return val;
+		Y.WebGLMatrix.mat4.rotateX(matrix, (rotX * (Math.PI / 180)));
+		Y.WebGLMatrix.mat4.rotateY(matrix, (rotY * (Math.PI / 180)));
+		Y.WebGLMatrix.mat4.rotateZ(matrix, (rotZ * (Math.PI / 180)));
 	}
 }, {
 	ATTRS: {
@@ -158,6 +138,24 @@ Y.Geometry = Y.Base.create('geometry', Y.Base, [], {
 			validator: Lang.isArray
 		},
 
+		position: {
+			value: {
+				x: 0,
+				y: 0,
+				z: 0
+			},
+			setter: '_setVector'
+		},
+
+		rotation: {
+			value: {
+				x: 0,
+				y: 0,
+				z: 0
+			},
+			setter: '_setVector'
+		},
+
 		texture: {
 			value: null,
 			setter: '_setTexture'
@@ -177,27 +175,6 @@ Y.Geometry = Y.Base.create('geometry', Y.Base, [], {
 			value: false,
 			setter: '_setWireframe',
 			validator: Lang.isBoolean
-		},
-
-		// TODO: getters
-
-		x: {
-			value: 0
-		},
-
-		y: {
-			value: 0
-		},
-
-		z: {
-			value: 0
-		},
-
-		xyz: {
-			lazyAdd: false,
-			setter: '_setXYZ',
-			value: null,
-			validator: Lang.isArray
 		}
 	}
 });
