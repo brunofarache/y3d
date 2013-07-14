@@ -218,7 +218,7 @@ var playground = {
 
 		ace.commands.addCommand({
 			name: 'runCommand',
-			bindKey: {win: 'Ctrl-R',  mac: 'Command-R'},
+			bindKey: {win: 'Ctrl-U',  mac: 'Command-U'},
 			exec: function(editor) {
 				instance.run();
 			},
