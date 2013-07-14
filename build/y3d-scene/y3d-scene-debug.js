@@ -233,7 +233,7 @@ Y.Scene = Y.Base.create('scene', Y.Base, [], {
 	_setUniforms: function(program, geometry, projectionMatrix) {
 		var instance = this,
 			context = instance.context,
-			cameraMatrix = instance.get('camera').getMatrix(),
+			cameraMatrix = instance.get('camera').getInvertedMatrix(),
 			geometryMatrix = geometry.get('matrix'),
 			normalMatrix = Y.WebGLMatrix.mat3.create();
 
