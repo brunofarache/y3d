@@ -8,10 +8,9 @@ window.YUI_config = {
 	"y3d-anim": {},
 	"y3d-camera": {
 		"requires": [
-			"base-build",
 			"event-key",
 			"event-mousewheel",
-			"y3d-matrix"
+			"y3d-model"
 		]
 	},
 	"y3d-color": {
