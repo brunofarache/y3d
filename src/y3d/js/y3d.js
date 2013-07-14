@@ -31,9 +31,8 @@ window.YUI_config = {
 	},
 	"y3d-geometry-base": {
 		"requires": [
-			"base-build",
-			"y3d-texture",
-			"y3d-matrix"
+			"y3d-model",
+			"y3d-texture"
 		]
 	},
 	"y3d-geometry-box": {
@@ -68,6 +67,12 @@ window.YUI_config = {
 		]
 	},
 	"y3d-matrix": {},
+	"y3d-model": {
+		"requires": [
+			"base-build",
+			"y3d-matrix"
+		]
+	},
 	"y3d-picker-plugin": {
 		"requires": [
 			"plugin"

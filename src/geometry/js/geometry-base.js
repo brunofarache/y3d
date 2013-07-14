@@ -1,15 +1,6 @@
 var Lang = Y.Lang;
 
-Y.Geometry = Y.Base.create('geometry', Y.Base, [], {
-	initializer: function() {
-		var instance = this;
-
-		instance._updateMatrix();
-
-		instance.after('positionChange', instance._updateMatrix);
-		instance.after('rotationChange', instance._updateMatrix);
-	},
-
+Y.Geometry = Y.Base.create('geometry', Y.y3d.Model, [], {
 	_generateId: function() {
         return Math.floor(Math.random() * 16777215).toString(16);
     },
@@ -32,28 +23,6 @@ Y.Geometry = Y.Base.create('geometry', Y.Base, [], {
 		}
 
 		return colorArray;
-	},
-
-	_setPosition: function(val) {
-		var instance = this,
-			position = instance.get('position') || {x: 0, y: 0, z: 0};
-
-		position.x = (val.x !== undefined) ? val.x : position.x;
-		position.y = (val.y !== undefined) ? val.y : position.y;
-		position.z = (val.z !== undefined) ? val.z : position.z;
-
-		return position;
-	},
-
-	_setRotation: function(val) {
-		var instance = this,
-			rotation = instance.get('rotation') || {x: 0, y: 0, z: 0};
-
-		rotation.x = (val.x !== undefined) ? val.x : rotation.x;
-		rotation.y = (val.y !== undefined) ? val.y : rotation.y;
-		rotation.z = (val.z !== undefined) ? val.z : rotation.z;
-
-		return rotation;
 	},
 
 	_setTexture: function(val) {
@@ -86,23 +55,6 @@ Y.Geometry = Y.Base.create('geometry', Y.Base, [], {
 		}
 
 		return val;
-	},
-
-	_updateMatrix: function() {
-		var instance = this,
-			matrix = Y.WebGLMatrix.mat4.create(),
-			position = instance.get('position'),
-			rotation = instance.get('rotation');
-
-		Y.WebGLMatrix.mat4.identity(matrix);
-
-		instance.set('matrix', matrix);
-
-		Y.WebGLMatrix.mat4.translate(matrix, [position.x, position.y, position.z]);
-
-		Y.WebGLMatrix.mat4.rotateX(matrix, (rotation.x * (Math.PI / 180)));
-		Y.WebGLMatrix.mat4.rotateY(matrix, (rotation.y * (Math.PI / 180)));
-		Y.WebGLMatrix.mat4.rotateZ(matrix, (rotation.z * (Math.PI / 180)));
 	}
 }, {
 	ATTRS: {
@@ -129,31 +81,9 @@ Y.Geometry = Y.Base.create('geometry', Y.Base, [], {
 			validator: Lang.isArray
 		},
 
-		matrix: {
-			value: null
-		},
-
 		normals: {
 			value: [],
 			validator: Lang.isArray
-		},
-
-		position: {
-			value: {
-				x: 0,
-				y: 0,
-				z: 0
-			},
-			setter: '_setPosition'
-		},
-
-		rotation: {
-			value: {
-				x: 0,
-				y: 0,
-				z: 0
-			},
-			setter: '_setRotation'
 		},
 
 		texture: {

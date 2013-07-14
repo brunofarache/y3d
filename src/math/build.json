@@ -5,6 +5,12 @@
 			"jsfiles": [
 				"matrix.js"
 			]
+		},
+
+		"y3d-model": {
+			"jsfiles": [
+				"model.js"
+			]
 		}
 	}
 }
