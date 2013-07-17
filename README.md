@@ -28,7 +28,9 @@ Create a scene and add a 3D object to it:
 YUI().use('y3d-scene', 'y3d-camera', 'y3d-geometry-box', function(Y) {
 	var scene = new Y.Scene({
 		camera: new Y.Camera({
-			z: 20
+			position: {
+				z: 20
+			}
 		}),
 
 		background: '#272822'
@@ -38,7 +40,7 @@ YUI().use('y3d-scene', 'y3d-camera', 'y3d-geometry-box', function(Y) {
 		color: '#ff7700'
 	});
 
-	box.rotate('xy', 45);
+	box.set('rotation', { x: 45, y: 45 });
 
 	scene.add(box);
 

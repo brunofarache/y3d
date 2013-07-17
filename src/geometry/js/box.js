@@ -10,7 +10,6 @@ Y.Box = Y.Base.create('box', Y.Geometry, [], {
 			z = depth / 2,
 			i, mod;
 
-
 		for (i = 0; i < vertices.length; i++) {
 			mod = i % 3;
 
