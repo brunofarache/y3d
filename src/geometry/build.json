@@ -19,6 +19,12 @@
 			]
 		},
 
+		"y3d-geometry-grid": {
+			"jsfiles": [
+				"grid.js"
+			]
+		},
+
 		"y3d-geometry-plane": {
 			"jsfiles": [
 				"plane.js"

@@ -77,7 +77,7 @@ Y.Geometry = Y.Base.create('geometry', Y.y3d.Model, [], {
 		},
 
 		lines: {
-			value: null,
+			value: [],
 			validator: Lang.isArray
 		},
 

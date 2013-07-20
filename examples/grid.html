@@ -1,0 +1,41 @@
+<html>
+<head>
+	<title>yui webgl module</title>
+
+	<script src="http://yui.yahooapis.com/3.10.3/build/yui/yui-min.js"></script>
+	<script src="../build/y3d/y3d.js"></script>
+</head>
+<body>
+	<canvas id='y3d' height="600" width="600"></canvas>
+
+	<script>
+	YUI().use('y3d-scene', 'y3d-camera', 'y3d-geometry-grid', 'y3d-geometry-sphere', function(Y) {
+		var scene = new Y.Scene({
+			camera: new Y.Camera({
+				position: {
+					y: 4,
+					z: 20
+				}
+			}),
+
+			background: '#272822'
+		});
+
+		var grid = new Y.Grid();
+
+		var sphere = new Y.Sphere({
+			radius: 2,
+			color: 'red',
+			position: {
+				y: 1
+			}
+		});
+
+		scene.add(grid);
+		scene.add(sphere);
+
+		scene.render();
+	});
+	</script>	
+</body>
+</html>
