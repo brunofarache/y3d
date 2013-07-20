@@ -44,6 +44,11 @@ window.YUI_config = {
 			"y3d-geometry-base"
 		]
 	},
+	"y3d-geometry-grid": {
+		"requires": [
+			"y3d-geometry-base"
+		]
+	},
 	"y3d-geometry-plane": {
 		"requires": [
 			"y3d-geometry-base"

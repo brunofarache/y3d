@@ -79,7 +79,7 @@ Y.Geometry = Y.Base.create('geometry', Y.y3d.Model, [], {
 		},
 
 		lines: {
-			value: null,
+			value: [],
 			validator: Lang.isArray
 		},
 
@@ -111,4 +111,4 @@ Y.Geometry = Y.Base.create('geometry', Y.y3d.Model, [], {
 	}
 });
 
-}, '0.1', {"requires": ["y3d-texture", "y3d-matrix", "y3d-model"]});
+}, '0.1', {"requires": ["y3d-model", "y3d-texture"]});
