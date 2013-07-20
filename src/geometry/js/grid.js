@@ -9,7 +9,7 @@ Y.Grid = Y.Base.create('grid', Y.Geometry, [], {
 			x, y, z, i, index;
 
 		for (i = 0; i <= size; i++) {
-			index = 6 * i;
+			index = 12 * i;
 
 			x = half;
 			y = 0;
@@ -23,28 +23,24 @@ Y.Grid = Y.Base.create('grid', Y.Geometry, [], {
 			vertices[index + 4] = y;
 			vertices[index + 5] = z;
 
-			index = index + (6 * (size + 1));
-
 			x = -half + i;
 			z = half;
 
-			vertices[index] = x;
-			vertices[index + 1] = y;
-			vertices[index + 2] = -z;
+			vertices[index + 6] = x;
+			vertices[index + 7] = y;
+			vertices[index + 8] = -z;
 
-			vertices[index + 3] = x;
-			vertices[index + 4] = y;
-			vertices[index + 5] = z;
+			vertices[index + 9] = x;
+			vertices[index + 10] = y;
+			vertices[index + 11] = z;
 
-			index = 2 * i;
-
-			lines[index] = index;
-			lines[index + 1] = index + 1;
-
-			index = index + (2 * (size + 1));
+			index = 4 * i;
 
 			lines[index] = index;
 			lines[index + 1] = index + 1;
+
+			lines[index + 2] = index + 2;
+			lines[index + 3] = index + 3;
 		}
 
 		for (i = 0; i < vertices.length/3; i++) {
