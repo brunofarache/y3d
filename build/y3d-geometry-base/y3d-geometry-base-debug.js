@@ -41,9 +41,7 @@ Y.Geometry = Y.Base.create('geometry', Y.y3d.Model, [], {
 			indices = instance.get('indices'),
 			i;
 
-		if (val && (lines === null)) {
-			lines = [];
-
+		if (val && (lines.length == 0)) {
 			for (i = 0; i < indices.length; i = i + 3) {
 				lines.push(indices[i]);
 				lines.push(indices[i + 1]);
