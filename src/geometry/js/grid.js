@@ -5,28 +5,50 @@ Y.Grid = Y.Base.create('grid', Y.Geometry, [], {
 			vertices = instance.get('vertices'),
 			normals = instance.get('normals'),
 			lines = instance.get('lines'),
-			x, z, i;
+			half = size / 2,
+			x, y, z, i, index;
 
-		for (x = -1 * size / 2; x <= size / 2; x++) {
-			for (z = size / 2; z >= -1 * size / 2; z--) {
-				vertices.push(x, 0, z);
-			}
+		for (i = 0; i <= size; i++) {
+			index = 6 * i;
+
+			x = half;
+			y = 0;
+			z = -half + i;
+	
+			vertices[index] = -x;
+			vertices[index + 1] = y;
+			vertices[index + 2] = z;
+
+			vertices[index + 3] = x;
+			vertices[index + 4] = y;
+			vertices[index + 5] = z;
+
+			index = index + (6 * (size + 1));
+
+			x = -half + i;
+			z = half;
+
+			vertices[index] = x;
+			vertices[index + 1] = y;
+			vertices[index + 2] = -z;
+
+			vertices[index + 3] = x;
+			vertices[index + 4] = y;
+			vertices[index + 5] = z;
+
+			index = 2 * i;
+
+			lines[index] = index;
+			lines[index + 1] = index + 1;
+
+			index = index + (2 * (size + 1));
+
+			lines[index] = index;
+			lines[index + 1] = index + 1;
 		}
 
 		for (i = 0; i < vertices.length/3; i++) {
-			normals.push(0, 0, 1);
-		}
-
-		for (i = 0; i < vertices.length/3; i = i + size + 1) {
-			lines.push(i);
-			lines.push(i + size);
-		}
-
-		var l = vertices.length/3 - size - 1;
-
-		for (i = 0; i <= size; i = i + 1) {
-			lines.push(i);
-			lines.push(i + l);
+			normals.push(0, 1, 0);
 		}
 
 		instance.set('color', 'white');
@@ -34,7 +56,7 @@ Y.Grid = Y.Base.create('grid', Y.Geometry, [], {
 }, {
 	ATTRS: {
 		size: {
-			value: 50
+			value: 12
 		},
 
 		wireframe: {
