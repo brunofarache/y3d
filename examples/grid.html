@@ -13,7 +13,7 @@
 		var scene = new Y.Scene({
 			camera: new Y.Camera({
 				position: {
-					y: 4,
+					y: 3,
 					z: 20
 				}
 			}),
@@ -21,7 +21,13 @@
 			background: '#272822'
 		});
 
-		var grid = new Y.Grid();
+		var gridXZ = new Y.Grid();
+		
+		var gridXY = new Y.Grid({
+			rotation: {
+				x: 90
+			}
+		});
 
 		var sphere = new Y.Sphere({
 			radius: 2,
@@ -31,7 +37,9 @@
 			}
 		});
 
-		scene.add(grid);
+		scene.add(gridXZ);
+		scene.add(gridXY);
+		
 		scene.add(sphere);
 
 		scene.render();
