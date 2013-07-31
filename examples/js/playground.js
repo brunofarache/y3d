@@ -173,6 +173,7 @@ var playground = {
 				y: 0,
 				z: 0,
 				color: '#ff7700',
+				grid: true,
 				wireframe: false
 			},
 			positionFolder = instance.controls.addFolder('Position and color'),
@@ -187,6 +188,7 @@ var playground = {
 		};
 
 		instance.controls.color = positionFolder.addColor(values, 'color');
+		instance.controls.grid = positionFolder.add(values, 'grid');
 		instance.controls.wireframe = positionFolder.add(values, 'wireframe');
 
 		rotationFolder = instance.controls.addFolder('Rotation');

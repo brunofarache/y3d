@@ -31,6 +31,13 @@ Y.Scene = Y.Base.create('scene', Y.Base, [], {
 		lights.push(light);
 	},
 
+	remove: function(geometry) {
+		var instance = this,
+			geometries = instance.get('geometries');
+
+		delete geometries[geometry.get('id')];
+	},
+
 	render: function() {
 		var instance = this,
 			context = instance.context,
