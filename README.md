@@ -1,6 +1,10 @@
 # y3d
 
-This is a YUI3 WebGL module.
+YUI3 WebGL module.
+
+## Demos
+
+Check the **[demo site](http://brunofarache.github.io/y3d)**, there are many examples. Click on the `Examples` button to load other scripts and learn how to use y3d.
 
 ## Getting Started
 
@@ -47,9 +51,6 @@ YUI().use('y3d-scene', 'y3d-camera', 'y3d-geometry-box', function(Y) {
 	scene.render();
 });
 ```
-## Documentation
-
-Check the **[demo site](http://brunofarache.github.io/y3d)**, there are many examples. Click on the `Examples` button to load other scripts and learn how to use y3d.
 
 ## License
 
