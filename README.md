@@ -2,9 +2,9 @@
 
 YUI3 WebGL module.
 
-## Demos
+## [Demos](http://brunofarache.github.io/y3d)
 
-Check the **[demo site](http://brunofarache.github.io/y3d)**, there are many examples. Click on the `Examples` button to load other scripts and learn how to use y3d.
+Check out the **[playground page](http://brunofarache.github.io/y3d)**, it contains some examples. Click on the `Examples` button to load more scripts and learn how to use y3d.
 
 ## Getting Started
 
