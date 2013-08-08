@@ -53,4 +53,4 @@ Check the **[demo site](http://brunofarache.github.io/y3d)**, there are many exa
 
 ## License
 
-Code is under [MIT](http://mit-license.org) license.
+Code is under [YUI BSD License](http://yuilibrary.com/license).
