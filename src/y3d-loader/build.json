@@ -1,0 +1,10 @@
+{
+	"name": "y3d-loader",
+	"builds": {
+		"y3d-loader": {
+			"jsfiles": [
+				"loader.js"
+			]
+		}
+	}
+}

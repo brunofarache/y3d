@@ -70,6 +70,11 @@ window.YUI_config = {
 			"y3d-color"
 		]
 	},
+	"y3d-loader": {
+		"requires": [
+			"y3d-geometry-base"
+		]
+	},
 	"y3d-matrix": {},
 	"y3d-model": {
 		"requires": [

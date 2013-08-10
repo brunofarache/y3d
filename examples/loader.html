@@ -1,0 +1,34 @@
+<html>
+<head>
+	<title>yui webgl module</title>
+
+	<script src="http://yui.yahooapis.com/3.10.3/build/yui/yui-min.js"></script>
+	<script src="../build/y3d/y3d.js"></script>
+</head>
+<body>
+	<canvas id='y3d' height="600" width="600"></canvas>
+
+	<script>
+	YUI().use('y3d-scene', 'y3d-camera', 'y3d-loader', function(Y) {
+		var scene = new Y.Scene({
+			camera: new Y.Camera({
+				position: {
+					z: 10	
+				}
+			}),
+
+			background: '#272822'
+		});
+
+		var loader = new Y.Loader();
+		var geometry = loader.load();
+
+		geometry.set('rotation', {x: 45, y: 45});
+
+		scene.add(geometry);
+
+		scene.render();
+	});
+	</script>	
+</body>
+</html>
