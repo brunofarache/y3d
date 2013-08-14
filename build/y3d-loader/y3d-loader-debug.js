@@ -6,7 +6,6 @@ Y.Loader = Y.Base.create('loader', Y.Base, [], {
 	load: function() {
 		var instance = this,
 			geometry = instance.get('geometry'),
-			vertices = geometry.get('vertices'),
 			normals = geometry.get('normals'),
 			src = instance.get('src'),
 			lines = src.split('\n'),
@@ -16,19 +15,19 @@ Y.Loader = Y.Base.create('loader', Y.Base, [], {
 			line = lines[i].trim();
 			values = line.split(/\s+/);
 
-			if (line.indexOf('v ') === 0) {
-				instance._parseVertice(geometry, values);
-			}
-			else if (line.indexOf('f ') === 0) {
+			if (line.indexOf('f ') === 0) {
 				instance._parseFace(geometry, values);
+			}
+			else if (line.indexOf('v ') === 0) {
+				instance._parseVertice(geometry, values);
 			}
 		}
 
-		for (i = 0; i < vertices.length/3; i++) {
+		for (i = 0; i < geometry.get('vertices').length/3; i++) {
 			normals.push(0, 1, 0);
 		}
 
-		geometry.set('color', 'blue');
+		geometry.set('color', 'white');
 
 		return geometry;
 	},
