@@ -90,7 +90,7 @@ Y.Scene = Y.Base.create('scene', Y.Base, [], {
 
 		context.viewport(0, 0, width, height);
 
-		Y.WebGLMatrix.mat4.perspective(45, width/height, 0.1, 100.0, projectionMatrix);
+		Y.WebGLMatrix.mat4.perspective(45, width/height, 0.1, 300.0, projectionMatrix);
 
 		return projectionMatrix;
 	},

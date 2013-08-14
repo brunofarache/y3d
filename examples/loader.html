@@ -13,7 +13,7 @@
 		var scene = new Y.Scene({
 			camera: new Y.Camera({
 				position: {
-					z: 10	
+					z: 290
 				}
 			}),
 
@@ -29,7 +29,8 @@
 						var loader = new Y.Loader({ src: src });
 						var geometry = loader.load();
 
-						geometry.set('rotation', {x: 45, y: 45});
+						geometry.set('wireframe', true);
+						geometry.set('position.z', 50);
 
 						scene.add(geometry);
 
