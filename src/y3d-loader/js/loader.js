@@ -25,7 +25,7 @@ Y.Loader = Y.Base.create('loader', Y.Base, [], {
 			normals.push(0, 1, 0);
 		}
 
-		geometry.set('color', 'blue');
+		geometry.set('color', 'white');
 
 		return geometry;
 	},
