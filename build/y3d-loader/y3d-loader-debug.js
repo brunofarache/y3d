@@ -6,7 +6,6 @@ Y.Loader = Y.Base.create('loader', Y.Base, [], {
 	load: function() {
 		var instance = this,
 			geometry = instance.get('geometry'),
-			indices = geometry.get('indices'),
 			vertices = geometry.get('vertices'),
 			normals = geometry.get('normals'),
 			src = instance.get('src'),
@@ -18,25 +17,10 @@ Y.Loader = Y.Base.create('loader', Y.Base, [], {
 			values = line.split(/\s+/);
 
 			if (line.indexOf('v ') === 0) {
-				var v1 = parseFloat(values[1], 10),
-					v2 = parseFloat(values[2], 10),
-					v3 = parseFloat(values[3], 10);
-
-				vertices.push(v1, v2, v3);
+				instance._parseVertice(geometry, values);
 			}
 			else if (line.indexOf('f ') === 0) {
-				var i1 = parseInt(values[1], 10) - 1,
-					i2 = parseInt(values[2], 10) - 1,
-					i3 = parseInt(values[3], 10) - 1;
-
-				if (values.length === 4) {
-					indices.push(i1, i2, i3);
-				}
-				else if (values.length === 5) {
-					var i4 = parseInt(values[4], 10) - 1;
-
-					indices.push(i1, i2, i3, i1, i3, i4);
-				}
+				instance._parseFace(geometry, values);
 			}
 		}
 
@@ -47,6 +31,41 @@ Y.Loader = Y.Base.create('loader', Y.Base, [], {
 		geometry.set('color', 'blue');
 
 		return geometry;
+	},
+
+	_parseFace: function(geometry, values) {
+		var instance = this,
+			indices = geometry.get('indices'),
+			i1 = instance._parseIndex(values[1]),
+			i2 = instance._parseIndex(values[2]),
+			i3 = instance._parseIndex(values[3]),
+			i4;
+
+		if (values.length === 4) {
+			indices.push(i1, i2, i3);
+		}
+		else if (values.length === 5) {
+			i4 = instance._parseIndex(values[4]);
+
+			indices.push(i1, i2, i3, i1, i3, i4);
+		}
+	},
+
+	_parseIndex: function(value) {
+		var index = value.split(/\//)[0];
+
+		index = parseInt(index, 10) - 1;
+
+		return index;
+	},
+
+	_parseVertice: function(geometry, values) {
+		var vertices = geometry.get('vertices'),
+			v1 = parseFloat(values[1], 10),
+			v2 = parseFloat(values[2], 10),
+			v3 = parseFloat(values[3], 10);
+
+		vertices.push(v1, v2, v3);
 	}
 }, {
 	ATTRS: {
@@ -55,28 +74,7 @@ Y.Loader = Y.Base.create('loader', Y.Base, [], {
 		},
 
 		src: {
-			value: [
-				'# Vertex list',
-				'',
-				'v -0.5 -0.5 0.5',
-				'v -0.5 -0.5 -0.5',
-				'v -0.5 0.5 -0.5',
-				'v -0.5 0.5 0.5',
-				'v 0.5 -0.5 0.5',
-				'v 0.5 -0.5 -0.5',
-				'v 0.5 0.5 -0.5',
-				'v 0.5 0.5 0.5',
-				'',
-				'# Point/Line/Face list',
-				'',
-				'f 4 3 2 1',
-				'f 2 6 5 1',
-				'f 3 7 6 2',
-				'f 8 7 3 4',
-				'f 5 8 4 1',
-				'f 6 7 8 5'
-			].join('\n'),
-
+			value: '',
 			validator: Lang.isString
 		}
 	}
