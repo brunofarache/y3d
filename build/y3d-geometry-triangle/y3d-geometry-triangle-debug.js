@@ -9,14 +9,6 @@ Y.Triangle = Y.Base.create('triangle', Y.Geometry, [], {
 			]
 		},
 
-		normals: {
-			value: [
-				0, 0, 1,
-				0, 0, 1,
-				0, 0, 1
-			]
-		},
-
 		textureCoordinates: {
 			value: [
 				0, 0,

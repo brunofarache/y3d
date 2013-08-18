@@ -245,11 +245,6 @@ Y.Geometry = Y.Base.create('geometry', Y.y3d.Model, [], {
 			validator: Lang.isArray
 		},
 
-		normals: {
-			value: [],
-			validator: Lang.isArray
-		},
-
 		texture: {
 			value: null,
 			setter: '_setTexture'
@@ -320,46 +315,6 @@ Y.Box = Y.Base.create('box', Y.Geometry, [], {
 				12, 13, 14, 12, 14, 15, // Bottom face
 				16, 17, 18, 16, 18, 19, // Right face
 				20, 21, 22, 20, 22, 23  // Left face
-			]
-		},
-
-		normals: {
-			value: [
-				// Front face
-				0,  0,  1,
-				0,  0,  1,
-				0,  0,  1,
-				0,  0,  1,
-
-				// Back face
-				0,  0, -1,
-				0,  0, -1,
-				0,  0, -1,
-				0,  0, -1,
-
-				// Top face
-				0,  1,  0,
-				0,  1,  0,
-				0,  1,  0,
-				0,  1,  0,
-
-				// Bottom face
-				0, -1,  0,
-				0, -1,  0,
-				0, -1,  0,
-				0, -1,  0,
-
-				// Right face
-				1,  0,  0,
-				1,  0,  0,
-				1,  0,  0,
-				1,  0,  0,
-
-				// Left face
-				-1,  0,  0,
-				-1,  0,  0,
-				-1,  0,  0,
-				-1,  0,  0
 			]
 		},
 
@@ -460,7 +415,6 @@ Y.Cylinder = Y.Base.create('cylinder', Y.Geometry, [], {
 			height = instance.get('height'),
 			heightBands = instance.get('heightBands'),
 			indices = instance.get('indices'),
-			normals = instance.get('normals'),
 			textureCoordinates = instance.get('textureCoordinates'),
 			radius = instance.get('radius'),
 			vertices = instance.get('vertices'),
@@ -486,10 +440,6 @@ Y.Cylinder = Y.Base.create('cylinder', Y.Geometry, [], {
 				vertices.push(radius * x);
 				vertices.push(y);
 				vertices.push(radius * z);
-
-				normals.push(x);
-				normals.push(0);
-				normals.push(z);
 
 				u = 1 - (j / widthBands);
 				v = 1 - (i / heightBands);
@@ -546,7 +496,6 @@ Y.Grid = Y.Base.create('grid', Y.Geometry, [], {
 		var instance = this,
 			size = instance.get('size'),
 			vertices = instance.get('vertices'),
-			normals = instance.get('normals'),
 			lines = instance.get('lines'),
 			half = size / 2,
 			x, y, z, i, index;
@@ -586,10 +535,6 @@ Y.Grid = Y.Base.create('grid', Y.Geometry, [], {
 			lines[index + 3] = index + 3;
 		}
 
-		for (i = 0; i < vertices.length/3; i++) {
-			normals.push(0, 1, 0);
-		}
-
 		instance.set('color', 'white');
 	}
 }, {
@@ -614,15 +559,6 @@ Y.Plane = Y.Base.create('plane', Y.Geometry, [], {
 			value: [
 				0, 1, 2,
 				0, 2, 3
-			]
-		},
-
-		normals: {
-			value: [
-				0, 0, 1,
-				0, 0, 1,
-				0, 0, 1,
-				0, 0, 1
 			]
 		},
 
@@ -656,7 +592,6 @@ Y.Sphere = Y.Base.create('sphere', Y.Geometry, [], {
 		var instance = this,
 			heightBands = instance.get('heightBands'),
 			indices = instance.get('indices'),
-			normals = instance.get('normals'),
 			textureCoordinates = instance.get('textureCoordinates'),
 			radius = instance.get('radius'),
 			vertices = instance.get('vertices'),
@@ -680,10 +615,6 @@ Y.Sphere = Y.Base.create('sphere', Y.Geometry, [], {
 				vertices.push(radius * x);
 				vertices.push(radius * y);
 				vertices.push(radius * z);
-
-				normals.push(x);
-				normals.push(y);
-				normals.push(z);
 
 				u = 1 - (j / widthBands);
 				v = 1 - (i / heightBands);
@@ -739,14 +670,6 @@ Y.Triangle = Y.Base.create('triangle', Y.Geometry, [], {
 			]
 		},
 
-		normals: {
-			value: [
-				0, 0, 1,
-				0, 0, 1,
-				0, 0, 1
-			]
-		},
-
 		textureCoordinates: {
 			value: [
 				0, 0,
@@ -766,32 +689,6 @@ Y.Triangle = Y.Base.create('triangle', Y.Geometry, [], {
 });
 
 }, '0.1', {"requires": ["y3d-geometry-base"]});
-YUI.add('y3d-light', function (Y, NAME) {
-
-var Lang = Y.Lang;
-
-Y.Light = Y.Base.create('light', Y.Base, [], {
-	_setColor: function(value) {
-		if (Lang.isString(value)) {
-			value = Y.Color.normalizedColorArray(value);
-		}
-
-		return value;
-	}
-}, {
-	ATTRS: {
-		color: {
-			value: 'white',
-			setter: '_setColor'
-		},
-
-		direction: {
-			value: [0, 0, 0]
-		}
-	}
-});
-
-}, '0.1', {"requires": ["base-build", "y3d-color"]});
 YUI.add('y3d-matrix', function (Y, NAME) {
 
 /**
@@ -4327,7 +4224,6 @@ Y.ObjLoader = Y.Base.create('obj-loader', Y.Base, [], {
 	load: function() {
 		var instance = this,
 			geometry = instance.get('geometry'),
-			normals = geometry.get('normals'),
 			src = instance.get('src'),
 			lines = src.split('\n'),
 			i, line, values;
@@ -4342,10 +4238,6 @@ Y.ObjLoader = Y.Base.create('obj-loader', Y.Base, [], {
 			else if (line.indexOf('v ') === 0) {
 				instance._parseVertice(geometry, values);
 			}
-		}
-
-		for (i = 0; i < geometry.get('vertices').length/3; i++) {
-			normals.push(0, 1, 0);
 		}
 
 		geometry.set('color', 'white');
@@ -4505,7 +4397,6 @@ Y.extend(Picker, Y.Plugin.Base, {
 			context.useProgram(program);
 
 			host._setVertexAttribute(geometry.pickerColorBuffer, program.vertexColorAttribute, 4);
-			host._setVertexAttribute(geometry.normalsBuffer, program.vertexNormalAttribute, 3);
 			host._setVertexAttribute(geometry.verticesBuffer, program.vertexPositionAttribute, 3);
 
 			host._setUniforms(program, geometry, projectionMatrix);
@@ -4548,19 +4439,11 @@ Y.Scene = Y.Base.create('scene', Y.Base, [], {
 			geometries = instance.get('geometries');
 
 		instance._loadBufferData(geometry, context.ELEMENT_ARRAY_BUFFER, new Uint16Array(geometry.get('indices')), 'indicesBuffer');
-		instance._loadBufferData(geometry, context.ARRAY_BUFFER, new Float32Array(geometry.get('normals')), 'normalsBuffer');
 		instance._loadBufferData(geometry, context.ARRAY_BUFFER, new Float32Array(geometry.get('vertices')), 'verticesBuffer');
 
 		instance._loadTextureBufferData(geometry);
 
 		geometries[geometry.get('id')] = geometry;
-	},
-
-	addLight: function(light) {
-		var instance = this,
-			lights = instance.get('lights');
-
-		lights.push(light);
 	},
 
 	remove: function(geometry) {
@@ -4587,12 +4470,10 @@ Y.Scene = Y.Base.create('scene', Y.Base, [], {
 			instance._loadBufferData(geometry, context.ARRAY_BUFFER, new Float32Array(geometry.get('color')), 'colorBuffer');
 			instance._setVertexAttribute(geometry.colorBuffer, program.vertexColorAttribute, 4);
 
-			instance._setVertexAttribute(geometry.normalsBuffer, program.vertexNormalAttribute, 3);
 			instance._setVertexAttribute(geometry.verticesBuffer, program.vertexPositionAttribute, 3);
 			instance._setTextureAttribute(program, geometry);
 
 			instance._setUniforms(program, geometry, projectionMatrix);
-			instance._setLightUniforms(program);
 
 			if (geometry.get('wireframe')) {
 				instance._drawWireframe(geometry);
@@ -4670,15 +4551,10 @@ Y.Scene = Y.Base.create('scene', Y.Base, [], {
 	_getProgram: function(geometry) {
 		var instance = this,
 			texture = geometry.get('texture'),
-			lights = instance.get('lights'),
 			program = null,
 			options = {
 				context: instance.context
 			};
-
-		if (lights.length > 0) {
-			options.constants = ['#define USE_LIGHT'];
-		}
 
 		if (texture !== null) {
 			program = Y.Shader.getTextureProgram(options);
@@ -4724,22 +4600,6 @@ Y.Scene = Y.Base.create('scene', Y.Base, [], {
 		return value;
 	},
 
-	_setLightUniforms: function(program) {
-		var instance = this,
-			context = instance.context,
-			lights = instance.get('lights'),
-			light, color, direction;
-
-		if (lights.length > 0) {
-			light = lights[0];
-			color = light.get('color');
-			direction = light.get('direction');
-
-			context.uniform3f(program.lightColorUniform, color[0], color[1], color[2]);
-			context.uniform3f(program.lightDirectionUniform, direction[0], direction[1], direction[2]);
-		}
-	},
-
 	_setTextureAttribute: function(program, geometry) {
 		var instance = this,
 			context = instance.context,
@@ -4771,15 +4631,10 @@ Y.Scene = Y.Base.create('scene', Y.Base, [], {
 		var instance = this,
 			context = instance.context,
 			cameraMatrix = instance.get('camera').getInvertedMatrix(),
-			geometryMatrix = geometry.get('matrix'),
-			normalMatrix = Y.WebGLMatrix.mat3.create();
-
-		Y.WebGLMatrix.mat4.toInverseMat3(geometryMatrix, normalMatrix);
-		Y.WebGLMatrix.mat3.transpose(normalMatrix);
+			geometryMatrix = geometry.get('matrix');
 
 		Y.WebGLMatrix.mat4.multiply(cameraMatrix, geometryMatrix);
 
-		context.uniformMatrix3fv(program.normalMatrixUniform, false, normalMatrix);
 		context.uniformMatrix4fv(program.projectionMatrixUniform, false, projectionMatrix);
 		context.uniformMatrix4fv(program.modelViewMatrixUniform, false, cameraMatrix);
 	},
@@ -4834,10 +4689,6 @@ Y.Scene = Y.Base.create('scene', Y.Base, [], {
 			}
 		},
 
-		lights: {
-			value: []
-		},
-
 		srcNode: {
 			value: Y.Node.one('#y3d'),
 			setter: Y.Node.one,
@@ -4884,7 +4735,6 @@ var colorProgram = null,
 		'precision mediump float;',
 
 		'varying vec4 fragmentColor;',
-		'varying vec3 lightWeight;',
 
 		'#ifdef USE_TEXTURE',
 			'varying vec2 vertexTextureCoordinates;',
@@ -4897,17 +4747,12 @@ var colorProgram = null,
 			'#ifdef USE_TEXTURE',
 				'gl_FragColor = gl_FragColor * texture2D(sampler, vertexTextureCoordinates);',
 			'#endif',
-
-			'#ifdef USE_LIGHT',
-				'gl_FragColor = vec4(gl_FragColor.rgb * lightWeight, gl_FragColor.a);',
-			'#endif',
 		'}'
 	].join('\n'),
 
 	vertexShaderSource = [
 		'attribute vec3 vertexPosition;',
 		'attribute vec4 vertexColor;',
-		'attribute vec3 vertexNormal;',
 
 		'#ifdef USE_TEXTURE',
 			'attribute vec2 textureCoordinates;',
@@ -4916,15 +4761,8 @@ var colorProgram = null,
 
 		'uniform mat4 projectionMatrix;',
 		'uniform mat4 modelViewMatrix;',
-		'uniform mat3 normalMatrix;',
-
-		'#ifdef USE_LIGHT',
-			'uniform vec3 lightColor;',
-			'uniform vec3 lightDirection;',
-		'#endif',
 
 		'varying vec4 fragmentColor;',
-		'varying vec3 lightWeight;',
 
 		'void main(void) {',
 			'gl_Position = projectionMatrix * modelViewMatrix * vec4(vertexPosition, 1.0);',
@@ -4933,18 +4771,6 @@ var colorProgram = null,
 
 			'#ifdef USE_TEXTURE',
 				'vertexTextureCoordinates = textureCoordinates;',
-			'#endif',
-
-			'#ifdef USE_LIGHT',
-				'vec3 ambientLightColor = vec3(1.0, 1.0, 1.0);',
-
-				'vec3 transformedNormal = normalMatrix * vertexNormal;',
-				'float directionalLightWeight = max(dot(transformedNormal, lightDirection), 0.0);',
-
-				'lightWeight = ambientLightColor + lightColor * directionalLightWeight;',
-			'#else',
-				'lightWeight = vec3(1.0, 1.0, 1.0);',
-				'vertexNormal;',
 			'#endif',
 		'}'
 	].join('\n');
@@ -5030,14 +4856,8 @@ Y.Shader = {
 		program.vertexColorAttribute = context.getAttribLocation(program, "vertexColor");
 		context.enableVertexAttribArray(program.vertexColorAttribute);
 
-		program.vertexNormalAttribute = context.getAttribLocation(program, "vertexNormal");
-		context.enableVertexAttribArray(program.vertexNormalAttribute);
-
 		program.projectionMatrixUniform = context.getUniformLocation(program, "projectionMatrix");
 		program.modelViewMatrixUniform = context.getUniformLocation(program, "modelViewMatrix");
-		program.normalMatrixUniform = context.getUniformLocation(program, "normalMatrix");
-		program.lightColorUniform = context.getUniformLocation(program, "lightColor");
-		program.lightDirectionUniform = context.getUniformLocation(program, "lightDirection");
 
 		return program;
 	}
@@ -5143,7 +4963,6 @@ YUI.add('gallery-y3d', function (Y, NAME) {}, '0.1', {
         "y3d-geometry-plane",
         "y3d-geometry-sphere",
         "y3d-geometry-triangle",
-        "y3d-light",
         "y3d-matrix",
         "y3d-model",
         "y3d-obj-loader",

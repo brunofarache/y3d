@@ -7,7 +7,6 @@ Y.Sphere = Y.Base.create('sphere', Y.Geometry, [], {
 		var instance = this,
 			heightBands = instance.get('heightBands'),
 			indices = instance.get('indices'),
-			normals = instance.get('normals'),
 			textureCoordinates = instance.get('textureCoordinates'),
 			radius = instance.get('radius'),
 			vertices = instance.get('vertices'),
@@ -31,10 +30,6 @@ Y.Sphere = Y.Base.create('sphere', Y.Geometry, [], {
 				vertices.push(radius * x);
 				vertices.push(radius * y);
 				vertices.push(radius * z);
-
-				normals.push(x);
-				normals.push(y);
-				normals.push(z);
 
 				u = 1 - (j / widthBands);
 				v = 1 - (i / heightBands);
