@@ -4,7 +4,6 @@ Y.ObjLoader = Y.Base.create('obj-loader', Y.Base, [], {
 	load: function() {
 		var instance = this,
 			geometry = instance.get('geometry'),
-			normals = geometry.get('normals'),
 			src = instance.get('src'),
 			lines = src.split('\n'),
 			i, line, values;
@@ -19,10 +18,6 @@ Y.ObjLoader = Y.Base.create('obj-loader', Y.Base, [], {
 			else if (line.indexOf('v ') === 0) {
 				instance._parseVertice(geometry, values);
 			}
-		}
-
-		for (i = 0; i < geometry.get('vertices').length/3; i++) {
-			normals.push(0, 1, 0);
 		}
 
 		geometry.set('color', 'white');

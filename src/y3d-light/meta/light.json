@@ -1,8 +1,0 @@
-{
-	"y3d-light": {
-		"requires": [
-			"base-build",
-			"y3d-color"
-		]
-	}
-}

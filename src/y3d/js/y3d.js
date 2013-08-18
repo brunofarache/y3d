@@ -65,12 +65,6 @@ window.YUI_config = {
 			"y3d-geometry-base"
 		]
 	},
-	"y3d-light": {
-		"requires": [
-			"base-build",
-			"y3d-color"
-		]
-	},
 	"y3d-matrix": {},
 	"y3d-model": {
 		"requires": [
