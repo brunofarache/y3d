@@ -1,8 +1,8 @@
-YUI.add('y3d-loader', function (Y, NAME) {
+YUI.add('y3d-obj-loader', function (Y, NAME) {
 
 var Lang = Y.Lang;
 
-Y.Loader = Y.Base.create('loader', Y.Base, [], {
+Y.ObjLoader = Y.Base.create('obj-loader', Y.Base, [], {
 	load: function() {
 		var instance = this,
 			geometry = instance.get('geometry'),
