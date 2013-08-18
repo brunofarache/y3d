@@ -74,4 +74,4 @@ Y.namespace('y3d').Model = Y.Base.create('model', Y.Base, [], {
 	}
 });
 
-}, '0.1', {"requires": ["base-build"]});
+}, '0.1', {"requires": ["base-build", "y3d-matrix"]});
