@@ -5,6 +5,7 @@ window.YUI_config = {
             combine: false,
             filter: 'RAW',
             modules: {
+	"gallery-y3d": {},
 	"y3d-anim": {},
 	"y3d-camera": {
 		"requires": [
@@ -70,16 +71,16 @@ window.YUI_config = {
 			"y3d-color"
 		]
 	},
-	"y3d-loader": {
-		"requires": [
-			"y3d-geometry-base"
-		]
-	},
 	"y3d-matrix": {},
 	"y3d-model": {
 		"requires": [
 			"base-build",
 			"y3d-matrix"
+		]
+	},
+	"y3d-obj-loader": {
+		"requires": [
+			"y3d-geometry-base"
 		]
 	},
 	"y3d-picker-plugin": {

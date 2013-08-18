@@ -1,6 +1,6 @@
 var Lang = Y.Lang;
 
-Y.Loader = Y.Base.create('loader', Y.Base, [], {
+Y.ObjLoader = Y.Base.create('obj-loader', Y.Base, [], {
 	load: function() {
 		var instance = this,
 			geometry = instance.get('geometry'),

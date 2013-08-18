@@ -1,12 +1,9 @@
 {
-	"name": "gallery-y3d",
-
 	"builds": {
 	},
 
 	"rollups": {
-		"y3d": {
-			"name": "gallery-y3d",
+		"gallery-y3d": {
 			"config": {
 				"use": [
 					"y3d-anim",

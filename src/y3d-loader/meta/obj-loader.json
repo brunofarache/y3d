@@ -1,5 +1,5 @@
 {
-	"y3d-loader": {
+	"y3d-obj-loader": {
 		"requires": [
 			"y3d-geometry-base"
 		]
