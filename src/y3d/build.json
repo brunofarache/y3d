@@ -1,7 +1,10 @@
 {
 	"name": "y3d",
 	"exec": [
-		"yogi loader --yes --mix --json js/y3d-config-modules.json --start ../",
+		"yogi loader --yes --mix --json js/y3d-config-modules.json --start ../"
+	],
+
+	"postexec": [
 		"./scripts/build.js"
 	],
 
