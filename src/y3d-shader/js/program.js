@@ -47,7 +47,7 @@ Y.Program.prototype = {
 	}
 };
 
-var Variables = {
+var VARIABLES = {
 	ID: {
 		ATTRIBUTE: 'attribute',
 		UNIFORM: 'uniform',
@@ -86,19 +86,35 @@ Y.Shader.prototype = {
 };
 
 Y.Shader.TEMPLATES = {
-	VERTEX: {
-		BASIC: [
+	BASIC: {
+		VERTEX: [
 			'{{% Y.Array.each(this.variables, function(variable) { %}}',
 			'	{{{ variable.id }}} {{{ variable.type }}} {{{ variable.name }}};',
 			'{{% }); %}}',
 
-			'void main(void) {',
-			'	gl_Position = projection * modelViewMatrix * vec4(position, 1.0);',
+			'	void main(void) {',
+			'		gl_Position = projection * modelViewMatrix * vec4(position, 1.0);',
 
 				'{{% Y.Array.each(this.assigns, function(assign) { %}}',
-				'	{{{ assign }}}',
+				'		{{{ assign }}}',
 				'{{% }); %}}',
-			'}'
+			'	}'
+		].join('\n'),
+
+		FRAGMENT: [
+			'	precision mediump float;',
+
+			'{{% Y.Array.each(this.variables, function(variable) { %}}',
+			'	{{{ variable.id }}} {{{ variable.type }}} {{{ variable.name }}};',
+			'{{% }); %}}',
+
+			'	void main(void) {',
+			'		gl_FragColor = colorVarying;',
+
+				'{{% Y.Array.each(this.assigns, function(assign) { %}}',
+				'		{{{ assign }}}',
+				'{{% }); %}}',
+			'	}'
 		].join('\n')
 	}
 };
@@ -115,10 +131,10 @@ Y.Shader.Builder = {
 
 		var data = {
 			variables: [
-				{ name: 'position', id: Variables.ID.ATTRIBUTE, type: Variables.TYPES.VEC3 },
-				{ name: 'projection', id: Variables.ID.UNIFORM, type: Variables.TYPES.MAT4 },
-				{ name: 'modelViewMatrix', id: Variables.ID.UNIFORM, type: Variables.TYPES.MAT4 },
-				{ name: 'colorVarying', id: Variables.ID.VARYING, type: Variables.TYPES.VEC4 }
+				{ name: 'position', id: VARIABLES.ID.ATTRIBUTE, type: VARIABLES.TYPES.VEC3 },
+				{ name: 'projection', id: VARIABLES.ID.UNIFORM, type: VARIABLES.TYPES.MAT4 },
+				{ name: 'modelViewMatrix', id: VARIABLES.ID.UNIFORM, type: VARIABLES.TYPES.MAT4 },
+				{ name: 'colorVarying', id: VARIABLES.ID.VARYING, type: VARIABLES.TYPES.VEC4 }
 			],
 
 			assigns: []
@@ -126,19 +142,33 @@ Y.Shader.Builder = {
 
 		// console.log(template.render(source, data));
 
-		data.variables.push({ name: 'textureVarying', id: Variables.ID.VARYING, type: Variables.TYPES.VEC2 });
+		data.variables.push({ name: 'textureVarying', id: VARIABLES.ID.VARYING, type: VARIABLES.TYPES.VEC2 });
 
 		Y.Array.each(data.variables, function(variable) {
-			if (variable.id !== Variables.ID.VARYING) {
+			if (variable.id !== VARIABLES.ID.VARYING) {
 				return;
 			}
 
 			var name = variable.name.slice(0, -7);
 
-			data.variables.push({ name: name, id: Variables.ID.ATTRIBUTE, type: variable.type });
+			data.variables.push({ name: name, id: VARIABLES.ID.ATTRIBUTE, type: variable.type });
 			data.assigns.push(variable.name + ' = ' + name + ';');
 		});
 
-		console.log(template.render(source, data));
+		// console.log(template.render(source, data));
+
+		data = {
+			variables: [
+				{ name: 'colorVarying', id: VARIABLES.ID.VARYING, type: VARIABLES.TYPES.VEC4 },
+				{ name: 'textureVarying', id: VARIABLES.ID.VARYING, type: VARIABLES.TYPES.VEC2 },
+				{ name: 'sampler', id: VARIABLES.ID.UNIFORM, type: VARIABLES.TYPES.SAMPLER2D }
+			],
+
+			assigns: []
+		};
+
+		data.assigns.push('gl_FragColor = gl_FragColor * texture2D(sampler, textureVarying);');
+
+		console.log(template.render(Y.Shader.TEMPLATES.BASIC.FRAGMENT, data));
 	}
 };
