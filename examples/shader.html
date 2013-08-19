@@ -1,0 +1,17 @@
+<html>
+<head>
+	<title>yui webgl module</title>
+
+	<script src="http://yui.yahooapis.com/3.10.3/build/yui/yui-min.js"></script>
+	<script src="../build/y3d/y3d.js"></script>
+</head>
+<body>
+	<canvas id='y3d' height="600" width="600"></canvas>
+
+	<script>
+	YUI().use('y3d-shader', function(Y) {
+		Y.Shader.Builder.compile(Y.Shader.TEMPLATES.VERTEX.BASIC);
+	});
+	</script>	
+</body>
+</html>

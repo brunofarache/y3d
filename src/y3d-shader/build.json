@@ -3,7 +3,7 @@
 	"builds": {
 		"y3d-shader": {
 			"jsfiles": [
-				"shader.js"
+				"program.js"
 			]
 		}
 	}

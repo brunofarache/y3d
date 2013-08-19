@@ -93,7 +93,11 @@ window.YUI_config = {
 			"y3d-shader"
 		]
 	},
-	"y3d-shader": {},
+	"y3d-shader": {
+		"requires": [
+			"template"
+		]
+	},
 	"y3d-texture": {
 		"requires": [
 			"base-build"

@@ -1,3 +1,7 @@
 {
-	"y3d-shader": {}
+	"y3d-shader": {
+		"requires": [
+			"template"
+		]
+	}
 }
