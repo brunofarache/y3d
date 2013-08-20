@@ -1,138 +1,178 @@
 YUI.add('y3d-shader', function (Y, NAME) {
 
-var colorProgram = null,
-	textureProgram = null,
+Y.Program = function(context) {
+	this.context = context;
+	this.program = context.createProgram();
+};
 
-	fragmentShaderSource = [
-		'precision mediump float;',
+Y.Program.prototype = {
+	attrs: {
+	},
 
-		'varying vec4 fragmentColor;',
+	uniforms: {
+	},
 
-		'#ifdef USE_TEXTURE',
-			'varying vec2 vertexTextureCoordinates;',
-			'uniform sampler2D sampler;',
-		'#endif',
+	link: function(vertexShader, fragmentShader) {
+		var instance = this,
+			context = instance.context,
+			program = instance.program;
 
-		'void main(void) {',
-			'gl_FragColor = fragmentColor;',
+		context.attachShader(program, vertexShader);
+		context.attachShader(program, fragmentShader);
 
-			'#ifdef USE_TEXTURE',
-				'gl_FragColor = gl_FragColor * texture2D(sampler, vertexTextureCoordinates);',
-			'#endif',
-		'}'
-	].join('\n'),
+		context.linkProgram(program);
 
-	vertexShaderSource = [
-		'attribute vec3 vertexPosition;',
-		'attribute vec4 vertexColor;',
+		if (!context.getProgramParameter(program, context.LINK_STATUS)) {
+			console.error('Error while linking shaders.');
 
-		'#ifdef USE_TEXTURE',
-			'attribute vec2 textureCoordinates;',
-			'varying vec2 vertexTextureCoordinates;',
-		'#endif',
-
-		'uniform mat4 projectionMatrix;',
-		'uniform mat4 modelViewMatrix;',
-
-		'varying vec4 fragmentColor;',
-
-		'void main(void) {',
-			'gl_Position = projectionMatrix * modelViewMatrix * vec4(vertexPosition, 1.0);',
-
-			'fragmentColor = vertexColor;',
-
-			'#ifdef USE_TEXTURE',
-				'vertexTextureCoordinates = textureCoordinates;',
-			'#endif',
-		'}'
-	].join('\n');
-
-Y.Shader = {
-	compile: function(context, type, constants) {
-		var shader, source;
-
-		if (type === 'fragment') {
-			shader = context.createShader(context.FRAGMENT_SHADER);
-			source = fragmentShaderSource;
+			return;
 		}
-		else if (type === 'vertex') {
-			shader = context.createShader(context.VERTEX_SHADER);
-			source = vertexShaderSource;
-		}
+	},
 
-		constants = constants.join('\n');
-		source = [constants, source].join('\n');
+	setAttr: function(input) {
+		var instance = this,
+			context = instance.context,
+			program = instance.program,
+			name = input.name;
+
+		program.attrs[name] = context.getAttribLocation(program, name);
+		context.enableVertexAttribArray(program.attrs[name]);
+	},
+
+	setUniform: function(input) {
+		var instance = this,
+			context = instance.context,
+			program = instance.program,
+			name = input.name;
+
+		program.uniforms[name] = context.getUniformLocation(program, name);
+	}
+};
+
+var VARIABLES = {
+	ID: {
+		ATTRIBUTE: 'attribute',
+		UNIFORM: 'uniform',
+		VARYING: 'varying'
+	},
+
+	TYPES: {
+		MAT4: 'mat4',
+		SAMPLER2D: 'sampler2D',
+		VEC2: 'vec2',
+		VEC3: 'vec3',
+		VEC4: 'vec4'
+	}
+};
+
+Y.Shader = function(context, type) {
+	this.context = context;
+	this.shader = context.createShader(type);
+};
+
+Y.Shader.prototype = {
+	compile: function(source) {
+		var instance = this,
+			context = instance.context,
+			shader = instance.shader;
 
 		context.shaderSource(shader, source);
 		context.compileShader(shader);
 
 		if (!context.getShaderParameter(shader, context.COMPILE_STATUS)) {
-			console.log(context.getShaderInfoLog(shader));
+			console.error('Error while compiling shader.', context.getShaderInfoLog(shader));
 
-			return null;
+			return;
 		}
-
-		return shader;
-	},
-
-	getColorProgram: function(options) {
-		if (colorProgram !== null) {
-			return colorProgram;
-		}
-
-		var context = options.context,
-			constants = options.constants || [];
-
-		colorProgram = Y.Shader.link(context, constants);
-
-		return colorProgram;
-	},
-
-	getTextureProgram: function(options) {
-		if (textureProgram !== null) {
-			return textureProgram;
-		}
-
-		var context = options.context,
-			constants = options.constants || [];
-
-		constants.push('#define USE_TEXTURE');
-
-		textureProgram = Y.Shader.link(context, constants);
-
-		textureProgram.textureCoordinatesAttribute = context.getAttribLocation(textureProgram, "textureCoordinates");
-		context.enableVertexAttribArray(textureProgram.textureCoordinatesAttribute);
-
-		textureProgram.samplerUniform = context.getUniformLocation(textureProgram, "sampler");
-
-		return textureProgram;
-	},
-
-	link: function(context, constants) {
-		var fragmentShader = Y.Shader.compile(context, 'fragment', constants),
-			vertexShader = Y.Shader.compile(context, 'vertex', constants),
-			program = context.createProgram();
-
-		context.attachShader(program, fragmentShader);
-		context.attachShader(program, vertexShader);
-
-		context.linkProgram(program);
-
-		if (!context.getProgramParameter(program, context.LINK_STATUS)) {
-			console.log("Could not link shaders");
-		}
-
-		program.vertexPositionAttribute = context.getAttribLocation(program, "vertexPosition");
-		context.enableVertexAttribArray(program.vertexPositionAttribute);
-
-		program.vertexColorAttribute = context.getAttribLocation(program, "vertexColor");
-		context.enableVertexAttribArray(program.vertexColorAttribute);
-
-		program.projectionMatrixUniform = context.getUniformLocation(program, "projectionMatrix");
-		program.modelViewMatrixUniform = context.getUniformLocation(program, "modelViewMatrix");
-
-		return program;
 	}
 };
 
-}, '0.1');
+Y.Shader.TEMPLATES = {
+	BASIC: {
+		VERTEX: [
+			'{{% Y.Array.each(this.variables, function(variable) { %}}',
+			'	{{{ variable.id }}} {{{ variable.type }}} {{{ variable.name }}};',
+			'{{% }); %}}',
+
+			'	void main(void) {',
+			'		gl_Position = projection * modelViewMatrix * vec4(position, 1.0);',
+
+				'{{% Y.Array.each(this.assigns, function(assign) { %}}',
+				'		{{{ assign }}}',
+				'{{% }); %}}',
+			'	}'
+		].join('\n'),
+
+		FRAGMENT: [
+			'	precision mediump float;',
+
+			'{{% Y.Array.each(this.variables, function(variable) { %}}',
+			'	{{{ variable.id }}} {{{ variable.type }}} {{{ variable.name }}};',
+			'{{% }); %}}',
+
+			'	void main(void) {',
+			'		gl_FragColor = colorVarying;',
+
+				'{{% Y.Array.each(this.assigns, function(assign) { %}}',
+				'		{{{ assign }}}',
+				'{{% }); %}}',
+			'	}'
+		].join('\n')
+	}
+};
+
+Y.Shader.Builder = {
+	compile: function(source, data) {
+		Y.mix(Y.Template.Micro.options, {
+			code: /\{\{%([\s\S]+?)%\}\}/g,
+			escapedOutput: /\{\{(?!%)([\s\S]+?)\}\}/g,
+			rawOutput: /\{\{\{([\s\S]+?)\}\}\}/g
+		}, true);
+
+		var template = new Y.Template();
+
+		var data = {
+			variables: [
+				{ name: 'position', id: VARIABLES.ID.ATTRIBUTE, type: VARIABLES.TYPES.VEC3 },
+				{ name: 'projection', id: VARIABLES.ID.UNIFORM, type: VARIABLES.TYPES.MAT4 },
+				{ name: 'modelViewMatrix', id: VARIABLES.ID.UNIFORM, type: VARIABLES.TYPES.MAT4 },
+				{ name: 'colorVarying', id: VARIABLES.ID.VARYING, type: VARIABLES.TYPES.VEC4 }
+			],
+
+			assigns: []
+		};
+
+		// console.log(template.render(source, data));
+
+		data.variables.push({ name: 'textureVarying', id: VARIABLES.ID.VARYING, type: VARIABLES.TYPES.VEC2 });
+
+		Y.Array.each(data.variables, function(variable) {
+			if (variable.id !== VARIABLES.ID.VARYING) {
+				return;
+			}
+
+			var name = variable.name.slice(0, -7);
+
+			data.variables.push({ name: name, id: VARIABLES.ID.ATTRIBUTE, type: variable.type });
+			data.assigns.push(variable.name + ' = ' + name + ';');
+		});
+
+		// console.log(template.render(source, data));
+
+		data = {
+			variables: [
+				{ name: 'colorVarying', id: VARIABLES.ID.VARYING, type: VARIABLES.TYPES.VEC4 },
+				{ name: 'textureVarying', id: VARIABLES.ID.VARYING, type: VARIABLES.TYPES.VEC2 },
+				{ name: 'sampler', id: VARIABLES.ID.UNIFORM, type: VARIABLES.TYPES.SAMPLER2D }
+			],
+
+			assigns: []
+		};
+
+		data.assigns.push('gl_FragColor = gl_FragColor * texture2D(sampler, textureVarying);');
+
+		console.log(template.render(Y.Shader.TEMPLATES.BASIC.FRAGMENT, data));
+	}
+};
+
+}, '0.1', {"requires": ["template"]});
