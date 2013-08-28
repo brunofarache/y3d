@@ -1,5 +1,5 @@
 {
-	"name": "y3d-obj-loader",
+	"name": "y3d-loader",
 	"builds": {
 		"y3d-obj-loader": {
 			"jsfiles": [
