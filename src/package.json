@@ -1,0 +1,9 @@
+{
+    "name": "build-gallery",
+    "version": "0.0.1",
+    "author": "Anthony Pipkin",
+    "description": "Load in packages required for build-gallery.js script",
+    "dependencies": {
+        "node-fs": "0.x"
+    }
+}
