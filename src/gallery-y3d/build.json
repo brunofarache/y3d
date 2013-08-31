@@ -1,49 +1,27 @@
 {
-	"builds": {
-	},
-
-	"rollups": {
-		"gallery-y3d": {
-			"config": {
-				"use": [
-					"y3d-anim",
-					"y3d-camera",
-					"y3d-color",
-					"y3d-geometry-base",
-					"y3d-geometry-box",
-					"y3d-geometry-cylinder",
-					"y3d-geometry-grid",
-					"y3d-geometry-plane",
-					"y3d-geometry-sphere",
-					"y3d-geometry-triangle",
-					"y3d-matrix",
-					"y3d-model",
-					"y3d-obj-loader",
-					"y3d-picker-plugin",
-					"y3d-scene",
-					"y3d-shader",
-					"y3d-texture"
-]
-			},
-			"files": [
-					"y3d-anim",
-					"y3d-camera",
-					"y3d-color",
-					"y3d-geometry-base",
-					"y3d-geometry-box",
-					"y3d-geometry-cylinder",
-					"y3d-geometry-grid",
-					"y3d-geometry-plane",
-					"y3d-geometry-sphere",
-					"y3d-geometry-triangle",
-					"y3d-matrix",
-					"y3d-model",
-					"y3d-obj-loader",
-					"y3d-picker-plugin",
-					"y3d-scene",
-					"y3d-shader",
-					"y3d-texture"
-]
-		}
-	}
+    "name": "gallery-y3d",
+    "builds": {
+        "gallery-y3d": {
+            "jsfiles": [
+                "matrix.js",
+            	"model.js",
+                "texture.js",
+                "geometry-base.js",
+                "anim.js",
+                "camera.js",
+                "color.js",
+                "box.js",
+                "cylinder.js",
+                "grid.js",
+                "plane.js",
+                "sphere.js",
+                "triangle.js",
+                "obj-loader.js",
+                "picker-plugin.js",
+                "shader.js",
+                "scene.js",
+                "texture-loader.js"
+            ]
+        }
+    }
 }
