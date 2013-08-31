@@ -5,7 +5,17 @@ window.YUI_config = {
             combine: false,
             filter: 'RAW',
             modules: {
-	"gallery-y3d": {},
+	"gallery-y3d": {
+		"requires": [
+			"event-key",
+			"event-mousewheel",
+			"color",
+			"base-build",
+			"plugin",
+			"base-pluginhost",
+			"node-base"
+		]
+	},
 	"y3d-anim": {},
 	"y3d-camera": {
 		"requires": [
