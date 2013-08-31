@@ -81,6 +81,11 @@ function processDir(dir) {
 
 	if (exists) {
 		fs.readdirSync(dir + '/js').forEach(function (jsFile) {
+			// ignore files not ending with .js
+			if (/[^\.js]$/.test(jsFile)) {
+				return;
+			}
+
 			copyFile(dir + '/js/' + jsFile, galleryDir + '/js/' + jsFile, function (err) {
 				if (err) {
 					_log(jsFile + ' : ' + err, false);
