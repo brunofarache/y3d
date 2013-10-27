@@ -1,0 +1,38 @@
+<html>
+<head>
+	<title>yui webgl module</title>
+
+	<script src="http://yui.yahooapis.com/3.13.0/build/yui/yui-min.js"></script>
+</head>
+<body>
+	<canvas id='y3d' height="600" width="600"></canvas>
+
+	<script>
+	YUI({
+		gallery: 'gallery-2013.10.24-18-05'
+	}).use('gallery-y3d', function(Y) {
+		var scene = new Y.Scene({
+			camera: new Y.Camera({
+				position: {
+					z: 20
+				}
+			}),
+
+			background: '#272822'
+		});
+
+		var box = new Y.Box({
+			color: '#ff7700',
+			rotation: {
+				x: 45,
+				y: 45
+			}
+		});
+
+		scene.add(box);
+
+		scene.render();
+	});
+	</script>	
+</body>
+</html>
