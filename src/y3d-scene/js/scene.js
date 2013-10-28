@@ -39,12 +39,16 @@ Y.Scene = Y.Base.create('scene', Y.Base, [], {
 		instance._clearColor();
 		instance._enableDepthTest();
 
-		Y.each(geometries, function(geometry) {
-			var program = instance._getProgram(geometry);
+		for (var id in geometries) {
+			var geometry = geometries[id],
+				program = instance._getProgram(geometry);
 
 			context.useProgram(program);
 
-			instance._loadBufferData(geometry, context.ARRAY_BUFFER, new Float32Array(geometry.get('color')), 'colorBuffer');
+			if (!geometry.colorBuffer) {
+				instance._loadBufferData(geometry, context.ARRAY_BUFFER, new Float32Array(geometry.get('color')), 'colorBuffer');
+			}
+
 			instance._setVertexAttribute(geometry.colorBuffer, program.vertexColorAttribute, 4);
 
 			instance._setVertexAttribute(geometry.verticesBuffer, program.vertexPositionAttribute, 3);
@@ -60,7 +64,7 @@ Y.Scene = Y.Base.create('scene', Y.Base, [], {
 			}
 
 			instance._unbindBuffers();
-		});
+		}
 	},
 
 	_clearColor: function() {

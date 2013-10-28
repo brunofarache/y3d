@@ -22,6 +22,8 @@ Y.Geometry = Y.Base.create('geometry', Y.y3d.Model, [], {
 			colorArray = colorArray.concat(val);
 		}
 
+		instance.colorBuffer = null;
+
 		return colorArray;
 	},
 
