@@ -4,18 +4,19 @@ Y.Camera = Y.Base.create('camera', Y.y3d.Model, [], {
 
 		Y.on('keypress', Y.bind(instance._onKeyPress, instance));
 		Y.on('mousewheel', Y.bind(instance._onMouseWheel, instance));
+
+		instance.inverse = Y.WebGLMatrix.mat4.create();
 	},
 
 	getInvertedMatrix: function() {
 		var instance = this,
 			val = instance.get('matrix'),
-			matrix = Y.WebGLMatrix.mat4.create();
+			inverse = instance.inverse;
 
-		Y.WebGLMatrix.mat4.set(val, matrix);
+		Y.WebGLMatrix.mat4.set(val, inverse);
+		Y.WebGLMatrix.mat4.inverse(inverse);
 
-		Y.WebGLMatrix.mat4.inverse(matrix);
-
-		return matrix;
+		return inverse;
 	},
 
 	_onKeyPress: function(event) {
