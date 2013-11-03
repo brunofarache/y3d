@@ -29,16 +29,16 @@
 			}
 		});
 		
-		// var sphere = new Y.Sphere({
-		// 	radius: 2,
-		// 	texture: 'images/moon.gif',
-		// 	position: {
-		// 		x: -4
-		// 	}
-		// });
+		var sphere = new Y.Sphere({
+			radius: 2,
+			texture: 'images/moon.gif',
+			position: {
+				x: -4
+			}
+		});
 
 		scene.add(box);
-		// scene.add(sphere);
+		scene.add(sphere);
 
 		var x = 0, y = 0, z = 0;
 
@@ -61,7 +61,7 @@
 
 
 			box.set('rotation', {x: x, y: y, z: z});
-			// sphere.set('rotation', {y: y});
+			sphere.set('rotation', {y: y});
 		};
 
 		var anim = new Y.WebGLAnim(scene, animFn);
@@ -70,7 +70,7 @@
 			onLoad: function() {
 				anim.start();
 			},
-			textures: [box.get('texture')]
+			textures: [box.get('texture'), sphere.get('texture')]
 		});
 	});
 	</script>	

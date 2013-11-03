@@ -12,13 +12,17 @@
 	YUI().use('y3d-anim', 'y3d-scene', 'y3d-camera', 'y3d-geometry-box', 'y3d-geometry-sphere', 'y3d-texture', function(Y) {
 		var camera = new Y.Camera({
 			position: {
-				z: 20
+				z: 40
 			}
 		});
 
 		var scene = new Y.Scene({
 			camera: camera,
 			background: 'white'
+		});
+
+		var texture = new Y.Texture({
+			imageUrl: 'images/grass.png'
 		});
 
 		var size = 50;
@@ -33,7 +37,7 @@
 					}
 				});
 
-				box.set('color', '#' + box.get('id'))
+				box.set('texture', texture)
 				
 				scene.add(box);
 			}
@@ -44,8 +48,13 @@
 
 			camera.set('position.z', k + 1);
 		});
-		
-		anim.start();
+
+		new Y.TextureLoader({
+			onLoad: function() {
+				anim.start();
+			},
+			textures: [texture]
+		});
 	});
 	</script>	
 </body>
