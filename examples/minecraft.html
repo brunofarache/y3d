@@ -1,0 +1,52 @@
+<html>
+<head>
+	<title>yui webgl module</title>
+
+	<script src="http://yui.yahooapis.com/3.13.0/build/yui/yui-min.js"></script>
+	<script src="../build/y3d/y3d.js"></script>
+</head>
+<body>
+	<canvas id='y3d' height="600" width="1000"></canvas>
+
+	<script>
+	YUI().use('y3d-anim', 'y3d-scene', 'y3d-camera', 'y3d-geometry-box', 'y3d-geometry-sphere', 'y3d-texture', function(Y) {
+		var camera = new Y.Camera({
+			position: {
+				z: 20
+			}
+		});
+
+		var scene = new Y.Scene({
+			camera: camera,
+			background: 'white'
+		});
+
+		var size = 50;
+
+		for (var i = 0; i < size; i++) {
+			for (var j = 0; j < size; j++) {
+				var box = new Y.Box({
+					position: {
+						x: -size + j * 2,
+						y: -4,
+						z: i * 2
+					}
+				});
+
+				box.set('color', '#' + box.get('id'))
+				
+				scene.add(box);
+			}
+		}
+
+		var anim = new Y.WebGLAnim(scene, function() {
+			var k = camera.get('position.z');
+
+			camera.set('position.z', k + 1);
+		});
+		
+		anim.start();
+	});
+	</script>	
+</body>
+</html>
