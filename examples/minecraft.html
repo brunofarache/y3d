@@ -9,12 +9,23 @@
 	<canvas id='y3d' height="600" width="1000"></canvas>
 
 	<script>
+	var distance = function(x0, y0, z0, x1, y1, z1) {
+        var dx = x1-x0,
+            dy = y1-y0,
+            dz = z1-z0;
+
+        return Math.sqrt(dx*dx + dy*dy + dz*dz);
+    };
+
+
 	YUI().use('y3d-anim', 'y3d-scene', 'y3d-camera', 'y3d-geometry-box', 'y3d-geometry-sphere', 'y3d-texture', function(Y) {
 		var camera = new Y.Camera({
 			position: {
-				z: 40
+				z: 10
 			}
 		});
+
+		// camera.lookAt([0, 0, 0]);
 
 		var scene = new Y.Scene({
 			camera: camera,
@@ -25,28 +36,48 @@
 			imageUrl: 'images/grass.png'
 		});
 
-		var size = 50;
+		var box = new Y.Box({
+			texture: texture
+		});		
 
-		for (var i = 0; i < size; i++) {
-			for (var j = 0; j < size; j++) {
-				var box = new Y.Box({
-					position: {
-						x: -size + j * 2,
-						y: -4,
-						z: i * 2
-					}
-				});
+		scene.add(box);
 
-				box.set('texture', texture)
-				
-				scene.add(box);
-			}
-		}
+		var i = 0;
 
 		var anim = new Y.WebGLAnim(scene, function() {
-			var k = camera.get('position.z');
+			i += 1;
 
-			camera.set('position.z', k + 1);
+			var r = distance(
+						camera.get('position.x'),
+						camera.get('position.y'),
+						camera.get('position.z'),
+						0,
+						0,
+						0
+					),
+					theta = -i * (Math.PI/180),
+					phi = 90 * (Math.PI/180);
+
+				var x = r * Math.sin(theta) * Math.cos(phi);
+				var y = r * Math.sin(theta) * Math.sin(phi);
+				var z = r * Math.cos(theta);
+
+				// console.log('x', x);
+				// console.log('y', y);
+				// console.log('z', z);
+				// console.log('r', r);
+				// console.log('----');
+
+				// camera.lookAt([y, x, -z]);
+
+
+				//---
+
+				var k = camera.get('rotation.y');
+				// var j = box.get('rotation.y');
+
+				// camera.set('rotation.y', k + 1);
+				// box.set('rotation.y', j + 1);
 		});
 
 		new Y.TextureLoader({
