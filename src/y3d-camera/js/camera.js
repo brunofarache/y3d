@@ -1,11 +1,16 @@
 Y.Camera = Y.Base.create('camera', Y.y3d.Model, [], {
+	_handles: null,
+
 	initializer: function() {
 		var instance = this;
 
-		Y.on('keypress', Y.bind(instance._onKeyPress, instance));
-		Y.on('mousewheel', Y.bind(instance._onMouseWheel, instance));
-
 		instance.inverse = Y.WebGLMatrix.mat4.create();
+
+		instance.after('controlsChange', instance._afterControlsChange);
+
+		if (instance.get('controls') !== null) {
+			instance._bindControls();
+		}
 	},
 
 	getInvertedMatrix: function() {
@@ -17,6 +22,26 @@ Y.Camera = Y.Base.create('camera', Y.y3d.Model, [], {
 		Y.WebGLMatrix.mat4.inverse(inverse);
 
 		return inverse;
+	},
+
+	_afterControlsChange: function(event) {
+		var instance = this;
+
+		if (event.newVal !== null) {
+			instance._bindControls();
+		}
+		else {
+			instance._unbindControls();
+		}
+	},
+
+	_bindControls: function() {
+		var instance = this;
+
+		instance._handles = [
+			Y.on('keypress', Y.bind(instance._onKeyPress, instance)),
+			Y.on('mousewheel', Y.bind(instance._onMouseWheel, instance))
+		];
 	},
 
 	_onKeyPress: function(event) {
@@ -58,6 +83,12 @@ Y.Camera = Y.Base.create('camera', Y.y3d.Model, [], {
 		z = z - (event.wheelDelta * distance);
 
 		instance.set('position.z', z);
+	},
+
+	_unbindControls: function() {
+		var instance = this;
+
+		(new Y.EventHandle(instance._handles)).detach();
 	}
 }, {
 	ATTRS: {
@@ -70,7 +101,6 @@ Y.Camera = Y.Base.create('camera', Y.y3d.Model, [], {
 					left: 97,
 					distance: 0.3
 				},
-
 				mouseWheelDistance: 0.1
 			}
 		}
