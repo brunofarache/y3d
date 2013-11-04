@@ -52,7 +52,6 @@ Y.Scene = Y.Base.create('scene', Y.Base, [], {
 			}
 
 			instance._setVertexAttribute(geometry.colorBuffer, program.vertexColorAttribute, 4);
-
 			instance._setVertexAttribute(geometry.verticesBuffer, program.vertexPositionAttribute, 3);
 			instance._setTextureAttribute(program, geometry);
 
@@ -198,9 +197,13 @@ Y.Scene = Y.Base.create('scene', Y.Base, [], {
 		webglTexture = texture.get('webglTexture');
 
 		context.bindTexture(context.TEXTURE_2D, webglTexture);
-
 		context.pixelStorei(context.UNPACK_FLIP_Y_WEBGL, true);
-		context.texImage2D(context.TEXTURE_2D, 0, context.RGBA, context.RGBA, context.UNSIGNED_BYTE, image);
+
+		if (!texture.texImage2D) {
+			context.texImage2D(context.TEXTURE_2D, 0, context.RGBA, context.RGBA, context.UNSIGNED_BYTE, image);
+			texture.texImage2D = true;
+		}
+
 		context.texParameteri(context.TEXTURE_2D, context.TEXTURE_MAG_FILTER, context.NEAREST);
 		context.texParameteri(context.TEXTURE_2D, context.TEXTURE_MIN_FILTER, context.NEAREST);
 
@@ -247,7 +250,9 @@ Y.Scene = Y.Base.create('scene', Y.Base, [], {
 		},
 
 		camera: {
-			value: new Y.Camera()
+			valueFn: function() {
+				return new Y.Camera();
+			}
 		},
 
 		geometries: {

@@ -42,11 +42,13 @@ Y.namespace('y3d').Model = Y.Base.create('model', Y.Base, [], {
 
 		instance.set('matrix', matrix);
 
-		Y.WebGLMatrix.mat4.translate(matrix, [position.x, position.y, position.z]);
-
 		Y.WebGLMatrix.mat4.rotateX(matrix, (rotation.x * (Math.PI / 180)));
 		Y.WebGLMatrix.mat4.rotateY(matrix, (rotation.y * (Math.PI / 180)));
 		Y.WebGLMatrix.mat4.rotateZ(matrix, (rotation.z * (Math.PI / 180)));
+		
+		Y.WebGLMatrix.mat4.translate(matrix, [position.x, position.y, position.z]);
+
+		
 	}
 }, {
 	ATTRS: {

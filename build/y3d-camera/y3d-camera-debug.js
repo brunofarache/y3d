@@ -6,6 +6,7 @@ Y.Camera = Y.Base.create('camera', Y.y3d.Model, [], {
 
 		Y.on('keypress', Y.bind(instance._onKeyPress, instance));
 		Y.on('mousewheel', Y.bind(instance._onMouseWheel, instance));
+		Y.on('mousemove', Y.bind(instance._onMouseMove, instance));
 
 		instance.inverse = Y.WebGLMatrix.mat4.create();
 	},
@@ -19,6 +20,17 @@ Y.Camera = Y.Base.create('camera', Y.y3d.Model, [], {
 		Y.WebGLMatrix.mat4.inverse(inverse);
 
 		return inverse;
+	},
+
+	lookAt: function(center) {
+		var instance = this,
+			position = instance.get('position'),
+			eye = [position.x, position.y, position.z],
+			up = [0, 1, 0],
+			matrix = Y.WebGLMatrix.mat4.lookAt(eye, center, up);;
+
+		Y.WebGLMatrix.mat4.inverse(matrix);
+		instance.set('matrix', matrix);
 	},
 
 	_onKeyPress: function(event) {
@@ -50,6 +62,24 @@ Y.Camera = Y.Base.create('camera', Y.y3d.Model, [], {
 
 				break;
 		}
+	},
+
+	_onMouseMove: function(event) {
+		var instance = this;
+			rotation = instance.get('rotation');
+
+		var deltaX = event.clientX - (instance.previousX || event.clientX );
+		instance.previousX = event.clientX;
+
+		instance.set('rotation.y', rotation.y + deltaX * -0.1);
+
+		var deltaY = event.clientY - (instance.previousY || event.clientY);
+		instance.previousY = event.clientY;
+
+		instance.set('rotation.x', rotation.x + deltaY * -0.1);
+		// console.log(event);
+
+		
 	},
 
 	_onMouseWheel: function(event) {

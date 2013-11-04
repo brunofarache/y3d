@@ -34,7 +34,6 @@ Y.TextureLoader = Y.Base.create('texture-loader', Y.Base, [], {
 			unloadedTextures[imageUrl] = texture;
 
 			image.onload = Y.bind(instance._onLoad, instance, texture);
-
 			image.src = imageUrl;
 
 			texture.set('image', image);
