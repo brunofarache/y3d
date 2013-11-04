@@ -248,7 +248,9 @@ Y.Scene = Y.Base.create('scene', Y.Base, [], {
 		},
 
 		camera: {
-			value: new Y.Camera()
+			valueFn: function() {
+				return new Y.Camera();
+			}
 		},
 
 		geometries: {
